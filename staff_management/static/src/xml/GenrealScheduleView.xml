@@ -1,0 +1,26 @@
+<template>
+<t t-name="GenrealScheduleView">
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="oe_calendar_table">
+        <tr>
+            <td width="100%">
+                <div class="oe_calendar dhx_cal_container">
+                    <div class="dhx_cal_navline staff_mngmt_special_nav">
+                        <div class="dhx_cal_prev_button">Week</div>
+                        <div class="dhx_cal_next_button">Week</div>
+                        <div class="dhx_cal_today_button" t-opentag="true"></div>
+                        <div class="dhx_cal_prev_month_button" t-opentag="true"><span class="arrow">&amp;nbsp;</span>Month</div>
+                        <div class="dhx_cal_next_month_button" t-opentag="true"><span class="arrow">&amp;nbsp;</span>Month</div>
+                        <div class="dhx_cal_date" t-opentag="true"></div>
+                        <div class="dhx_cal_tab" name="matrix_tab" style="right:76px;" t-opentag="true">Week</div>
+                    </div>
+                    <div class="dhx_cal_header">
+                    </div>
+                    <div class="dhx_cal_data">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="staff_tooltip"></div>
+</t>
+</template>

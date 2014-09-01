@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    	
+    	<record id="view_staff_authorization_search_form" model="ir.ui.view">
+            <field name="name">staff.authorization.search.form</field>
+            <field name="model">staff.authorization</field>
+            <field name="arch" type="xml">
+                <search string="Authorizations">
+                	<field name="task_id"/>
+                    <field name="user_id"/>
+                   <group  expand='0' string='Group by...'>
+                       <filter string='Users' domain="[]" context="{'group_by' : 'user_id'}"/>
+                       <filter string='Tasks' domain="[]" context="{'group_by' : 'task_id'}"/>
+                   </group>
+                </search>
+            </field>
+        </record>
+    	
+        <record model="ir.ui.view" id="view_staff_authorization_form">
+            <field name="name">staff.authorization.form</field>
+            <field name="model">staff.authorization</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Authorizations">
+                	<field name="user_id"/>
+                    <field name="task_id"/>
+                    <field name="create_uid"/>
+                    <field name="write_date"/>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_staff_authorization_tree">
+            <field name="name">staff.authorization.tree</field>
+            <field name="model">staff.authorization</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Authorizations">
+                    <field name="user_id"/>
+                    <field name="task_id"/>
+                    <field name="create_uid"/>
+                    <field name="write_date"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="show_staff_authorization">
+			<field name="name">Formations</field>
+			<field name="res_model">staff.authorization</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<menuitem name="Authorizations" id="menu_staff_user_authorization" sequence="41" parent="menu_staff_authorization" action="show_staff_authorization" groups="group_staff_management_trainer"/>
+        
+    </data>
+</openerp>

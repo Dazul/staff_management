@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+    	<!-- filters -->
+		<record id="view_staff_management_booking_search" model="ir.ui.view">
+            <field name="name">staff.booking.search.form</field>
+            <field name="model">staff.booking</field>
+            <field name="arch" type="xml">
+                <search string="Booking">
+                	<field name="booking_name" />
+                	<field name="date"/>
+                    <field name="booking_type"/>
+                    <field name="create_uid"/>
+                </search>
+            </field>
+        </record>
+    
+    	<!-- form view -->
+        <record model="ir.ui.view" id="view_staff_booking_form">
+            <field name="name">staff.booking.form</field>
+            <field name="model">staff.booking</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Booking" version="7.0">
+                	<group>
+				    	<group>
+					    	<field name="booking_name"/>
+					    	<field name="date"/>
+					    	<field name="hour_from" widget="float_time"/>
+					    	<field name="hour_to" widget="float_time"/>
+					    	<field name="booking_type"/>
+					    	<field name="date_report"/>
+					    	<field name="come_all_weather"/>
+						</group>
+						<group>
+					    	<field name="group_leader_name"/>
+					    	<field name="group_leader_address" height="3"/>
+					    	<field name="group_leader_email"/>
+					    	<field name="group_leader_tel"/>
+						</group>
+                	</group>
+					<newline />
+					<group>
+						<group>
+					    	<field name="nbr_adult" class="staff_nbr_adult"/>
+					    	<field name="price_adult" class="staff_price_adult"/>
+					    	<field name="nbr_child" class="staff_nbr_child"/>
+					    	<field name="price_child" class="staff_price_child"/>
+					    	<field name="nbr_wheelchair" class="staff_nbr_wheelchair"/>
+					    	<field name="price_wheelchair" class="staff_price_wheelchair"/>
+					    	<field name="observation" height="20"/>
+						</group>
+						<group>
+					    	<field name="meal_included" class="staff_meal_included"/>
+					    	<field name="meal_price_adult" class="staff_meal_price_adult"/>
+					    	<field name="meal_price_child" class="staff_meal_price_child"/>
+					    	<field name="meal_observation" height="20"/>
+					    	<field name="total_price" class="staff_total_price"/>
+							<field name="create_uid"/>
+							<field name="write_uid"/>
+	            		</group>
+					</group>
+                </form>
+            </field>
+        </record>
+        
+        <!-- calendar view -->
+        <record id="view_staff_management_booking_calendar" model="ir.ui.view">
+			<field name="name">calendar_booking</field>
+			<field name="model">staff.booking</field>
+			<field name="arch" type="xml">
+				<calendar string="Booking" color="meal_included" date_start="date" mode="month">
+					<field name="booking_name" />
+					<field name="nbr_adult" />
+					<field name="nbr_child" />
+					<field name="meal_included" />
+					<field name="hour_from" />
+					<field name="hour_to" />
+					<field name="observation" />
+				</calendar>
+			</field>
+		</record>
+        
+        <!-- tree view -->
+        <record model="ir.ui.view" id="view_staff_booking_tree">
+            <field name="name">staff.booking.tree</field>
+            <field name="model">staff.booking</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Booking">
+                    <field name="booking_name"/>
+                    <field name="date"/>
+                    <field name="hour_from"/>
+                    <field name="hour_to"/>
+                    <field name="booking_type"/>
+                    <field name="create_uid"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- action -->
+        <record model="ir.actions.act_window" id="show_booking">
+			<field name="name">Booking</field>
+			<field name="res_model">staff.booking</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">calendar_booking,tree,form</field>
+			<field name="search_view_id" ref="view_staff_management_booking_search" />
+		</record>
+		
+		<!-- menu -->
+		<menuitem name="Bookings" id="menu_staff_booking"  sequence="25" parent="menu_staff_planification" action="show_booking" groups="group_staff_management_booking"/>
+        
+    </data>
+</openerp>

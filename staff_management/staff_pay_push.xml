@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    	<!-- Search view -->
+    	<record id="view_staff_pay_push_search" model="ir.ui.view">
+            <field name="name">staff.pay.push.search.form</field>
+            <field name="model">staff.pay.push</field>
+            <field name="arch" type="xml">
+                <search string="Pay Push">
+                    <field name="user_id" readonly="1"/>
+                </search>
+            </field>
+        </record>
+    	
+    	<!-- form view -->
+        <record model="ir.ui.view" id="view_staff_pay_push_form">
+            <field name="name">staff.pay.push.form</field>
+            <field name="model">staff.pay.push</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+				<form string="Pay Push">
+
+          				<field name="user_id_read" readonly="1"/>
+          				<field name="creditMonth" readonly="1"/>
+          				<field name="amount" />  
+          				<field name="creditTotal" readonly="1"/>
+          				<field name="date" />
+          				<field name="comment" attrs="{'required':True}"/>
+          				<field name="analytic_account" />
+          				<field name="account"/>
+          				<field name="journal"/>
+
+		  		</form>
+        	</field>
+        </record>
+        
+        <!-- action -->
+        <record model="ir.actions.act_window" id="show_Field">
+			<field name="name">Pay Push</field>
+			<field name="res_model">staff.pay.push</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">salary_timeline</field>
+			<field name="view_id" ref="view_staff_pay_push_form"/>
+			<field name="search_view_id" ref="view_staff_pay_push_search" />
+		</record>
+		
+		<menuitem name="Entry payroll" id="menu_staff_pay_pushs"  sequence="32" parent="menu_staff_administrative" action="show_Field" groups="group_staff_management_in_charge_time"/>
+        
+    </data>
+</openerp>

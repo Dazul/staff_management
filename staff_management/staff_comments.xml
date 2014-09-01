@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    	
+    	<record id="view_staff_comments_search_form" model="ir.ui.view">
+            <field name="name">staff.comments.search.form</field>
+            <field name="model">staff.comments</field>
+            <field name="arch" type="xml">
+                <search string="Comments">
+                	<field name="user_id"/>
+                    <field name="comment_type"/>
+                   <group  expand='0' string='Group by...'>
+                       <filter string='Users' domain="[]" context="{'group_by' : 'user_id'}"/>
+                       <filter string='Comment Type' domain="[]" context="{'group_by' : 'comment_type'}"/>
+                   </group>
+                </search>
+            </field>
+        </record>
+    	
+        <record model="ir.ui.view" id="view_staff_comments_form">
+            <field name="name">staff.comments.form</field>
+            <field name="model">staff.comments</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Comments">
+                	<field name="user_id"/>
+                	<field name="comment"/>
+                    <field name="comment_type"/>
+                    <field name="create_uid"/>
+                    <field name="write_date"/>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_staff_comments_tree">
+            <field name="name">staff.comments.tree</field>
+            <field name="model">staff.comments</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Comments">
+                    <field name="user_id"/>
+                    <field name="comment"/>
+                    <field name="comment_type"/>
+                    <field name="create_uid"/>
+                    <field name="write_date"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="show_staff_comments">
+			<field name="name">Comments</field>
+			<field name="res_model">staff.comments</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<menuitem name="Comments" id="menu_staff_comments" sequence="52" parent="menu_staff_authorization" action="show_staff_comments" groups="group_staff_management_trainer"/>
+        
+    </data>
+</openerp>

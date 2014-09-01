@@ -1,0 +1,859 @@
+# German translation for staff-management
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the staff-management package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: staff-management\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-08-08 12:00+0000\n"
+"PO-Revision-Date: 2014-07-01 08:27+0000\n"
+"Last-Translator: Rudolf Schnapka <rs@techno-flex.de>\n"
+"Language-Team: German <de@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-09 05:47+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_authorization
+msgid "staff.authorization"
+msgstr "staff.authorization"
+
+#. module: staff_management
+#: field:staff.authorization,write_date:0
+msgid "Date of formation"
+msgstr "Ausbildungsdatum"
+
+#. module: staff_management
+#: field:staff.authorization,create_uid:0
+#: field:staff.comments,create_uid:0
+msgid "Author"
+msgstr "Urheber"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_comments
+msgid "staff.comments"
+msgstr "staff.comments"
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_staff_comments
+#: model:ir.ui.menu,name:staff_management.menu_staff_comments
+#: view:staff.comments:0
+msgid "Comments"
+msgstr "Bemerkungen"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/SchedulerView.xml:13
+#, python-format
+msgid "Start hour"
+msgstr "Anfangsstunde"
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_Field
+#: view:staff.pay.push:0
+msgid "Pay Push"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.booking,price_child:0
+msgid "Price per child"
+msgstr "Kinderpreis"
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:77
+#, python-format
+msgid "The user removed this availability."
+msgstr "Der Benutzer hat diese Verfügbarkeit gelöscht"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/calendar_booking.js:197
+#: code:addons/staff_management/static/src/js/calendar_booking.js:206
+#, python-format
+msgid "children"
+msgstr "Kinder"
+
+#. module: staff_management
+#: field:staff.break.management,break_time:0
+msgid "Break time"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:360
+#, python-format
+msgid "No data available"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.pay.push,journal:0
+msgid "Analytic Journal"
+msgstr "Kostenstellenjournal"
+
+#. module: staff_management
+#: model:ir.ui.menu,name:staff_management.menu_staff_planification
+#: view:staff.scheduler:0
+msgid "Schedule"
+msgstr "Zeitplan"
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:177
+#: code:addons/staff_management/staff_scheduler.py:189
+#, python-format
+msgid "Only future dates can be changed."
+msgstr "Nur zukünftige Termine können geändert werden."
+
+#. module: staff_management
+#: selection:staff.pay.push,state:0
+msgid "init"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/GenrealScheduleView.xml:11
+#: code:addons/staff_management/static/src/xml/GenrealScheduleView.xml:12
+#, python-format
+msgid "&nbsp;"
+msgstr "&nbsp;"
+
+#. module: staff_management
+#: field:staff.booking,create_uid:0
+msgid "Created by"
+msgstr "Angelegt von"
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_scheduler
+#: model:ir.ui.menu,name:staff_management.scheduler
+#: view:staff.scheduler:0
+msgid "Scheduler"
+msgstr "Planer"
+
+#. module: staff_management
+#: model:ir.ui.menu,name:staff_management.menu_staff_management
+msgid "Staff Management"
+msgstr "Belegschaftsverwaltung"
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:87
+#, python-format
+msgid "This user can not do this task"
+msgstr "Dieser Benutzer darf diese Aufgabe nicht ausführen"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/SchedulerView.xml:11
+#: field:staff.authorization,task_id:0
+#: field:staff.scheduler,task_id:0
+#, python-format
+msgid "Task"
+msgstr "Aufgabe"
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_break_management
+#: model:ir.ui.menu,name:staff_management.menu_staff_break_management
+#: view:staff.break.management:0
+msgid "Break management"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.booking,meal_price_adult:0
+msgid "Price per adult meal"
+msgstr "Kosten für ein Erwachsenen-Essen"
+
+#. module: staff_management
+#: field:staff.pay.push,amount:0
+msgid "Amount"
+msgstr "Betrag"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/TimecheckView.xml:11
+#: field:staff.scheduler,work_time:0
+#, python-format
+msgid "Worked time"
+msgstr "Arbeitzteit"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_break_management
+msgid "staff.break.management"
+msgstr ""
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_general_schedule
+#: model:ir.ui.menu,name:staff_management.general_scheduler
+msgid "General Schedule"
+msgstr "Zeitplan"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_events
+msgid "staff.events"
+msgstr "staff.events"
+
+#. module: staff_management
+#: field:staff.booking,group_leader_tel:0
+msgid "Group leader Tel"
+msgstr "Telefon d. Gruppenleitung"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:385
+#: code:addons/staff_management/static/src/js/salary_timeline.js:399
+#, python-format
+msgid "Amount due:"
+msgstr ""
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_account_analytic_account
+#: field:staff.pay.push,analytic_account:0
+msgid "Analytic Account"
+msgstr "Kostenrechnungskonto"
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:173
+#, python-format
+msgid "You have already an availability this day."
+msgstr "Sie haben diese Verfügbarkeit schon gemeldet"
+
+#. module: staff_management
+#: field:staff.booking,hour_from:0
+#: field:staff.events,hour_from:0
+#: field:staff.scheduler,hour_from:0
+msgid "Start Hour"
+msgstr "Anfangsstunde"
+
+#. module: staff_management
+#: field:staff.events,event_name:0
+msgid "Event"
+msgstr "Ereignis"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_pay_push
+msgid "staff.pay.push"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.scheduler,confirm:0
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#. module: staff_management
+#: model:res.groups,name:staff_management.group_staff_management_in_charge
+msgid "In charge"
+msgstr "Verantwortlich"
+
+#. module: staff_management
+#: field:staff.booking,meal_observation:0
+msgid "Meal observation"
+msgstr "Mahlzeitüberwachung"
+
+#. module: staff_management
+#: field:staff.break.management,work_time_min:0
+msgid "Minimum work time"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:411
+#, python-format
+msgid "Working time:"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/timecheck.js:153
+#: code:addons/staff_management/static/src/js/timecheck.js:160
+#, python-format
+msgid "duration"
+msgstr "Dauer"
+
+#. module: staff_management
+#: selection:staff.pay.push,state:0
+msgid "defineAmount"
+msgstr ""
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_personal_schedule
+#: model:ir.ui.menu,name:staff_management.personal_schedule
+#: view:staff.scheduler:0
+msgid "Personal Schedule"
+msgstr "Eigener Zeitplan"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/timecheck.js:155
+#, python-format
+msgid "Entered:"
+msgstr "Eingetragen:"
+
+#. module: staff_management
+#: field:staff.pay.push,state:0
+msgid "unknown"
+msgstr "unbekannt"
+
+#. module: staff_management
+#: field:staff.booking,nbr_adult:0
+msgid "Number of adults"
+msgstr "Anzahl Erwachsener"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/SalaryTimeline.xml:9
+#, python-format
+msgid "Today"
+msgstr ""
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:131
+#, python-format
+msgid "You cannot enter worked time in the future."
+msgstr "Sie können geleistete Arbeitszeit nicht für die Zukunft eingeben."
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_comment_types
+#: model:ir.ui.menu,name:staff_management.menu_staff_comment_types
+#: view:staff.comment.type:0
+msgid "Comment Types"
+msgstr "Kommentararten"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "July"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.booking,group_leader_address:0
+msgid "Group leader address"
+msgstr "Gruppenleiter-Anschrift"
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:91
+#: code:addons/staff_management/staff_scheduler.py:95
+#: code:addons/staff_management/staff_scheduler.py:99
+#, python-format
+msgid "You need to specify a correct work time."
+msgstr "Sie müssen eine zutreffende Arbeitszeit angeben."
+
+#. module: staff_management
+#: model:res.groups,name:staff_management.group_staff_management_planner
+msgid "Planner"
+msgstr "Planer"
+
+#. module: staff_management
+#: field:staff.booking,observation:0
+msgid "Observation"
+msgstr "Beobachtung"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_comment_type
+msgid "staff.comment.type"
+msgstr "staff.comment.type"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/personal_schedule.js:39
+#, python-format
+msgid "Worktime entered:"
+msgstr "Eingegebene Arbeitzeit:"
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_booking_types
+#: model:ir.ui.menu,name:staff_management.menu_staff_booking_types
+#: view:staff.booking.type:0
+msgid "Booking Types"
+msgstr "Buchungsarten"
+
+#. module: staff_management
+#: field:staff.booking,come_all_weather:0
+msgid "Come with all weather"
+msgstr "Bei allen Wettern zutreffend"
+
+#. module: staff_management
+#: field:staff.booking,date_report:0
+msgid "Date Report"
+msgstr "Reportdatum"
+
+#. module: staff_management
+#: field:staff.booking,nbr_wheelchair:0
+msgid "Number of wheelchair"
+msgstr "Rollstuhlanzahl"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "March"
+msgstr ""
+
+#. module: staff_management
+#: model:ir.ui.menu,name:staff_management.menu_staff_options
+msgid "Options"
+msgstr "Optionen"
+
+#. module: staff_management
+#: field:staff.break.management,work_time_max:0
+msgid "Maximum work time"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.comments,comment:0
+#: field:staff.pay.push,comment:0
+#: field:staff.scheduler,comment:0
+msgid "Comment"
+msgstr "Kommentar"
+
+#. module: staff_management
+#: view:account.analytic.account:0
+#: model:ir.actions.act_window,name:staff_management.show_tasks_accounts
+#: model:ir.ui.menu,name:staff_management.menu_staff_tasks_accounts
+#: view:staff.authorization:0
+msgid "Tasks"
+msgstr "Aufgaben"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "September"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "December"
+msgstr ""
+
+#. module: staff_management
+#: view:staff.scheduler:0
+msgid "Only users with events"
+msgstr "Nur Benutzer mit Ereignissen"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/GenrealScheduleView.xml:11
+#: code:addons/staff_management/static/src/xml/GenrealScheduleView.xml:12
+#: code:addons/staff_management/static/src/xml/PersonalScheduleView.xml:8
+#: code:addons/staff_management/static/src/xml/PersonalScheduleView.xml:9
+#: code:addons/staff_management/static/src/xml/SalaryTimeline.xml:7
+#: code:addons/staff_management/static/src/xml/SalaryTimeline.xml:8
+#: code:addons/staff_management/static/src/xml/SchedulerView.xml:26
+#: code:addons/staff_management/static/src/xml/SchedulerView.xml:27
+#: code:addons/staff_management/static/src/xml/TimecheckView.xml:22
+#: code:addons/staff_management/static/src/xml/TimecheckView.xml:23
+#, python-format
+msgid "Month"
+msgstr "Monat"
+
+#. module: staff_management
+#: view:staff.authorization:0
+#: view:staff.comments:0
+msgid "Group by..."
+msgstr "Gruppieren nach..."
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:57
+#: constraint:staff.booking:0
+#: constraint:staff.events:0
+#: constraint:staff.scheduler:0
+#, python-format
+msgid "Start hour must be between 0 and 24."
+msgstr "Anfangsstunde muss zwischen 0 und 24 liegen."
+
+#. module: staff_management
+#: field:staff.booking,meal_price_child:0
+msgid "Price per child meal"
+msgstr "Preis für eine Kindermahlzeit"
+
+#. module: staff_management
+#: field:staff.pay.push,creditTotal:0
+msgid "Balance total"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.booking,group_leader_name:0
+msgid "Group leader name"
+msgstr "Gruppenleitername"
+
+#. module: staff_management
+#: view:staff.scheduler:0
+msgid "Only with event"
+msgstr "Nur mit Veranstaltung"
+
+#. module: staff_management
+#: sql_constraint:staff.events:0
+msgid "Only one event per day!"
+msgstr "Nür eine Veranstaltung pro Tag!"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/calendar_booking.js:198
+#: field:staff.booking,meal_included:0
+#, python-format
+msgid "Meal included"
+msgstr "Mahlzeit eingeschlossen"
+
+#. module: staff_management
+#: field:staff.booking,nbr_child:0
+msgid "Number of children"
+msgstr "Anzahl Kinder"
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_staff_authorization
+msgid "Formations"
+msgstr "Ausbildung"
+
+#. module: staff_management
+#: model:ir.ui.menu,name:staff_management.menu_staff_pay_pushs
+msgid "Entry payroll"
+msgstr "Eintritts-Lohnzettel"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_booking
+msgid "staff.booking"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.booking,hour_to:0
+#: field:staff.events,hour_to:0
+#: field:staff.scheduler,hour_to:0
+msgid "End Hour"
+msgstr "Endstunde"
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_events
+#: model:ir.ui.menu,name:staff_management.menu_staff_events
+#: view:staff.events:0
+msgid "Events"
+msgstr "Veranstaltung"
+
+#. module: staff_management
+#: model:ir.ui.menu,name:staff_management.menu_staff_authorization
+msgid "Authorization"
+msgstr "Berechtigung"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/GenrealScheduleView.xml:8
+#: code:addons/staff_management/static/src/xml/GenrealScheduleView.xml:9
+#: code:addons/staff_management/static/src/xml/GenrealScheduleView.xml:14
+#: code:addons/staff_management/static/src/xml/SchedulerView.xml:23
+#: code:addons/staff_management/static/src/xml/SchedulerView.xml:24
+#: code:addons/staff_management/static/src/xml/SchedulerView.xml:29
+#: code:addons/staff_management/static/src/xml/TimecheckView.xml:19
+#: code:addons/staff_management/static/src/xml/TimecheckView.xml:20
+#: code:addons/staff_management/static/src/xml/TimecheckView.xml:25
+#, python-format
+msgid "Week"
+msgstr "Woche"
+
+#. module: staff_management
+#: field:staff.comment.type,comment_type:0
+#: view:staff.comments:0
+#: field:staff.comments,comment_type:0
+msgid "Comment Type"
+msgstr "Bemerkungsart"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "August"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/SchedulerView.xml:10
+#: code:addons/staff_management/static/src/xml/TimecheckView.xml:10
+#, python-format
+msgid "Quick assign"
+msgstr "Schnelle Zuweisung"
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:81
+#, python-format
+msgid "Work time already entered."
+msgstr "Arbeitzeit schon eingetragen"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "June"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:208
+#: model:res.groups,name:staff_management.group_staff_management_user
+#: field:staff.authorization,user_id:0
+#: field:staff.comments,user_id:0
+#: field:staff.pay.push,user_id:0
+#: field:staff.pay.push,user_id_read:0
+#: field:staff.scheduler,user_id:0
+#, python-format
+msgid "User"
+msgstr "Benutzer"
+
+#. module: staff_management
+#: field:staff.booking,date:0
+#: field:staff.events,date:0
+#: field:staff.pay.push,date:0
+#: field:staff.scheduler,date:0
+msgid "Date"
+msgstr "Datum"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "November"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "October"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "January"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.booking,write_uid:0
+msgid "Last modification by"
+msgstr "Zuletzt verändert durch"
+
+#. module: staff_management
+#: field:staff.booking,price_adult:0
+msgid "Price per adult"
+msgstr "Erwachsenenpreis"
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:77
+#: code:addons/staff_management/staff_scheduler.py:81
+#: code:addons/staff_management/staff_scheduler.py:87
+#: code:addons/staff_management/staff_scheduler.py:91
+#: code:addons/staff_management/staff_scheduler.py:95
+#: code:addons/staff_management/staff_scheduler.py:99
+#: code:addons/staff_management/staff_scheduler.py:131
+#: code:addons/staff_management/staff_scheduler.py:173
+#: code:addons/staff_management/staff_scheduler.py:177
+#: code:addons/staff_management/staff_scheduler.py:185
+#: code:addons/staff_management/staff_scheduler.py:189
+#, python-format
+msgid "Error"
+msgstr "Fehler"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/calendar_booking.js:158
+#: code:addons/staff_management/static/src/js/salary_timeline.js:141
+#, python-format
+msgid "Create: %s"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:212
+#: code:addons/staff_management/static/src/js/salary_timeline.js:213
+#, python-format
+msgid "Balance"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/timecheck.js:162
+#, python-format
+msgid "No hour entered"
+msgstr "Keine Stunde eingegeben"
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:58
+#: constraint:staff.booking:0
+#: constraint:staff.events:0
+#: constraint:staff.scheduler:0
+#, python-format
+msgid "End hour must be between 0 and 24."
+msgstr "Endstunde muss zwischen 0 und 24 liegen"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_tasks
+msgid "staff.tasks"
+msgstr ""
+
+#. module: staff_management
+#: model:ir.ui.menu,name:staff_management.menu_staff_booking
+msgid "Bookings"
+msgstr "Buchungen"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:391
+#: code:addons/staff_management/static/src/js/salary_timeline.js:402
+#, python-format
+msgid "Versed amount:"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.pay.push,account:0
+msgid "General account"
+msgstr "Allgemeines Konto"
+
+#. module: staff_management
+#: model:ir.ui.menu,name:staff_management.menu_staff_user_authorization
+#: view:staff.authorization:0
+msgid "Authorizations"
+msgstr "Berechtigungen"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/calendar_booking.js:196
+#: code:addons/staff_management/static/src/js/calendar_booking.js:205
+#, python-format
+msgid "adults"
+msgstr "Erwachsene"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/scheduler.js:271
+#, python-format
+msgid "No User"
+msgstr "Kein Benutzer"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/calendar_booking.js:231
+#, python-format
+msgid "New event"
+msgstr "Neues Ereignis"
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_time_check
+#: model:ir.ui.menu,name:staff_management.time_check
+#: model:res.groups,name:staff_management.group_staff_management_in_charge_time
+msgid "Time Check"
+msgstr "Zeitprüfung"
+
+#. module: staff_management
+#: model:ir.ui.menu,name:staff_management.menu_staff_administrative
+msgid "Administrative"
+msgstr "Verwaltung"
+
+#. module: staff_management
+#: model:ir.actions.act_window,name:staff_management.show_booking
+#: model:res.groups,name:staff_management.group_staff_management_booking
+#: view:staff.booking:0
+#: field:staff.booking,booking_name:0
+msgid "Booking"
+msgstr "Buchung"
+
+#. module: staff_management
+#: view:staff.authorization:0
+#: view:staff.comments:0
+msgid "Users"
+msgstr "Benutzer"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_scheduler
+msgid "staff.scheduler"
+msgstr "staff.scheduler"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "May"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.booking,group_leader_email:0
+msgid "Group leader email"
+msgstr "Gruppenleitung EMail"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/SchedulerView.xml:15
+#, python-format
+msgid "End hour"
+msgstr "Endstunde"
+
+#. module: staff_management
+#: field:staff.booking,total_price:0
+msgid "Total price"
+msgstr "Gesamtpreis"
+
+#. module: staff_management
+#: field:staff.comments,write_date:0
+msgid "Date of comment"
+msgstr "Kommentar Datum"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "February"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.booking,price_wheelchair:0
+msgid "Price per wheelchair"
+msgstr "Preis je Rollstuhl"
+
+#. module: staff_management
+#: field:staff.pay.push,creditMonth:0
+msgid "Balance month"
+msgstr ""
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:67
+#, python-format
+msgid "April"
+msgstr ""
+
+#. module: staff_management
+#: field:staff.booking,booking_type:0
+msgid "Event Type"
+msgstr "Ereignisart"
+
+#. module: staff_management
+#: field:staff.booking.type,booking_type:0
+msgid "Booking Type"
+msgstr "Buchungsart"
+
+#. module: staff_management
+#: model:res.groups,name:staff_management.group_staff_management_trainer
+msgid "Trainer"
+msgstr "Ausbilder"
+
+#. module: staff_management
+#: model:ir.model,name:staff_management.model_staff_booking_type
+msgid "staff.booking.type"
+msgstr ""
+
+#. module: staff_management
+#: code:addons/staff_management/staff_scheduler.py:185
+#, python-format
+msgid ""
+"You can't delete this availability because there is an assigned task on it."
+msgstr ""
+"Sie können diese Verfügbarkeit nicht löschen, weil ein Ereignis zugeordnet "
+"ist."
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/salary_timeline.js:287
+#, python-format
+msgid "Total"
+msgstr ""

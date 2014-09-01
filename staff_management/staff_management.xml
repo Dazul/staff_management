@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+		
+		<!-- filters -->
+		<record id="view_staff_management_calendar_search" model="ir.ui.view">
+            <field name="name">staff.scheduler.search.form</field>
+            <field name="model">staff.scheduler</field>
+            <field name="arch" type="xml">
+                <search string="Scheduler">
+                	<field name="task_id"/>
+                    <field name="user_id"/>
+                    <filter name="usershow" string="Only with event" context="{'usershow':'only'}"  help="Only users with events" icon="terp-project"/>
+                </search>
+            </field>
+        </record>
+        
+        <record id="view_staff_management_calendar_nosearch" model="ir.ui.view">
+            <field name="name">staff.scheduler.search.form</field>
+            <field name="model">staff.scheduler</field>
+            <field name="arch" type="xml">
+                <search string="Scheduler">
+                    <field name="date" />
+                </search>
+            </field>
+        </record>
+		
+		<!-- view user -->
+		
+		<record id="view_staff_management_calendar" model="ir.ui.view">
+			<field name="name">personal_schedule</field>
+			<field name="model">staff.scheduler</field>
+			<field name="arch" type="xml">
+				<calendar string="Personal Schedule" color="task_id" date_start="date" mode="month">
+					<field name="user_id" />
+					<field name="task_id" />
+					<field name="hour_from" />
+					<field name="hour_to" />
+					<field name="comment" />
+					<field name="work_time" />
+					<field name="confirm" />
+				</calendar>
+			</field>
+		</record>
+		
+		<record id="view_staff_management_calendar_popup" model="ir.ui.view">
+			<field name="name">personal_schedule_popup</field>
+			<field name="model">staff.scheduler</field>
+			<field name="priority" eval="1"/>
+			<field name="arch" type="xml">
+				<form string="Schedule">
+					<field name="user_id" />
+					<field name="date" />
+					<field name="hour_from" widget="float_time" />
+					<field name="hour_to" widget="float_time" />
+					<field name="task_id" domain="[('user_id_for_task', '=', user_id)]"/>
+					<field name="comment" />
+				</form>
+			</field>
+		</record>
+		
+		<record id="view_staff_management_calendar_popup_timecheck" model="ir.ui.view">
+			<field name="name">timecheck_popup</field>
+			<field name="model">staff.scheduler</field>
+			<field name="priority" eval="2"/>
+			<field name="arch" type="xml">
+				<form string="Schedule">
+					<field name="user_id" />
+					<field name="date" />
+					<field name="hour_from" widget="float_time" readonly="1"/>
+					<field name="hour_to" widget="float_time" readonly="1"/>
+					<field name="task_id" domain="[('user_id_for_task', '=', user_id)]" readonly="1"/> <!-- readonly -->
+					<field name="work_time" widget="float_time" attrs="{'required':True}"/>
+					<field name="confirm" attrs="{'required':True}"/>
+				</form>
+			</field>
+		</record>
+		
+		<!-- action listener -->
+		<record model="ir.actions.act_window" id="show_personal_schedule">
+			<field name="name">Personal Schedule</field>
+			<field name="res_model">staff.scheduler</field>
+			<field name="view_mode">calendar_personal</field>
+			<field name="domain">[('user_id','=',uid)]</field>
+			<field name="view_id" ref="view_staff_management_calendar"/>
+			<field name="search_view_id" ref="view_staff_management_calendar_nosearch" />
+		</record>
+		
+		<record model="ir.actions.act_window" id="show_scheduler">
+			<field name="name">Scheduler</field>
+			<field name="res_model">staff.scheduler</field>
+			<field name="view_mode">calendar_scheduler</field>
+			<field name="context">{'search_default_usershow':1}</field>
+			<field name="view_id" ref="view_staff_management_calendar"/>
+			<field name="search_view_id" ref="view_staff_management_calendar_search" />
+		</record>
+		
+		<record model="ir.actions.act_window" id="show_general_schedule">
+			<field name="name">General Schedule</field>
+			<field name="res_model">staff.scheduler</field>
+			<field name="view_mode">calendar_general</field>
+			<field name="context">{'search_default_usershow':1}</field>
+			<field name="view_id" ref="view_staff_management_calendar"/>
+			<field name="search_view_id" ref="view_staff_management_calendar_search" />
+		</record>
+
+		<record model="ir.actions.act_window" id="show_time_check">
+			<field name="name">Time Check</field>
+			<field name="res_model">staff.scheduler</field>
+			<field name="view_mode">calendar_timecheck</field>
+			<field name="context">{'write_worked_time':1,'search_default_usershow':1}</field>
+			<field name="view_id" ref="view_staff_management_calendar"/>
+			<field name="search_view_id" ref="view_staff_management_calendar_search" />
+		</record>
+
+		<!-- rules -->
+		<!--
+		<record id="calldata_form_action_tree_view" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence"/>
+			<field name="view_mode">calendar_scheduler</field>
+			<field name="view_id" ref="view_staff_management_calendar"/>
+			<field name="act_window_id" ref="show_scheduler"/>
+		</record>
+		<record id="calldata_form_action_form_view" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence"/>
+			<field name="view_mode">calendar_scheduler</field>
+			<field name="view_id" ref="view_staff_management_calendar"/>
+			<field name="act_window_id" ref="show_time_check"/>
+		</record>
+-->
+		<!-- menu tree -->
+		<menuitem name="Staff Management" id="menu_staff_management" sequence="10" action="show_personal_schedule"/>
+		<menuitem name="Schedule" id="menu_staff_planification" sequence="20" parent="menu_staff_management"/>
+		<menuitem name="Administrative" id="menu_staff_administrative" sequence="30" parent="menu_staff_management"/>
+		<menuitem name="Authorization" id="menu_staff_authorization" sequence="40" parent="menu_staff_management"/>
+		<menuitem name="Options" id="menu_staff_options" sequence="50" parent="menu_staff_management"/>
+		
+		<!-- menu items -->
+		<menuitem name="Personal Schedule" sequence="21" id="personal_schedule" action="show_personal_schedule" parent="menu_staff_planification" groups="group_staff_management_user"/>
+		<menuitem name="General Schedule" sequence="22" id="general_scheduler" action="show_general_schedule" parent="menu_staff_planification" groups="group_staff_management_user"/>
+		
+		<menuitem name="Scheduler" sequence="23" id="scheduler" action="show_scheduler" parent="menu_staff_planification" groups="group_staff_management_planner"/>
+
+		<menuitem name="Time Check" sequence="31" id="time_check" action="show_time_check" parent="menu_staff_administrative" groups="group_staff_management_in_charge_time"/>
+
+	
+	</data>
+</openerp>

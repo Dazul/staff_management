@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    	<!-- form view -->
+        <record model="ir.ui.view" id="view_staff_event_type_form">
+            <field name="name">staff.event.type.form</field>
+            <field name="model">staff.event.type</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Event Types">
+                    <field name="event_type"/>
+                </form>
+            </field>
+        </record>
+        
+        <!-- tree view -->
+        <record model="ir.ui.view" id="view_staff_event_type_tree">
+            <field name="name">staff.event.type.tree</field>
+            <field name="model">staff.event.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Event Types">
+                    <field name="event_type"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- action -->
+        <record model="ir.actions.act_window" id="show_event_types">
+			<field name="name">Event Types</field>
+			<field name="res_model">staff.event.type</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<!-- menu -->
+		<menuitem name="Event Types" id="menu_staff_event_types"  sequence="54" parent="menu_staff_options" action="show_event_types" groups="group_staff_management_in_charge"/>
+        
+    </data>
+</openerp>

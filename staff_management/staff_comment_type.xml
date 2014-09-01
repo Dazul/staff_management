@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    	<!-- form view -->
+        <record model="ir.ui.view" id="view_staff_comment_type_form">
+            <field name="name">staff.comment.type.form</field>
+            <field name="model">staff.comment.type</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Comment Types">
+                    <field name="comment_type"/>
+                </form>
+            </field>
+        </record>
+        
+        <!-- tree view -->
+        <record model="ir.ui.view" id="view_staff_comment_type_tree">
+            <field name="name">staff.comment.type.tree</field>
+            <field name="model">staff.comment.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Comment Types">
+                    <field name="comment_type"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- action -->
+        <record model="ir.actions.act_window" id="show_comment_types">
+			<field name="name">Comment Types</field>
+			<field name="res_model">staff.comment.type</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<!-- menu -->
+		<menuitem name="Comment Types" id="menu_staff_comment_types"  sequence="53" parent="menu_staff_options" action="show_comment_types" groups="group_staff_management_in_charge"/>
+        
+    </data>
+</openerp>

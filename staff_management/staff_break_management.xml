@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    	<!-- form view -->
+        <record model="ir.ui.view" id="view_staff_break_management_form">
+            <field name="name">staff.break.management.form</field>
+            <field name="model">staff.break.management</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Break management">
+                    <field name="work_time_min" widget="float_time"/>
+                    <field name="work_time_max" widget="float_time"/>
+                    <field name="break_time" widget="float_time"/>
+                </form>
+            </field>
+        </record>
+        
+        <!-- tree view -->
+        <record model="ir.ui.view" id="view_staff_break_management_tree">
+            <field name="name">staff.break.management.tree</field>
+            <field name="model">staff.break.management</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Break management">
+                    <field name="work_time_min" widget="float_time"/>
+                    <field name="work_time_max" widget="float_time"/>
+                    <field name="break_time" widget="float_time"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- action -->
+        <record model="ir.actions.act_window" id="show_break_management">
+			<field name="name">Break management</field>
+			<field name="res_model">staff.break.management</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<!-- menu -->
+		<menuitem name="Break management" id="menu_staff_break_management"  sequence="55" parent="menu_staff_options" action="show_break_management" groups="group_staff_management_in_charge"/>
+        
+    </data>
+</openerp>

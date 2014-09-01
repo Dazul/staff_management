@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    	<!-- form view -->
+        <record model="ir.ui.view" id="view_staff_events_form">
+            <field name="name">staff.events.form</field>
+            <field name="model">staff.events</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Events">
+                    <field name="event_name"/>
+                    <field name="date"/>
+                    <field name="hour_from" widget="float_time"/>
+                    <field name="hour_to" widget="float_time"/>
+                </form>
+            </field>
+        </record>
+        
+        <!-- tree view -->
+        <record model="ir.ui.view" id="view_staff_events_tree">
+            <field name="name">staff.events.tree</field>
+            <field name="model">staff.events</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Events">
+                    <field name="event_name"/>
+                    <field name="date"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- action -->
+        <record model="ir.actions.act_window" id="show_events">
+			<field name="name">Events</field>
+			<field name="res_model">staff.events</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<!-- menu -->
+		<menuitem name="Events" id="menu_staff_events"  sequence="52" parent="menu_staff_options" action="show_events" groups="group_staff_management_in_charge"/>
+        
+    </data>
+</openerp>
