@@ -1,6 +1,6 @@
 <template> 
 	<t t-name="PersonalScheduleView"> 
-		<table cellspacing="0" cellpadding="0" border="0" width="100%" class="oe_calendar_table">
+		<table cellspacing="0" cellpadding="0" border="0" width="100%" class="">
 			<tr>
 				<td width="100%">
 					<div class="oe_calendar_view">        
@@ -8,10 +8,7 @@
 						<div class="oe_calendar_buttons"/>
 						<div class="oe_calendar_qc_placeholder"/>                    
 					</div>                
-				</td>
-				<td class='oe_calendar_sidebar_container'>
-				
-				</td>            
+				</td>          
 			</tr>
 		</table>
 	</t>
