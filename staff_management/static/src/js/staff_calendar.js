@@ -1,6 +1,17 @@
 openerp_staff_management_calendar = function(instance) {
 
 	instance.staff_management.Calendar = instance.web_calendar.CalendarView.extend({
+		init:function(){
+			this._super.apply(this,arguments);
+		},
+	});
+
+};
+
+/*
+openerp_staff_management_calendar = function(instance) {
+
+	instance.staff_management.Calendar = instance.web_calendar.CalendarView.extend({
 		
 		init:function(parent, dataset, view_id, options){
 			$(window).resize(function(){
@@ -226,3 +237,4 @@ openerp_staff_management_calendar = function(instance) {
 	});
 
 };
+*/

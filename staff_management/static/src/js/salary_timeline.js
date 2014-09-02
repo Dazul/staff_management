@@ -4,6 +4,16 @@ openerp_staff_management_salary_timeline = function(instance) {
 	instance.web.views.add('salary_timeline', 'instance.staff_management.SalaryTimeline');
 	
 	instance.staff_management.SalaryTimeline = instance.web.View.extend({
+	});
+}
+
+/*
+openerp_staff_management_salary_timeline = function(instance) {
+	var _t = instance.web._t; // For text translations
+	
+	instance.web.views.add('salary_timeline', 'instance.staff_management.SalaryTimeline');
+	
+	instance.staff_management.SalaryTimeline = instance.web.View.extend({
 	
 		template: "SalaryTimeline",	
 		
@@ -484,3 +494,4 @@ openerp_staff_management_salary_timeline = function(instance) {
 	
 
 };
+*/

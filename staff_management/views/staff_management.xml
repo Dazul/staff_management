@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<openerp>
+    <data>
+        <template id="assets_backend" name="staff_management assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+            	<!--
+                <link rel="stylesheet" href="/staff_management/static/src/css/web_fullcalendar.css"/>
+                <link rel="stylesheet" href="/staff_management/static/lib/fullcalendar/css/fullcalendar.css"/>
+
+                <script type="text/javascript" src="/staff_management/static/lib/fullcalendar/js/fullcalendar.js"></script>
+                -->
+                <script type="text/javascript" src="/staff_management/static/src/js/staff_calendar.js"></script>
+                <script type="text/javascript" src="/staff_management/static/src/js/personal_schedule.js"></script>
+                
+                
+                
+                <script type="text/javascript" src="/staff_management/static/src/js/calendar_booking.js"></script>
+                
+                <script type="text/javascript" src="/staff_management/static/src/js/general_schedule.js"></script>
+                <script type="text/javascript" src="/staff_management/static/src/js/salary_timeline.js"></script>
+                <script type="text/javascript" src="/staff_management/static/src/js/scheduler.js"></script>
+                <script type="text/javascript" src="/staff_management/static/src/js/timecheck.js"></script>
+                
+                <script type="text/javascript" src="/staff_management/static/src/js/staff_management.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>

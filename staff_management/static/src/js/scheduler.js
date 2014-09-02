@@ -4,6 +4,16 @@ openerp_staff_management_scheduler = function(instance) {
 	instance.web.views.add('calendar_scheduler', 'instance.staff_management.Scheduler');
 	
 	instance.staff_management.Scheduler = instance.staff_management.Calendar.extend({
+	});
+}
+
+/*
+openerp_staff_management_scheduler = function(instance) {
+	var _t = instance.web._t; // For text translations
+	
+	instance.web.views.add('calendar_scheduler', 'instance.staff_management.Scheduler');
+	
+	instance.staff_management.Scheduler = instance.staff_management.Calendar.extend({
 	
 		template: "SchedulerView",	
 		
@@ -245,7 +255,7 @@ openerp_staff_management_scheduler = function(instance) {
 		 * and during this prerender dhtmlx try to draw the events that are already loaded
 		 * But if the timeline view don't show all the lines (users), there is a javascript error
 		 * because the line don't exist
-		 */
+		 *//*
 		get_range_domain: function() {
 			var format = instance.web.date_to_str,
 				domain = this.last_search[0].slice(0);
@@ -601,3 +611,4 @@ openerp_staff_management_scheduler = function(instance) {
 	});
 
 };
+*/

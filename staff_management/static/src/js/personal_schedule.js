@@ -7,6 +7,30 @@ openerp_staff_management_personal_schedule = function(instance) {
 	
 		template: "PersonalScheduleView",
 		
+		init:function(){
+			this._super.apply(this,arguments);
+		},
+		
+		// destroy, restore scheduler fonctions
+		destroy:function(){
+			this._super();
+		},
+		
+	});
+	
+
+};
+
+/*
+openerp_staff_management_personal_schedule = function(instance) {
+	var _t = instance.web._t; // For text translations
+	
+	instance.web.views.add('calendar_personal', 'instance.staff_management.PersonalSchedule');
+	
+	instance.staff_management.PersonalSchedule = instance.staff_management.Calendar.extend({
+	
+		template: "PersonalScheduleView",
+		
 		// init, backup scheduler fonctions
 		init:function(){
 			this.backup = {};
@@ -353,3 +377,4 @@ openerp_staff_management_personal_schedule = function(instance) {
 	
 
 };
+*/

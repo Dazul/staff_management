@@ -9,11 +9,6 @@
 		'web_calendar',
 		'hr_timesheet_sheet'
 	],
-	"js": [
-		'static/lib/*.js',
-		'static/*/js/*.js'
-	],
-	"css": ['static/*/css/*.css'],
 	"init_xml" : [],
 	"demo_xml" : [],
 	"update_xml" : ['security/staff_management_security.xml',
@@ -30,5 +25,8 @@
 		'staff_pay_push.xml'],
 	"installable" : True,
 	"active" : False,
-	"qweb" : ['static/*/xml/*.xml']
+	"qweb" : ['static/*/xml/*.xml'],
+	'data' : [
+        'views/staff_management.xml',
+    ],
 }

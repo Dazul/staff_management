@@ -1,3 +1,13 @@
+openerp_staff_management_calendar_booking = function(instance) {
+	var _t = instance.web._t; // For text translations
+	
+	instance.web.views.add('calendar_booking', 'instance.staff_management.BookingCalendar');
+	
+	instance.staff_management.BookingCalendar = instance.staff_management.Calendar.extend({
+	});
+};
+
+/*
 (function ($) {
 
 /**
@@ -6,7 +16,7 @@
 * @param {function} handler A function to execute at the time when the element is inserted
 * @param {bool} shouldRunHandlerOnce Optional: if true, handler is unbound after its first invocation
 * @example $(selector).waitUntilExists(function);
-*/
+*//*
 
 $.fn.waitUntilExists    = function (handler, shouldRunHandlerOnce, isChild) {
 	var found       = 'found';
@@ -215,7 +225,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 				'<div>'+evt.task[1]+'</div>'+
 				'<div>'+comment+'</div>'
 			);
-			*/
+			*//*
 		},
 		
 		init_custom_calendar: function(){
@@ -365,7 +375,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 };
 
 
-
+*/
 
 
 

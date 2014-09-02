@@ -4,6 +4,17 @@ openerp_staff_management_general_schedule = function(instance) {
 	
 	instance.staff_management.GeneralScheduler = instance.staff_management.Scheduler.extend({
 		
+	});
+
+}
+
+/*
+openerp_staff_management_general_schedule = function(instance) {
+	
+	instance.web.views.add('calendar_general', 'instance.staff_management.GeneralScheduler');
+	
+	instance.staff_management.GeneralScheduler = instance.staff_management.Scheduler.extend({
+		
 		template: "GenrealScheduleView",
 		
 		// Do not load quick assign form
@@ -36,3 +47,4 @@ openerp_staff_management_general_schedule = function(instance) {
 	});
 
 }
+*/
