@@ -18,10 +18,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+from openerp.osv import orm, fields
 import datetime
 
-class staff_comments(osv.osv):
+class staff_comments(orm.Model):
 	_name="staff.comments"
 	_columns={
 		'comment':fields.char('Comment',size= 512 ,required=True),

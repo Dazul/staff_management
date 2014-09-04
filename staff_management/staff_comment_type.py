@@ -18,9 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+from openerp.osv import orm, fields
 
-class staff_comment_type(osv.osv):
+class staff_comment_type(orm.Model):
 	_name="staff.comment.type"
 	_columns={
 		'comment_type':fields.char('Comment Type',size= 32 ,required=True),

@@ -18,12 +18,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+from openerp.osv import orm, fields
 from openerp.osv.orm import except_orm
 from openerp.tools.translate import _
 from datetime import datetime
 
-class staff_timesheet(osv.osv):
+class staff_timesheet(orm.Model):
 	_name="staff.timesheet"
 	
 	_columns={

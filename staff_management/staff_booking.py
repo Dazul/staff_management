@@ -19,9 +19,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+from openerp.osv import orm, fields
 
-class staff_booking(osv.osv):
+class staff_booking(orm.Model):
 	_name="staff.booking"
 	_columns={
 		'booking_name':fields.char('Booking',size= 40 ,required=True),

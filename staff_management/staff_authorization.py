@@ -19,10 +19,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+from openerp.osv import orm, fields
 import datetime
 
-class staff_authorization(osv.osv):
+class staff_authorization(orm.Model):
 	_name="staff.authorization"
 	_columns={
 		'task_id':fields.many2one('account.analytic.account', 'Task', readonly=False),

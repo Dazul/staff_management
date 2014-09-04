@@ -18,9 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+from openerp.osv import orm, fields
 
-class staff_task_accounts(osv.osv):
+class staff_task_accounts(orm.Model):
 	_name="account.analytic.account"
 	_inherit="account.analytic.account"
 	_rec_name = 'name'

@@ -18,9 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+from openerp.osv import orm, fields
 
-class staff_break_management(osv.osv):
+class staff_break_management(orm.Model):
 	_name="staff.break.management"
 	_columns={
 		'work_time_min': fields.float('Minimum work time', readonly=False),

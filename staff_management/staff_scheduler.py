@@ -19,14 +19,14 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import osv, fields
+from openerp.osv import orm, fields
 from openerp.osv.orm import except_orm
 from openerp.tools.translate import _
 from datetime import datetime
 import calendar
 from staff_utils import staff_utils
 
-class staff_scheduler(osv.osv):
+class staff_scheduler(orm.Model):
 	_name="staff.scheduler"
 	
 	_columns={
