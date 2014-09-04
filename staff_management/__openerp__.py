@@ -11,7 +11,7 @@
 	],
 	"init_xml" : [],
 	"demo_xml" : [],
-	"update_xml" : ['security/staff_management_security.xml',
+	"data" : ['security/staff_management_security.xml',
 		'security/ir.model.access.csv',
 		'staff_management.xml',
 		'staff_tasks_accounts.xml',
@@ -22,11 +22,9 @@
 		'staff_booking_type.xml',
 		'staff_booking.xml',
 		'staff_break_management.xml',
-		'staff_pay_push.xml'],
+		'staff_pay_push.xml',
+		'views/staff_management.xml',],
 	"installable" : True,
 	"active" : False,
 	"qweb" : ['static/*/xml/*.xml'],
-	'data' : [
-        'views/staff_management.xml',
-    ],
 }
