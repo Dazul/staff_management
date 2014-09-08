@@ -24,7 +24,7 @@ import datetime
 class staff_comments(orm.Model):
 	_name="staff.comments"
 	_columns={
-		'comment':fields.char('Comment',size= 512 ,required=True),
+		'comment':fields.text('Comment',required=True),
 		'user_id':fields.many2one('res.users', 'User', readonly=False, relate=True),
 		'comment_type':fields.many2one('staff.comment.type', 'Comment Type', readonly=False, relate=True),
 		'create_uid':fields.many2one('res.users', 'Author', readonly=True, relate=True),
