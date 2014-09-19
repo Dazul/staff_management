@@ -16,9 +16,78 @@ openerp_staff_management_personal_schedule = function(instance) {
 			this._super();
 		},
 		
+		
+		get_fc_init_options: function () {
+	        //Documentation here : http://arshaw.com/fullcalendar/docs/
+	        var self = this;
+	        return  $.extend({}, this._super(), {
+	           	eventClick: function (event){
+		           	alert('not ready');
+		           	console.log(event);
+	           	},
+	            select: function (start_date, end_date, all_day, _js_event, _view) {
+                    self.toggle_availabilities(start_date, end_date);
+	            },	
+	        });
+	    },
+		
+		toggle_availabilities: function(start_date, end_date){
+			
+			
+			start_day = new Date(Date.UTC(start_date.getFullYear(),start_date.getMonth(),start_date.getDate()));
+			if (end_date == null || _.isUndefined(end_date)) {
+				stop_day = start_day;
+			}
+			stop_day = new Date(Date.UTC(end_date.getFullYear(),end_date.getMonth(),end_date.getDate()));
+			
+			for (var d=start_day; d<=stop_day; d.setDate(d.getDate() + 1)){
+				this.toggle_availability(d);
+			}
+			
+		},
+		
+		toggle_availability: function(date){
+			var self = this;
+		
+			var isAlreadyAnEvent = false;
+			var event_id = -1;
+			this.$calendar.fullCalendar('clientEvents', function(event) {
+				if(event.start.getUTCFullYear() == date.getUTCFullYear() && event.start.getUTCMonth() == date.getUTCMonth() && event.start.getUTCDate() == date.getUTCDate()){
+					isAlreadyAnEvent = true;
+					event_id = parseInt(event.id);
+				}
+            });
+            
+            if(isAlreadyAnEvent){
+            	console.log('remove event #'+event_id);
+	         	this.remove_event(event_id);
+	         	return;   
+            }
+		
+			strDate = date.getUTCFullYear()+'-'+this.zeroPad(date.getUTCMonth()+1, 2)+'-'+this.zeroPad(date.getUTCDate(), 2);
+		
+			data = {
+				date: strDate,
+				name: "Available"
+			};
+			
+				
+			this.dataset.create(data)
+                .then(function(id) {
+                	self.refresh_event(id);
+                	self.$calendar.fullCalendar('unselect');
+                }).fail(function(r, event) {
+                	event.preventDefault();
+                    alert('fail');
+                    self.$calendar.fullCalendar('unselect');
+                });
+			
+		},
+		
+		
 	});
 	
-
+	
 };
 
 /*
