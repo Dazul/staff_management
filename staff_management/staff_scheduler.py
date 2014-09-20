@@ -181,11 +181,11 @@ class staff_scheduler(orm.Model):
 	def unlink(self, cr, uid, ids, context=None):
 		records = super(staff_scheduler, self).read(cr, uid, ids, ['id', 'task_id'], context)
 		#raise Exception(records) if a user want remove an availibility with a task
-		if(records['task_id']):
+		if(records[0]['task_id']):
 			raise osv.except_osv(_('Error'), _("You can't delete this availability because there is an assigned task on it."))
 		#Check the unlink date.
 		date = super(staff_scheduler, self).read(cr, uid, ids, ['date'], context)
-		if self.checkPastDay(datetime.strptime(date['date'], "%Y-%m-%d")):
+		if self.checkPastDay(datetime.strptime(date[0]['date'], "%Y-%m-%d")):
 			raise osv.except_osv(_('Error'), _("Only future dates can be changed."))
 		return super(staff_scheduler, self).unlink(cr, uid, ids, context)
 	
