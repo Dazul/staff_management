@@ -59,7 +59,8 @@ openerp_staff_management_calendar = function(instance) {
                 selectable: !this.options.read_only_mode && this.create_right,
                 selectHelper: true,
                 editable: !this.options.read_only_mode,
-                droppable: true,
+                droppable: false,
+                disableDragging: true,
 
                 // callbacks
 
