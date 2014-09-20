@@ -8,7 +8,9 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Booking Types">
-                    <field name="booking_type"/>
+                	<group>
+                    	<field name="booking_type"/>
+                    </group>
                 </form>
             </field>
         </record>

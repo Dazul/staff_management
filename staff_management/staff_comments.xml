@@ -23,11 +23,13 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Comments">
-                	<field name="user_id"/>
-                	<field name="comment"/>
-                    <field name="comment_type"/>
-                    <field name="create_uid"/>
-                    <field name="write_date"/>
+                	<group>
+		            	<field name="user_id"/>
+		            	<field name="comment"/>
+		                <field name="comment_type"/>
+		                <field name="create_uid"/>
+		                <field name="write_date"/>
+                    </group>
                 </form>
             </field>
         </record>

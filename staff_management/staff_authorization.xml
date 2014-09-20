@@ -23,10 +23,12 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Authorizations">
-                	<field name="user_id"/>
-                    <field name="task_id"/>
-                    <field name="create_uid"/>
-                    <field name="write_date"/>
+                	<group>
+		            	<field name="user_id"/>
+		                <field name="task_id"/>
+		                <field name="create_uid"/>
+		                <field name="write_date"/>
+                    </group>
                 </form>
             </field>
         </record>

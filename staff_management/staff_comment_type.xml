@@ -8,7 +8,9 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Comment Types">
-                    <field name="comment_type"/>
+                	<group>
+                    	<field name="comment_type"/>
+                    </group>
                 </form>
             </field>
         </record>

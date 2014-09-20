@@ -8,9 +8,11 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Break management">
-                    <field name="work_time_min" widget="float_time"/>
-                    <field name="work_time_max" widget="float_time"/>
-                    <field name="break_time" widget="float_time"/>
+                	<group>
+		                <field name="work_time_min" widget="float_time"/>
+		                <field name="work_time_max" widget="float_time"/>
+		                <field name="break_time" widget="float_time"/>
+                    </group>
                 </form>
             </field>
         </record>

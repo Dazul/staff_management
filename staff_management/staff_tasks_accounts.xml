@@ -8,7 +8,9 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Tasks">
-                    <field name="name"/>
+                	<group>
+	                    <field name="name"/>
+                    </group>
                 </form>
             </field>
         </record>
@@ -20,7 +22,7 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Tasks">
-                    <field name="name"/>
+                   	<field name="name"/>
                 </tree>
             </field>
         </record>

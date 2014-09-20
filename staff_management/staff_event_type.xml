@@ -8,7 +8,9 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Event Types">
-                    <field name="event_type"/>
+                	<group>
+                    	<field name="event_type"/>
+                    </group>
                 </form>
             </field>
         </record>
