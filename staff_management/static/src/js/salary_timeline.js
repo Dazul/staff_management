@@ -1,3 +1,4 @@
+/*
 openerp_staff_management_salary_timeline = function(instance) {
 	var _t = instance.web._t; // For text translations
 	
@@ -7,7 +8,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 	});
 }
 
-/*
+/**/
 openerp_staff_management_salary_timeline = function(instance) {
 	var _t = instance.web._t; // For text translations
 	
@@ -494,4 +495,3 @@ openerp_staff_management_salary_timeline = function(instance) {
 	
 
 };
-*/
