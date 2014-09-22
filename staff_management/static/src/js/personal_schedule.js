@@ -27,18 +27,31 @@ openerp_staff_management_personal_schedule = function(instance) {
 	           	},
 	            select: function (start_date, end_date, all_day, _js_event, _view) {
                     self.toggle_availabilities(start_date, end_date);
-	            },	
+	            },
+	            eventRender: function(event, element) {			        
+			        var strDate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
+			        $('.fc-day[data-date|="'+strDate+'"]').addClass('staff_available');
+			        // TODO display event when there is a task
+			        element.css({'display': 'none'});
+			    },
+			    eventDestroy: function(event, element, view){
+				    var strDate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
+			        $('.fc-day[data-date|="'+strDate+'"]').removeClass('staff_available');
+			    }
 	        });
 	    },
 		
 		toggle_availabilities: function(start_date, end_date){
 			
 			
-			start_day = new Date(Date.UTC(start_date.getFullYear(),start_date.getMonth(),start_date.getDate()));
+			//start_day = new Date(Date.UTC(start_date.getFullYear(),start_date.getMonth(),start_date.getDate()));
+			start_day = start_date;
+			stop_day = end_date;
 			if (end_date == null || _.isUndefined(end_date)) {
 				stop_day = start_day;
 			}
-			stop_day = new Date(Date.UTC(end_date.getFullYear(),end_date.getMonth(),end_date.getDate()));
+			//stop_day = new Date(Date.UTC(end_date.getFullYear(),end_date.getMonth(),end_date.getDate()));
+			
 			
 			for (var d=start_day; d<=stop_day; d.setDate(d.getDate() + 1)){
 				this.toggle_availability(d);
@@ -50,24 +63,27 @@ openerp_staff_management_personal_schedule = function(instance) {
 			var self = this;
 		
 			var isAlreadyAnEvent = false;
-			var event_id = -1;
+			var eventData = {};
 			this.$calendar.fullCalendar('clientEvents', function(event) {
-				if(event.start.getUTCFullYear() == date.getUTCFullYear() && event.start.getUTCMonth() == date.getUTCMonth() && event.start.getUTCDate() == date.getUTCDate()){
+				var d1 = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
+				var d2 = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
+				if(d1 == d2){
 					isAlreadyAnEvent = true;
-					event_id = parseInt(event.id);
+					eventData = event;
 				}
             });
             
             if(isAlreadyAnEvent){
-            	console.log('remove event #'+event_id);
-	         	this.remove_event(event_id);
-	         	return;   
+	         	this.remove_event(parseInt(eventData.id)).then(function(){
+		         	var strDate = $.fullCalendar.formatDate(eventData.start, "yyyy-MM-dd");
+				 	self.$calendar.fullCalendar('unselect');
+				 	$('.fc-day[data-date|="'+strDate+'"]').removeClass('staff_available');
+	         	});
+	         	return;  
             }
-		
-			strDate = date.getUTCFullYear()+'-'+this.zeroPad(date.getUTCMonth()+1, 2)+'-'+this.zeroPad(date.getUTCDate(), 2);
-		
+						
 			data = {
-				date: strDate,
+				date: $.fullCalendar.formatDate(date, "yyyy-MM-dd"),
 				name: "Available"
 			};
 			
@@ -77,8 +93,10 @@ openerp_staff_management_personal_schedule = function(instance) {
                 	self.refresh_event(id);
                 	self.$calendar.fullCalendar('unselect');
                 }).fail(function(r, event) {
-                	event.preventDefault();
-                    alert('fail');
+                	//event.preventDefault();
+                    //alert('fail');
+                    var strDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
+			        $('.fc-day[data-date|="'+strDate+'"]').removeClass('staff_available');
                     self.$calendar.fullCalendar('unselect');
                 });
 			

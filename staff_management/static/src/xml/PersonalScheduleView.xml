@@ -1,6 +1,6 @@
 <template> 
 	<t t-name="PersonalScheduleView"> 
-		<table cellspacing="0" cellpadding="0" border="0" width="100%" class="">
+		<table cellspacing="0" cellpadding="0" border="0" width="100%" class="staff_calendar">
 			<tr>
 				<td width="100%">
 					<div class="oe_calendar_view">        
