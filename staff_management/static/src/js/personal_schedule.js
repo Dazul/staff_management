@@ -9,6 +9,7 @@ openerp_staff_management_personal_schedule = function(instance) {
 		
 		init:function(){
 			this._super.apply(this,arguments);
+			this.options.confirm_on_delete = false;
 		},
 		
 		// destroy, restore scheduler fonctions
@@ -22,8 +23,7 @@ openerp_staff_management_personal_schedule = function(instance) {
 	        var self = this;
 	        return  $.extend({}, this._super(), {
 	           	eventClick: function (event){
-		           	alert('not ready');
-		           	console.log(event);
+		           	self.toggle_availabilities(event.start, event.start);
 	           	},
 	            select: function (start_date, end_date, all_day, _js_event, _view) {
                     self.toggle_availabilities(start_date, end_date);
