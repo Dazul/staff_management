@@ -51,13 +51,16 @@ openerp_staff_management_calendar_booking = function(instance) {
 	        //Documentation here : http://arshaw.com/fullcalendar/docs/
 	        var self = this;
 	        return  $.extend({}, this._super(), {
+	        	
+	        	eventClick: function(event){
+	        		self.open_event_staff(event.id,event.title);
+	        	},
 	           	select: function (start_date, end_date, all_day, _js_event, _view) {
                     var data_template = self.get_event_data({
                         start: start_date,
                         end: end_date,
                         allDay: all_day,
                     });
-                    //self.open_quick_create(data_template);
 					self.slow_create(data_template);
                 },
 	        });
@@ -125,6 +128,48 @@ openerp_staff_management_calendar_booking = function(instance) {
             });
 			
 		},
+		
+		open_event_staff: function(id, title) {
+            var self = this;
+            if (! this.open_popup_action) {
+                var index = this.dataset.get_id_index(id);
+                this.dataset.index = index;
+                if (this.write_right) {
+                    this.do_switch_view('form', null, { mode: "edit" });
+                } else {
+                    this.do_switch_view('form', null, { mode: "view" });
+                }
+            }
+            else {
+                var pop = new instance.staff_management.FormOpenPopup(this);
+                pop.show_element(this.dataset.model, id, this.dataset.get_context(), {
+                    title: _.str.sprintf(_t("View: %s"),title),
+                    view_id: +this.open_popup_action,
+                    res_id: id,
+                    target: 'new',
+                });
+
+               var form_controller = pop.view_form;
+               form_controller.on("load_record", self, function(){
+                    button_delete = _.str.sprintf("<button class='oe_button oe_bold delme'><span> %s </span></button>",_t("Delete"));
+                    
+                    pop.$el.closest(".modal").find(".modal-footer").prepend(button_delete);
+                    
+                    $('.delme').click(
+                        function() {
+                            $('.oe_form_button_cancel').trigger('click');
+                            self.remove_event(id);
+                        }
+                    );
+               });
+               
+               pop.on("saved", self, function(){
+	               self.$calendar.fullCalendar('refetchEvents');
+               });
+               
+            }
+            return false;
+        },
 	
 	});
 	
@@ -182,7 +227,8 @@ openerp_staff_management_calendar_booking = function(instance) {
 				var old_field_value = self.getFieldValue('staff_meal_observation');
 				$('.staff_meal_observation textarea').keyup(function(){
 					if($('.staff_meal_observation textarea').val() != old_field_value){
-						self.view_form.set_values({'meal_included': true});
+						obj = self.view_form.set_values({'meal_included': true});
+						console.log(obj);
 						old_field_value = $('.staff_meal_observation textarea').val();
 					}
 				});
@@ -226,6 +272,13 @@ openerp_staff_management_calendar_booking = function(instance) {
 
 	});
 	
+	/*
+	instance.web.views.add('staff_booking_form', 'instance.web.StaffFormView');
+	
+	instance.web.StaffFormView = instance.web.FormView.extend({
+		
+	});
+	*/
 	
 };
 

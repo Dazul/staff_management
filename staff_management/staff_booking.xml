@@ -55,7 +55,7 @@
 					    	<field name="meal_included" class="staff_meal_included"/>
 					    	<field name="meal_price_adult" class="staff_meal_price_adult"/>
 					    	<field name="meal_price_child" class="staff_meal_price_child"/>
-					    	<field name="meal_observation" height="20"/>
+					    	<field name="meal_observation" height="20" class="staff_meal_observation"/>
 					    	<field name="total_price" class="staff_total_price"/>
 							<field name="create_uid"/>
 							<field name="write_uid"/>
@@ -70,7 +70,7 @@
 			<field name="name">calendar_booking</field>
 			<field name="model">staff.booking</field>
 			<field name="arch" type="xml">
-				<calendar string="Booking" color="meal_included" date_start="date" mode="month">
+				<calendar string="Booking" color="meal_included" date_start="date" mode="month" event_open_popup="true">
 					<field name="booking_name" />
 					<field name="nbr_adult" />
 					<field name="nbr_child" />
