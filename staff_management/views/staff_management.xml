@@ -11,6 +11,7 @@
 
                 <script type="text/javascript" src="/staff_management/static/lib/fullcalendar/js/fullcalendar.js"></script>
                 -->
+                <link rel="stylesheet" href="/staff_management/static/src/css/calendar.css"/>
                 
                 <script type="text/javascript" src="/staff_management/static/lib/jquery.dataTables.min.js"></script>
                 <script type="text/javascript" src="/staff_management/static/lib/sprintf.min.js"></script>
