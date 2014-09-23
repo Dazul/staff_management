@@ -1,7 +1,7 @@
-openerp_staff_management_calendar = function(instance) {
+openerp_staff_management_timeline_base = function(instance) {
 	var _t = instance.web._t;
 
-	instance.staff_management.SalaryTimeline = instance.web.View.extend({
+	instance.staff_management.Timeline = instance.web.View.extend({
 	
 		template: "staff_timeline",
 		

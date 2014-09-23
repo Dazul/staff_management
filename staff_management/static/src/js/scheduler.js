@@ -3,6 +3,6 @@ openerp_staff_management_scheduler = function(instance) {
 	
 	instance.web.views.add('calendar_scheduler', 'instance.staff_management.Scheduler');
 	
-	instance.staff_management.Scheduler = instance.staff_management.Calendar.extend({
+	instance.staff_management.Scheduler = instance.staff_management.GeneralScheduler.extend({
 	});
 }

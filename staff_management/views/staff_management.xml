@@ -18,6 +18,8 @@
                 <script type="text/javascript" src="/staff_management/static/lib/trunk8.js"></script>
                 
                 <script type="text/javascript" src="/staff_management/static/src/js/staff_calendar.js"></script>
+                <script type="text/javascript" src="/staff_management/static/src/js/timeline_base.js"></script>
+                
                 <script type="text/javascript" src="/staff_management/static/src/js/personal_schedule.js"></script>
                 
                 

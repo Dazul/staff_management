@@ -92,9 +92,14 @@ openerp_staff_management_personal_schedule = function(instance) {
 				.then(function(id) {
 					self.refresh_event(id);
 					self.$calendar.fullCalendar('unselect');
-				}).fail(function(r, event) {
-					//event.preventDefault();
-					//alert('fail');
+				}).fail(function(r, event) {				
+					if(self.quick_create_error){
+						event.preventDefault(); // don't show multiple warning messages
+					}
+					else{
+						self.quick_create_error = true;
+						setTimeout(function(){self.quick_create_error = false},200);
+					}
 					var strDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
 					$('.fc-day[data-date|="'+strDate+'"]').removeClass('staff_available');
 					self.$calendar.fullCalendar('unselect');
