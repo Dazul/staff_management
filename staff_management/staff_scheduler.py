@@ -74,29 +74,29 @@ class staff_scheduler(orm.Model):
 		records = super(staff_scheduler, self).read(cr, user, ids, None, context)
 		#Control if the availability exits when the write is performed
 		if len(records) == 0:
-			raise osv.except_osv(_('Error'), _("The user removed this availability."))
+			raise except_orm(_('Error'), _("The user removed this availability."))
 		#Control if the work time is entered.
 		if records[0]['confirm']:
 			if context is not None:
-				raise osv.except_osv(_('Error'), _("Work time already entered."))
+				raise except_orm(_('Error'), _("Work time already entered."))
 		#Get the authorizations. If the auth list is empty, the authorization don't exist.
 		if 'task_id' in vals and vals['task_id'] != False:
 			obj = self.pool.get('staff.authorization')
 			auth = obj.search(cr, user, [('user_id','=',records[0]['user_id'][0]),('task_id','=',vals['task_id'])])
 			if len(auth) == 0:
-				raise osv.except_osv(_('Error'), _("This user can not do this task"))
+				raise except_orm(_('Error'), _("This user can not do this task"))
 		#Control if the work time is possible.
 		if ('hour_from' in vals) and ('hour_to' in vals):
 			if vals['hour_to'] < vals['hour_from']:
-				raise osv.except_osv(_('Error'), _("You need to specify a correct work time."))
+				raise except_orm(_('Error'), _("You need to specify a correct work time."))
 		elif ('hour_from' in vals) and  not ('hour_to' in vals):
 			for event in self.browse(cr, user, ids):
 				if(event.hour_to < vals['hour_from']):
-					raise osv.except_osv(_('Error'), _("You need to specify a correct work time."))
+					raise except_orm(_('Error'), _("You need to specify a correct work time."))
 		elif not ('hour_from' in vals) and  ('hour_to' in vals):
 			for event in self.browse(cr, user, ids):
 				if(vals['hour_to'] < event.hour_from):
-					raise osv.except_osv(_('Error'), _("You need to specify a correct work time."))
+					raise except_orm(_('Error'), _("You need to specify a correct work time."))
 		#Knowned bug. Need to change the two hours to update the worked time.
 		if ('hour_from' in vals) and ('hour_to' in vals):
 			#get the break time to substract to the worked time
@@ -128,7 +128,7 @@ class staff_scheduler(orm.Model):
 		sheets = timesheet.search(cr, user, [("date_from", "=", first_day),("user_id", "=", user_id)])
 		#Check if the worked time entry is in the future.
 		if self.checkFutureDay(datetime.strptime(schedule_row.date, "%Y-%m-%d")):
-			raise osv.except_osv(_('Error'), _("You cannot enter worked time in the future."))
+			raise except_orm(_('Error'), _("You cannot enter worked time in the future."))
 		#check if the worked time has been changed.
 		if worked_time is None:
 			work_time_entry = schedule_row.work_time
@@ -170,11 +170,11 @@ class staff_scheduler(orm.Model):
 		#Control if an event is set this day.
 		listTasks = self.search(cr, user, [('date','=',vals['date']),('user_id','=',user)])
 		if len(listTasks) >= 1:
-			raise osv.except_osv(_('Error'), _("You have already an availability this day."))
+			raise except_orm(_('Error'), _("You have already an availability this day."))
 		#Control if the changed date is in the future.
 		#datetime.strptime(vals['date'], "%Y-%m-%d") < datetime.now():
 		if self.checkPastDay(datetime.strptime(vals['date'], "%Y-%m-%d")): 
-			raise osv.except_osv(_('Error'), _("Only future dates can be changed."))
+			raise except_orm(_('Error'), _("Only future dates can be changed."))
 		return super(staff_scheduler, self).create(cr, user, vals, context)
 	
 	#Remove an availability with assignement check.
@@ -182,11 +182,11 @@ class staff_scheduler(orm.Model):
 		records = super(staff_scheduler, self).read(cr, uid, ids, ['id', 'task_id'], context)
 		#raise Exception(records) if a user want remove an availibility with a task
 		if(records[0]['task_id']):
-			raise osv.except_osv(_('Error'), _("You can't delete this availability because there is an assigned task on it."))
+			raise except_orm(_('Error'), _("You can't delete this availability because there is an assigned task on it."))
 		#Check the unlink date.
 		date = super(staff_scheduler, self).read(cr, uid, ids, ['date'], context)
 		if self.checkPastDay(datetime.strptime(date[0]['date'], "%Y-%m-%d")):
-			raise osv.except_osv(_('Error'), _("Only future dates can be changed."))
+			raise except_orm(_('Error'), _("Only future dates can be changed."))
 		return super(staff_scheduler, self).unlink(cr, uid, ids, context)
 	
 	#Count the activities of the mounth for selected user
