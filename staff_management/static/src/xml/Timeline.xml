@@ -1,13 +1,36 @@
 <template>
 <t t-name="staff_timeline">
 	
-	<div class="staff_timeline">
+	<div class="staff_timeline fc fc-ltr oe_calendar_view">
 	
 		<div class="stimeline_header">
-			<div class="button_prev">Month</div>
-	        <div class="button_next">Month</div>
-	        <div class="button_today">Today</div>
-	        <div class="current_date"></div>
+			
+			<table class="fc-header" style="width:100%">
+				<tbody>
+					<tr>
+						<td class="fc-header-left">
+							<span class="fc-button fc-button-prev fc-state-default fc-corner-left" unselectable="on">
+								<span class="fc-text-arrow">«</span> Month
+							</span><span class="fc-button fc-button-prev fc-state-default" unselectable="on">
+								<span class="fc-text-arrow">‹</span> Week
+							</span><span class="fc-button fc-button-next fc-state-default" unselectable="on">
+								Week <span class="fc-text-arrow">›</span>
+							</span><span class="fc-button fc-button-next fc-state-default fc-corner-right" unselectable="on">
+								Month <span class="fc-text-arrow">»</span>
+							</span>
+							<span class="fc-header-space"></span>
+							<span class="fc-button fc-button-today fc-state-default fc-corner-left fc-corner-right fc-state-disabled" unselectable="on">Aujourd'hui</span>
+						</td>
+						<td class="fc-header-center">
+							<span class="fc-header-title">
+								<h2>septembre 2014</h2>
+							</span>
+						</td>
+						<td class="fc-header-right"></td>
+					</tr>
+				</tbody>
+			</table>
+			
 		</div>
 		
 		<div class="stimeline_table">
