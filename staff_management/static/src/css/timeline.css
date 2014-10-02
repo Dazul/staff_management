@@ -18,3 +18,25 @@
 	font-size: 2em;
 	margin-top: 8px!important;
 }
+
+.stimeline_table .stimeline_leftcol{
+	background: #f0f0f0;
+	text-align: left;
+}
+
+
+.stimeline_table table{
+	border: none;
+	border-collapse: collapse;
+}
+
+.stimeline_table tr.firstHeaderLine{
+	border-top: 1px solid #dfdfdf;
+}
+
+.stimeline_table table td, .staff_timeline table th{
+	vertical-align: middle;
+	border-left: 1px solid #dfdfdf;
+	border-bottom: 1px solid #dfdfdf;
+	text-align: center;
+}

@@ -7,132 +7,103 @@ openerp_staff_management_general_schedule = function(instance) {
 		init:function(parent, dataset, view_id, options){
 			this._super.apply(this, arguments);
 			
+			this.dataset = dataset;
+			
+			this.view_id = view_id;
+			this.view_type = 'calendar';
+			
 			this.set_interval('day', 1);
 			this.set_nbrOfHeaderLines(2);
-			
-			var curr = new Date; // get current date
-			var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-			var last = first + 6; // last day is the first day + 6
-			
-			var firstday = new Date(curr.setDate(first));
-			var lastday = new Date(curr.setDate(last));
-			
+
+			var now = new Date();
+			var firstday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + Date.CultureInfo.firstDayOfWeek );
+			var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
+
 			this.set_range_dates(firstday, lastday);
-						
-			
 		},
 		
-		view_loading: function (fv) {
-		
-			var curr = new Date;
-			var first = curr.getDate() - curr.getDay();
-			var one = new Date(curr.setDate(first));
+		get_range_domain: function(domain, start, end) {
+			var format = instance.web.date_to_str;
 			
-			var two = this.getNextDate(one);
-			var three = this.getNextDate(two);
-			var four = this.getNextDate(three);
-			var five = this.getNextDate(four);
-			var six = this.getNextDate(five);
-			var seven = this.getNextDate(six);
-			
-		
-			var datas = [
-				{
-					'html': $('<span>').text('User1'),
-					'lineID': 1,
-					'cells': [
-						{
-							'html': $('<span>').text(1),
-							'tooltip': $('<span>').text(1),
-							'date': one,
-						},
-						{
-							'html': $('<span>').text(2),
-							'tooltip': $('<span>').text(2),
-							'date': two,
-						},
-						{
-							'html': $('<span>').text(3),
-							'tooltip': $('<span>').text(3),
-							'date': three,
-						},
-						{
-							'html': $('<span>').text(4),
-							'tooltip': $('<span>').text(4),
-							'date': four,
-						},
-						{
-							'html': $('<span>').text(5),
-							'tooltip': $('<span>').text(5),
-							'date': five,
-						},
-						{
-							'html': $('<span>').text(6),
-							'tooltip': $('<span>').text(6),
-							'date': six,
-						},
-						{
-							'html': $('<span>').text(7),
-							'tooltip': $('<span>').text(7),
-							'date': seven,
-						},
-					]
-				},
-				{
-					'html': $('<span>').text('User2'),
-					'lineID': 2,
-					'cells': [
-						{
-							'html': $('<span>').text(1),
-							'tooltip': $('<span>').text(1),
-							'date': one,
-						},
-						{
-							'html': $('<span>').text(2),
-							'tooltip': $('<span>').text(2),
-							'date': two,
-						},
-						{
-							'html': $('<span>').text(6),
-							'tooltip': $('<span>').text(6),
-							'date': six,
-						},
-						{
-							'html': $('<span>').text(7),
-							'tooltip': $('<span>').text(7),
-							'date': seven,
-						},
-					],
-				},
-				{
-					'html': $('<span>').text('User3'),
-					'lineID': 3,
-					'cells': [
-						{
-							'html': $('<span>').text(4),
-							'tooltip': $('<span>').text(4),
-							'date': four,
-						},
-						{
-							'html': $('<span>').text(7),
-							'tooltip': $('<span>').text(7),
-							'date': seven,
-						},
-					],
-				},
-			];
-		
-			this.update_datas(datas);
+			extend_domain = [[this.date_field, '>=', format(start.clone())],
+					 [this.date_field, '<=', format(end.clone())]];
+
+			return new instance.web.CompoundDomain(domain, extend_domain);
 		},
 		
+		do_search: function(domain, context, _group_by) {
+			var self = this;
+			
+			this.dataset.read_slice(_.keys(this.fields), {
+				offset: 0,
+				domain: this.get_range_domain(domain, this.range_start, this.range_stop),
+				context: context,
+			}).done(function(events) {
+			
+				var lines = {};
+				
+				 _.each(events, function(e){
+
+					 var event_date = instance.web.auto_str_to_date(e[self.date_field]);
+					 
+					 var event_data = {
+						 'date': event_date,
+						 'event': e,
+					 };
+					 
+					 var lid = e['user_id'][0];
+					 if(lid in lines){
+						 lines[lid]['cells'].push(event_data);
+					 }
+					 else{	            	 	
+						 lines[lid] = {
+							 'cells': [event_data],
+							 'lineID': lid,
+							 'username': e['user_id'][1],
+						 };
+					 }
+					 
+				 });
+				 				 
+				 self.update_datas(lines);
+			});
+		},
 		
-		renderCell: function(cellDataList){
-			if(cellDataList.length == 1){
-				return cellDataList[0]['html'];
+		view_loading: function (fv) {		
+			var attrs = fv.arch.attrs;
+			if (!attrs.date_start) {
+				throw new Error("Calendar view has not defined 'date_start' attribute.");
 			}
-			return $('<span>');
+		
+			this.fields = fv.fields;
+			this.date_field = attrs.date_start;
 		},
 		
+		renderCell: function(td, cellDataList){
+			if(cellDataList.length == 1){
+				return td.append($('<div>').text('hi'));
+			}
+			return td;
+		},
+		
+		renderLeftCell: function(th, data){
+			return th.append(data['username']);
+		},
+		
+		renderHeaderCell: function(th, lineID, cdate){
+			
+			if(lineID == 1){
+				
+				th.append(instance.web.date_to_str(cdate));
+			}
+			return th;
+		},
+
+		cellClicked: function(lineID, date, cellDataList){
+			if(cellDataList.length >= 1){
+				alert('clicked!!! '+date);
+			}
+		},
 		
 	});
 
