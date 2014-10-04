@@ -173,18 +173,6 @@ openerp_staff_management_timeline_base = function(instance) {
 		update_range_dates: function(date_start, date_stop) {
 			this.set_range_dates(date_start, date_stop);
 			this.render_timeline();
-
-			var today = new Date();
-			if(this.range_start <= today && today <= this.range_stop){
-				$('.fc-button-today').addClass('fc-state-disabled');
-			}
-			else{
-				$('.fc-button-today').removeClass('fc-state-disabled');
-			}
-
-			var titleElmt = $('.fc-header-title h2');
-			this.renderTitle(titleElmt, this.range_start, this.range_stop);
-
 		},
 		
 		getNextDate: function(date, index){
@@ -219,6 +207,17 @@ openerp_staff_management_timeline_base = function(instance) {
 		render_timeline: function(){
 			var self = this;
 
+			var today = new Date();
+			if(this.range_start <= today && today <= this.range_stop){
+				$('.fc-button-today').addClass('fc-state-disabled');
+			}
+			else{
+				$('.fc-button-today').removeClass('fc-state-disabled');
+			}
+
+			var titleElmt = $('.fc-header-title h2');
+			this.renderTitle(titleElmt, this.range_start, this.range_stop);
+			
 			var table = $('<table>').attr('width', '100%');
 			var thead = $('<thead>');
 			var tbody = $('<tbody>');

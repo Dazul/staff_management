@@ -1,14 +1,103 @@
-/*
+
 openerp_staff_management_salary_timeline = function(instance) {
 	var _t = instance.web._t; // For text translations
 	
 	instance.web.views.add('salary_timeline', 'instance.staff_management.SalaryTimeline');
 	
-	instance.staff_management.SalaryTimeline = instance.web.View.extend({
+	instance.staff_management.SalaryTimeline = instance.staff_management.Timeline.extend({
+
+
+		init:function(parent, dataset, view_id, options){
+			this._super.apply(this, arguments);
+			
+			this.dataset = dataset;
+			
+			this.view_id = view_id;
+			this.view_type = 'calendar';
+			
+			this.set_interval('day', 1);
+			this.set_nbrOfHeaderLines(1);
+
+			var now = new Date();
+			var firstday = new Date(now.getFullYear(), now.getMonth(), 1);
+			var lastday = new Date(firstday.getFullYear(), firstday.getMonth() + 1, 0);
+
+			this.set_range_dates(firstday, lastday);
+		},
+
+		get_range_domain: function(domain, start, end) {
+			var format = instance.web.date_to_str;
+			
+			extend_domain = [[this.date_field, '>=', format(start.clone())],
+					 [this.date_field, '<=', format(end.clone())]];
+
+			return new instance.web.CompoundDomain(domain, extend_domain);
+		},
+		
+		do_search: function(domain, context, _group_by) {
+			var self = this;
+			
+			this.dataset.read_slice(_.keys(this.fields), {
+				offset: 0,
+				domain: this.get_range_domain(domain, this.range_start, this.range_stop),
+				context: context,
+			}).done(function(events) {
+			
+				var lines = {};
+				
+				 _.each(events, function(e){
+
+					 var event_date = instance.web.auto_str_to_date(e[self.date_field]);
+					 
+					 var event_data = {
+						 'date': event_date,
+						 'event': e,
+					 };
+					 
+					 var lid = e['user_id'][0];
+					 if(lid in lines){
+						 lines[lid]['cells'].push(event_data);
+					 }
+					 else{	            	 	
+						 lines[lid] = {
+							 'cells': [event_data],
+							 'lineID': lid,
+							 'username': e['user_id'][1],
+						 };
+					 }
+					 
+				 });
+				 				 
+				 self.update_datas(lines);
+			});
+		},
+
+		view_loading: function (fv) {
+			this._super.apply(this,arguments);
+			var attrs = fv.arch.attrs;
+			if (!attrs.date_start) {
+				throw new Error("Calendar view has not defined 'date_start' attribute.");
+			}
+		
+			this.fields = fv.fields;
+			this.date_field = attrs.date_start;
+		},
+
+		renderTitle: function(elmt, date_start, date_stop){
+			elmt.text('Title');
+		},
+
+		renderHeaderCell: function(th, lineID, cdate){
+			if(lineID == 1){
+				th.append(this.format_date(cdate, "dd"));
+			}
+			return th;
+		},
+
 	});
 }
 
-/**/
+/*
 openerp_staff_management_salary_timeline = function(instance) {
 	var _t = instance.web._t; // For text translations
 	
@@ -495,3 +584,4 @@ openerp_staff_management_salary_timeline = function(instance) {
 	
 
 };
+*/
