@@ -17,7 +17,6 @@ openerp_staff_management_personal_schedule = function(instance) {
 			this._super();
 		},
 		
-		
 		get_fc_init_options: function () {
 			//Documentation here : http://arshaw.com/fullcalendar/docs/
 			var self = this;
@@ -31,8 +30,11 @@ openerp_staff_management_personal_schedule = function(instance) {
 				eventRender: function(event, element) {			        
 					var strDate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
 					$('.fc-day[data-date|="'+strDate+'"]').addClass('staff_available');
-					// TODO display event when there is a task
-					element.css({'display': 'none'});
+					if(event.task_id){
+						element.text(self.format_hour(event.hour_from)+' '+event.task_id[1]);
+					}else{
+						element.css({'display': 'none'});
+					}
 				},
 				eventDestroy: function(event, element, view){
 					var strDate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
@@ -105,6 +107,14 @@ openerp_staff_management_personal_schedule = function(instance) {
 					self.$calendar.fullCalendar('unselect');
 				});
 			
+		},
+
+		event_data_transform: function(evt) {
+			var r = this._super.apply(this,arguments);
+			r.task_id = evt.task_id;
+			r.comment = evt.comment;
+			r.hour_from = evt.hour_from;
+			return r;
 		},
 		
 		

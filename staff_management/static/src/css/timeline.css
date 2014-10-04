@@ -40,3 +40,34 @@
 	border-bottom: 1px solid #dfdfdf;
 	text-align: center;
 }
+
+.stimeline_table .stimeline_leftcol{
+	width: 200px;
+}
+
+.stimeline_table tbody tr:hover .stimeline_leftcol{
+	background: rgb(222,239,255);
+}
+
+.stimeline_table td{
+	background: #f0f0f0;
+}
+
+.stimeline_table td.staff_available{
+	background: #FFF;
+}
+
+.stimeline_table td.staff_assigned{
+	background: rgb(222,239,255);
+	background: -moz-linear-gradient(top,  rgba(222,239,255,1) 0%, rgba(152,190,222,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(222,239,255,1)), color-stop(100%,rgba(152,190,222,1)));
+	background: -webkit-linear-gradient(top,  rgba(222,239,255,1) 0%,rgba(152,190,222,1) 100%);
+	background: -o-linear-gradient(top,  rgba(222,239,255,1) 0%,rgba(152,190,222,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(222,239,255,1) 0%,rgba(152,190,222,1) 100%);
+	background: linear-gradient(to bottom,  rgba(222,239,255,1) 0%,rgba(152,190,222,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#deefff', endColorstr='#98bede',GradientType=0 );
+}
+
+.stimeline_table .clickable{
+	cursor: pointer;
+}

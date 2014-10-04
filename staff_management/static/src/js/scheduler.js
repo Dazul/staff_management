@@ -6,6 +6,14 @@ openerp_staff_management_scheduler = function(instance) {
 	instance.staff_management.Scheduler = instance.staff_management.GeneralScheduler.extend({
 
 
+		renderCell: function(td, cellDataList){
+			td = this._super.apply(this,arguments);
+			if(cellDataList.length == 1){
+				td.addClass('clickable');
+			}
+			return td;
+		},
+
 		cellClicked: function(lineID, date, cellDataList){
 			if(cellDataList.length == 1){
 				

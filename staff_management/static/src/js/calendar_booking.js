@@ -82,7 +82,6 @@ openerp_staff_management_calendar_booking = function(instance) {
 			return infos;
 		},
 		slow_create: function(data){
-			console.log('slow create');	
 			
 			var self = this;
 			var defaults = {};
@@ -225,7 +224,6 @@ openerp_staff_management_calendar_booking = function(instance) {
 				$('.staff_meal_observation textarea').keyup(function(){
 					if($('.staff_meal_observation textarea').val() != old_field_value){
 						obj = self.view_form.set_values({'meal_included': true});
-						console.log(obj);
 						old_field_value = $('.staff_meal_observation textarea').val();
 					}
 				});

@@ -13,6 +13,103 @@ openerp_staff_management_timeline_base = function(instance) {
 			this._super();
 		},
 		
+
+		format_date: function(date, format){
+			return $.fullCalendar.formatDate(date, format, {
+				monthNames: Date.CultureInfo.monthNames,
+				monthNamesShort: Date.CultureInfo.abbreviatedMonthNames,
+				dayNames: Date.CultureInfo.dayNames,
+				dayNamesShort: Date.CultureInfo.abbreviatedDayNames,
+			});
+		},
+
+		// Format number for hour
+		FormatNumberLength: function(num, length) {
+			var r = "" + num;
+			while (r.length < length) {
+				r = "0" + r;
+			}
+			return r;
+		},
+	
+		// convert hour from 9.5 to 09:30
+		format_hour: function(hour){
+			hour = parseFloat(hour);
+			if(hour == undefined || isNaN(hour)){
+				return '00:00';
+			}
+			var h = Math.floor(hour);          
+			var m = Math.round((hour-h) * 60);
+			return this.FormatNumberLength(h, 2)+':'+this.FormatNumberLength(m, 2);
+		},
+		
+		format_hour_duration: function(hour_start, hour_end){
+			hour_start = parseFloat(hour_start);
+			hour_end = parseFloat(hour_end);
+			if(isNaN(hour_start)){
+				hour_start = 0;
+			}
+			if(isNaN(hour_end)){
+				hour_end = 0;
+			}
+			return this.convert_hour(hour_end-hour_start);
+		},
+
+		get_week_start: function(date){
+			var d = new Date(date);
+			if(d.getDay() == 0 && Date.CultureInfo.firstDayOfWeek > 0){
+				d.setDate(d.getDate()-7);
+			}
+			return new Date(d.getFullYear(), d.getMonth(), d.getDate() - d.getDay() + Date.CultureInfo.firstDayOfWeek);
+		},
+
+		view_loading: function (fv) {		
+			var self = this;
+			$('.fc-header-left .fc-button').hover(
+				function () {
+					$(this).addClass('fc-state-hover');
+				}, 
+				function () {
+					$(this).removeClass('fc-state-hover');
+				}
+			);
+
+			$('.fc-button-prev-month').click(function(){
+				// TODO - review
+				var firstday = new Date(self.range_stop.getFullYear(), self.range_stop.getMonth() - 1, 1);
+				firstday = self.get_week_start(firstday);
+				var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
+				self.update_range_dates(firstday, lastday);
+			});
+			$('.fc-button-next-month').click(function(){
+				// TODO - review
+				var firstday = new Date(self.range_stop.getFullYear(), self.range_stop.getMonth() + 1, 1);
+				firstday = self.get_week_start(firstday);
+				var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
+				self.update_range_dates(firstday, lastday);
+			});
+
+			$('.fc-button-prev-week').click(function(){
+				var firstday = new Date(self.range_start.getFullYear(), self.range_start.getMonth(), self.range_start.getDate() - 7);
+				var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
+				self.update_range_dates(firstday, lastday);
+			});
+			$('.fc-button-next-week').click(function(){
+				var firstday = new Date(self.range_start.getFullYear(), self.range_start.getMonth(), self.range_start.getDate() + 7);
+				var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
+				self.update_range_dates(firstday, lastday);
+			});
+
+			$('.fc-button-today').click(function(){
+				if(!$(this).hasClass('fc-state-disabled')){
+					var now = new Date();
+					var firstday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + Date.CultureInfo.firstDayOfWeek );
+					var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
+					self.update_range_dates(firstday, lastday);
+				}
+			});
+		},
+
 		/*
 			interval_mode: day | month | year
 			interval_nbr: nbr of day, month or year to add by step
@@ -76,6 +173,18 @@ openerp_staff_management_timeline_base = function(instance) {
 		update_range_dates: function(date_start, date_stop) {
 			this.set_range_dates(date_start, date_stop);
 			this.render_timeline();
+
+			var today = new Date();
+			if(this.range_start <= today && today <= this.range_stop){
+				$('.fc-button-today').addClass('fc-state-disabled');
+			}
+			else{
+				$('.fc-button-today').removeClass('fc-state-disabled');
+			}
+
+			var titleElmt = $('.fc-header-title h2');
+			this.renderTitle(titleElmt, this.range_start, this.range_stop);
+
 		},
 		
 		getNextDate: function(date, index){
@@ -157,7 +266,6 @@ openerp_staff_management_timeline_base = function(instance) {
 					tr.addClass('lastHeaderLine');
 				}
 				var th = $('<th>').addClass('stimeline_leftcol');
-				th.text('Titre');
 				tr.append(th);
 				
 				for(var cdate=this.range_start ; cdate<=this.range_stop ; cdate=this.getNextDate(cdate)){

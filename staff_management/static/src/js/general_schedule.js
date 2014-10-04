@@ -13,10 +13,10 @@ openerp_staff_management_general_schedule = function(instance) {
 			this.view_type = 'calendar';
 			
 			this.set_interval('day', 1);
-			this.set_nbrOfHeaderLines(2);
+			this.set_nbrOfHeaderLines(1);
 
 			var now = new Date();
-			var firstday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + Date.CultureInfo.firstDayOfWeek );
+			var firstday = this.get_week_start(now);
 			var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
 
 			this.set_range_dates(firstday, lastday);
@@ -69,7 +69,8 @@ openerp_staff_management_general_schedule = function(instance) {
 			});
 		},
 		
-		view_loading: function (fv) {		
+		view_loading: function (fv) {
+			this._super.apply(this,arguments);
 			var attrs = fv.arch.attrs;
 			if (!attrs.date_start) {
 				throw new Error("Calendar view has not defined 'date_start' attribute.");
@@ -81,7 +82,16 @@ openerp_staff_management_general_schedule = function(instance) {
 		
 		renderCell: function(td, cellDataList){
 			if(cellDataList.length == 1){
-				return td.append($('<div>').text('hi'));
+				var evt = cellDataList[0].event;
+
+				if(evt.task_id){
+					td.addClass('staff_assigned');
+					td.text(this.format_hour(evt.hour_from)+' '+evt.task_id[1]);
+				}
+				else{
+					td.addClass('staff_available');
+				}
+
 			}
 			return td;
 		},
@@ -93,16 +103,22 @@ openerp_staff_management_general_schedule = function(instance) {
 		renderHeaderCell: function(th, lineID, cdate){
 			
 			if(lineID == 1){
-				
-				th.append(instance.web.date_to_str(cdate));
+				th.append(this.format_date(cdate, "ddd dd MMM"));
 			}
 			return th;
 		},
 
+		renderTitle: function(elmt, date_start, date_stop){
+
+			var txt = this.format_date(date_start, "dd MMM yyyy");
+			txt += ' - ' + this.format_date(date_stop, "dd MMM yyyy");
+			
+
+			elmt.text(txt);
+		},
+
 		cellClicked: function(lineID, date, cellDataList){
-			if(cellDataList.length >= 1){
-				alert('clicked!!! '+date);
-			}
+			// no click action
 		},
 		
 	});

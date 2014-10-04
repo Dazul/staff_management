@@ -41,8 +41,43 @@ openerp_staff_management_calendar = function(instance) {
 			var self = this;
 			
 			self.$calendar.fullCalendar(self.get_fc_init_options());
+
+			$('.fc-button-next').empty().text('Mois').append($('<span>').addClass('fc-text-arrow').text('»'));
+			$('.fc-button-prev').empty().append($('<span>').addClass('fc-text-arrow').text('«')).append('Mois');
 			
 			return $.when();
+		},
+
+		// Format number for hour
+		FormatNumberLength: function(num, length) {
+			var r = "" + num;
+			while (r.length < length) {
+				r = "0" + r;
+			}
+			return r;
+		},
+	
+		// convert hour from 9.5 to 09:30
+		format_hour: function(hour){
+			hour = parseFloat(hour);
+			if(hour == undefined || isNaN(hour)){
+				return '00:00';
+			}
+			var h = Math.floor(hour);          
+			var m = Math.round((hour-h) * 60);
+			return this.FormatNumberLength(h, 2)+':'+this.FormatNumberLength(m, 2);
+		},
+		
+		format_hour_duration: function(hour_start, hour_end){
+			hour_start = parseFloat(hour_start);
+			hour_end = parseFloat(hour_end);
+			if(isNaN(hour_start)){
+				hour_start = 0;
+			}
+			if(isNaN(hour_end)){
+				hour_end = 0;
+			}
+			return this.convert_hour(hour_end-hour_start);
 		},
 		
 		get_fc_init_options: function () {
