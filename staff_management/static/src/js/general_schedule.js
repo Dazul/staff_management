@@ -32,6 +32,7 @@ openerp_staff_management_general_schedule = function(instance) {
 		},
 		
 		do_search: function(domain, context, _group_by) {
+			this._super.apply(this, arguments);
 			var self = this;
 			
 			this.dataset.read_slice(_.keys(this.fields), {

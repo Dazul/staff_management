@@ -35,6 +35,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 		},
 		
 		do_search: function(domain, context, _group_by) {
+			this._super.apply(this, arguments);
 			var self = this;
 			
 			this.dataset.read_slice(_.keys(this.fields), {
@@ -73,6 +74,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 		},
 
 		view_loading: function (fv) {
+			var self = this;
 			this._super.apply(this,arguments);
 			var attrs = fv.arch.attrs;
 			if (!attrs.date_start) {
@@ -83,8 +85,35 @@ openerp_staff_management_salary_timeline = function(instance) {
 			this.date_field = attrs.date_start;
 		},
 
+		set_button_actions: function() {
+			var self = this;
+			$('.fc-button-prev-month').click(function(){
+				var firstday = new Date(self.range_start.getFullYear(), self.range_start.getMonth() - 1, 1);
+				var lastday = new Date(firstday.getFullYear(), firstday.getMonth()+1, 0);
+				self.update_range_dates(firstday, lastday);
+			});
+			$('.fc-button-next-month').click(function(){
+				var firstday = new Date(self.range_start.getFullYear(), self.range_start.getMonth() + 1, 1);
+				var lastday = new Date(firstday.getFullYear(), firstday.getMonth()+1, 0);
+				self.update_range_dates(firstday, lastday);
+			});
+
+			$('.fc-button-prev-week').css({'display': 'none'});
+			$('.fc-button-next-week').css({'display': 'none'});
+
+			$('.fc-button-today').click(function(){
+				if(!$(this).hasClass('fc-state-disabled')){
+					var now = new Date();
+					var firstday = new Date(now.getFullYear(), now.getMonth(), 1);
+					var lastday = new Date(firstday.getFullYear(), firstday.getMonth() + 1, 0);
+					self.update_range_dates(firstday, lastday);
+				}
+			});
+
+		},
+
 		renderTitle: function(elmt, date_start, date_stop){
-			elmt.text('Title');
+			elmt.text(this.format_date(date_start, "MMMM yyyy"));
 		},
 
 		renderHeaderCell: function(th, lineID, cdate){

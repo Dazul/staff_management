@@ -73,16 +73,18 @@ openerp_staff_management_timeline_base = function(instance) {
 					$(this).removeClass('fc-state-hover');
 				}
 			);
+			this.set_button_actions();
+		},
 
+		set_button_actions: function() {
+			var self = this;
 			$('.fc-button-prev-month').click(function(){
-				// TODO - review
 				var firstday = new Date(self.range_stop.getFullYear(), self.range_stop.getMonth() - 1, 1);
 				firstday = self.get_week_start(firstday);
 				var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
 				self.update_range_dates(firstday, lastday);
 			});
 			$('.fc-button-next-month').click(function(){
-				// TODO - review
 				var firstday = new Date(self.range_stop.getFullYear(), self.range_stop.getMonth() + 1, 1);
 				firstday = self.get_week_start(firstday);
 				var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
@@ -103,7 +105,7 @@ openerp_staff_management_timeline_base = function(instance) {
 			$('.fc-button-today').click(function(){
 				if(!$(this).hasClass('fc-state-disabled')){
 					var now = new Date();
-					var firstday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + Date.CultureInfo.firstDayOfWeek );
+					var firstday = self.get_week_start(now);
 					var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
 					self.update_range_dates(firstday, lastday);
 				}
@@ -170,9 +172,20 @@ openerp_staff_management_timeline_base = function(instance) {
 			this.range_stop = new Date(date_stop);
 		},
 		
+
+		do_search: function(domain, context, _group_by) {
+			this.lastSearch = {
+				'domain': domain,
+				'context': context,
+				'_group_by': _group_by
+			};
+		},
+
 		update_range_dates: function(date_start, date_stop) {
 			this.set_range_dates(date_start, date_stop);
-			this.render_timeline();
+			// TODO - reload events !!!
+			//this.render_timeline();
+			this.do_search(this.lastSearch.domain, this.lastSearch.context, this.lastSearch._group_by);
 		},
 		
 		getNextDate: function(date, index){
@@ -203,11 +216,38 @@ openerp_staff_management_timeline_base = function(instance) {
 			var d2_str = $.fullCalendar.formatDate(d2, format);
 			return (d1_str == d2_str);
 		},
-		
+
+		refresh_events: function(){
+			this.do_search(this.lastSearch.domain, this.lastSearch.context, this.lastSearch._group_by);
+		},
+		/*
+		refresh_event: function(lineID, eventList, date){
+			// replace eventlist in datas
+			var data = this.datas[i];
+			var colNumber = 0;
+			for(var cdate=this.range_start ; cdate<=this.range_stop ; cdate=this.getNextDate(cdate)){
+				colNumber ++;
+				for(var j=0 ; j<data['cells'].length ; j++){
+					if(this.isSameDate(data['cells'][j]['date'], cdate)){
+						this.datas[i]['cells'][j] = eventList;
+					}
+				}
+			}
+
+			// refresh event view
+			var lineNumber = this.lineIndex.indexOf(lineID);
+			var tr = $('.stimeline_table table tbody tr').item(lineNumber);
+			var td = tr.find('td').item(colNumber);
+
+			td.empty();
+			td.append('BOOM');
+		},
+		*/
 		render_timeline: function(){
 			var self = this;
 
 			var today = new Date();
+			today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 			if(this.range_start <= today && today <= this.range_stop){
 				$('.fc-button-today').addClass('fc-state-disabled');
 			}

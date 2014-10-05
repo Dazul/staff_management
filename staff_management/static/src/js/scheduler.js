@@ -15,6 +15,7 @@ openerp_staff_management_scheduler = function(instance) {
 		},
 
 		cellClicked: function(lineID, date, cellDataList){
+			var self = this;
 			if(cellDataList.length == 1){
 				
 				var evt = cellDataList[0]['event'];
@@ -24,7 +25,12 @@ openerp_staff_management_scheduler = function(instance) {
 					title: _t("Edit Assignment"),
 					res_id: evt.id,
 					target: 'new',
-					readonly:false
+					readonly:false,
+					write_function: function(id, data, _options) {
+						return self.dataset.write(id, data, {}).done(function() {
+							self.refresh_events();
+						});
+					},
 				});
 
 				var form_controller = pop.view_form;
@@ -35,7 +41,8 @@ openerp_staff_management_scheduler = function(instance) {
 					
 					$('.removeme').click(function() {
 						$('.oe_form_button_cancel').trigger('click');
-						self.remove_event(id);
+						//self.remove_event(id);
+						alert('not ready');
 					});
 				});
 

@@ -44,21 +44,15 @@ openerp_staff_management_personal_schedule = function(instance) {
 		},
 		
 		toggle_availabilities: function(start_date, end_date){
-			
-			
-			//start_day = new Date(Date.UTC(start_date.getFullYear(),start_date.getMonth(),start_date.getDate()));
 			start_day = start_date;
 			stop_day = end_date;
 			if (end_date == null || _.isUndefined(end_date)) {
 				stop_day = start_day;
-			}
-			//stop_day = new Date(Date.UTC(end_date.getFullYear(),end_date.getMonth(),end_date.getDate()));
-			
+			}			
 			
 			for (var d=start_day; d<=stop_day; d.setDate(d.getDate() + 1)){
 				this.toggle_availability(d);
 			}
-			
 		},
 		
 		toggle_availability: function(date){
