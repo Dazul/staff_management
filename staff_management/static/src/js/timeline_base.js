@@ -13,7 +13,6 @@ openerp_staff_management_timeline_base = function(instance) {
 			this._super();
 		},
 		
-
 		format_date: function(date, format){
 			return $.fullCalendar.formatDate(date, format, {
 				monthNames: Date.CultureInfo.monthNames,
@@ -122,49 +121,27 @@ openerp_staff_management_timeline_base = function(instance) {
 		},
 		
 		/*
-			data: {
-				date: {
-					'html': jqueryDom,
-					'tooltip': jqueryDom,
-					'line_id': id,
-				},
-				...
-			}
+			datas = [{
+				 'cells': [event_data],
+				 'lineID': lid,
+				 'username': e['user_id'][1],
+			 };
 		*/
 		update_datas: function(datas){
 			this.datas = datas;
 			this.render_timeline();
 		},
 		
-		
-		update_lines: function(lineDatas){
-			this.set_line(lineDatas);
-			this.render_timeline();
-		},
-		
-		/*
-			lineDatas: [
-				{
-					'html': jqueryDom,
-					'lineID': id,
-					'cells': [
-						{ // lineID
-							'html': jqueryDom,
-							'tooltip': jqueryDom,
-							'date': date,
-						},
-					],
-				},
-				...
-			]
-		*/
-		set_lines: function(lineDatas){
-			this.lineDatas = lineDatas;
-		},
-		
-		
 		set_nbrOfHeaderLines: function(nbrOfHeaderLines){
 			this.nbrOfHeaderLines = nbrOfHeaderLines;
+		},
+
+		set_nbrOfRightCells: function(nbrOfRightCells){
+			this.nbrOfRightCells = nbrOfRightCells;
+		},
+
+		set_nbrOfFooterLines: function(nbrOfFooterLines){
+			this.nbrOfFooterLines = nbrOfFooterLines;
 		},
 		
 		set_range_dates: function(date_start, date_stop) {
@@ -172,7 +149,6 @@ openerp_staff_management_timeline_base = function(instance) {
 			this.range_stop = new Date(date_stop);
 		},
 		
-
 		do_search: function(domain, context, _group_by) {
 			this.lastSearch = {
 				'domain': domain,
@@ -183,8 +159,6 @@ openerp_staff_management_timeline_base = function(instance) {
 
 		update_range_dates: function(date_start, date_stop) {
 			this.set_range_dates(date_start, date_stop);
-			// TODO - reload events !!!
-			//this.render_timeline();
 			this.do_search(this.lastSearch.domain, this.lastSearch.context, this.lastSearch._group_by);
 		},
 		
@@ -243,6 +217,12 @@ openerp_staff_management_timeline_base = function(instance) {
 			td.append('BOOM');
 		},
 		*/
+
+		getLineData: function(trElement){
+			var lineID = this.lineIndex[parseInt(trElement.index())];
+			return this.datas[lineID];
+		},
+
 		render_timeline: function(){
 			var self = this;
 
@@ -265,6 +245,7 @@ openerp_staff_management_timeline_base = function(instance) {
 			
 			thead = this.header_rendering(thead);
 			tbody = this.body_rendering(tbody);
+			tfoot = this.footer_rendering(tfoot);
 						
 			table.append(thead);
 			table.append(tbody);
@@ -305,6 +286,7 @@ openerp_staff_management_timeline_base = function(instance) {
 					tr.addClass('lastHeaderLine');
 				}
 				var th = $('<th>').addClass('stimeline_leftcol');
+				th = this.renderHeaderCellLeft(th, lineID);
 				tr.append(th);
 				
 				for(var cdate=this.range_start ; cdate<=this.range_stop ; cdate=this.getNextDate(cdate)){
@@ -315,6 +297,14 @@ openerp_staff_management_timeline_base = function(instance) {
 					tr.append(th);
 				}
 				
+				if(this.nbrOfRightCells){
+					for(var i=1; i<=this.nbrOfRightCells; i++){
+						var th = $('<th>');
+						th = this.renderHeaderCellRight(th, lineID, i);
+						tr.append(th);
+					}
+				}
+
 				thead.append(tr);
 				
 			}
@@ -334,7 +324,7 @@ openerp_staff_management_timeline_base = function(instance) {
 				
 				var tr = $('<tr>');
 				var th = $('<th>').addClass('stimeline_leftcol');
-				th = this.renderLeftCell(th, data);
+				th = this.renderCellLeft(th, data);
 				tr.append(th);
 				
 				for(var cdate=this.range_start ; cdate<=this.range_stop ; cdate=this.getNextDate(cdate)){
@@ -347,9 +337,17 @@ openerp_staff_management_timeline_base = function(instance) {
 						}
 					}
 					
-					td = this.renderCell(td, cellDataList);
+					td = this.renderCell(td, cellDataList, cdate);
 					
 					tr.append(td);
+				}
+				
+				if(this.nbrOfRightCells){
+					for(var i=1; i<=this.nbrOfRightCells; i++){
+						var td = $('<td>');
+						td = this.renderCellRight(td, i, data);
+						tr.append(td);
+					}
 				}
 				
 				tbody.append(tr);
@@ -360,7 +358,44 @@ openerp_staff_management_timeline_base = function(instance) {
 			
 			return tbody;
 		},
-		
+
+		footer_rendering: function(tfoot){
+			if(this.nbrOfFooterLines && this.nbrOfFooterLines > 0){
+
+				for(var lineID=1 ; lineID<=this.nbrOfFooterLines ; lineID ++){
+					
+					var tr = $('<tr>');
+					if(lineID == 1){
+						tr.addClass('firstFooterLine');
+					}
+					if(lineID == this.nbrOfFooterLines){
+						tr.addClass('lastFooterLine');
+					}
+					var th = $('<th>').addClass('stimeline_leftcol');
+					th = this.renderFooterCellLeft(th, lineID);
+					tr.append(th);
+					
+					for(var cdate=this.range_start ; cdate<=this.range_stop ; cdate=this.getNextDate(cdate)){
+						var td = $('<td>');
+						td = this.renderFooterCell(td, lineID, cdate);						
+						tr.append(td);
+					}
+					
+					if(this.nbrOfRightCells){
+						for(var i=1; i<=this.nbrOfRightCells; i++){
+							var td = $('<td>');
+							td = this.renderFooterCellRight(td, lineID, i);
+							tr.append(td);
+						}
+					}
+
+					tfoot.append(tr);
+					
+				}
+
+			}
+			return tfoot;
+		},
 		
 		final_table_rendering: function(table){
 		
@@ -388,7 +423,6 @@ openerp_staff_management_timeline_base = function(instance) {
 				},
 				"bSortCellsTop": true
 			});	
-			
 			
 			var realTbodyHeight = $('.stimeline_table tbody').height();
 			if(realTbodyHeight < tbodyHeight){

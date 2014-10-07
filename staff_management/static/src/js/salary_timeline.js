@@ -17,6 +17,8 @@ openerp_staff_management_salary_timeline = function(instance) {
 			
 			this.set_interval('day', 1);
 			this.set_nbrOfHeaderLines(1);
+			this.set_nbrOfRightCells(2);
+			this.set_nbrOfFooterLines(1);
 
 			var now = new Date();
 			var firstday = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -37,40 +39,31 @@ openerp_staff_management_salary_timeline = function(instance) {
 		do_search: function(domain, context, _group_by) {
 			this._super.apply(this, arguments);
 			var self = this;
-			
-			this.dataset.read_slice(_.keys(this.fields), {
-				offset: 0,
-				domain: this.get_range_domain(domain, this.range_start, this.range_stop),
-				context: context,
-			}).done(function(events) {
-			
-				var lines = {};
-				
-				 _.each(events, function(e){
 
-					 var event_date = instance.web.auto_str_to_date(e[self.date_field]);
-					 
-					 var event_data = {
-						 'date': event_date,
-						 'event': e,
-					 };
-					 
-					 var lid = e['user_id'][0];
-					 if(lid in lines){
-						 lines[lid]['cells'].push(event_data);
-					 }
-					 else{	            	 	
-						 lines[lid] = {
-							 'cells': [event_data],
-							 'lineID': lid,
-							 'username': e['user_id'][1],
-						 };
-					 }
-					 
-				 });
-				 				 
-				 self.update_datas(lines);
+			this.sumCols = {};
+
+			this.dataset.call("get_month_salaries",[this.get_range_domain(domain, this.range_start, this.range_stop)]).then(function(datas) {
+				self.datas_loaded(datas);
 			});
+		},
+
+		datas_loaded: function(datas){
+			var lines = {};
+			for(uid in datas){
+				var eventist = [];
+				for(day in datas[uid]){
+					eventist.push({
+						'date': new Date(this.range_start.getFullYear(), this.range_start.getMonth(), day),
+						'event': datas[uid][day],
+					});
+				}
+				lines[uid] = {
+					'cells': eventist,
+					'lineID': uid,
+					'username': datas[uid].name,
+				};
+			}
+			this.update_datas(lines);
 		},
 
 		view_loading: function (fv) {
@@ -116,12 +109,194 @@ openerp_staff_management_salary_timeline = function(instance) {
 			elmt.text(this.format_date(date_start, "MMMM yyyy"));
 		},
 
+		renderHeaderCellLeft: function(th, lineID){
+			return th.text('Utilisateur');
+		},
+
+		renderCellLeft: function(th, data){
+			return th.append(data['username']);
+		},
+
 		renderHeaderCell: function(th, lineID, cdate){
 			if(lineID == 1){
 				th.append(this.format_date(cdate, "dd"));
 			}
 			return th;
 		},
+
+		addColSum: function(key, sumPositive, sumNegative){
+			if(key in this.sumCols){
+				this.sumCols[key]['sumPositive'] += sumPositive;
+				this.sumCols[key]['sumNegative'] += sumNegative;
+			}else{
+				this.sumCols[key] = {
+					'sumPositive': sumPositive,
+					'sumNegative': sumNegative,
+				};
+			}
+		},
+
+		renderCell: function(td, cellDataList, date){
+			if(cellDataList.length == 1){
+				var data = cellDataList[0].event;
+				
+				var sumPositive = 0;
+				var sumNegative = 0;
+
+				for(i in data.amounts){
+					var amount = data.amounts[i];
+					if(amount > 0){
+						sumPositive += amount;
+					}
+					else{
+						sumNegative += amount;
+					}
+				}
+
+				td.append($('<span>').addClass('red').text(sumPositive));
+				td.append($('<br>'));
+				td.append($('<span>').addClass('green').text(sumNegative));
+
+				td.addClass('staff_available');
+
+				this.addColSum(date, sumPositive, sumNegative);
+			}
+			return td;
+		},
+
+		renderHeaderCellRight: function(th, lineID, colID){
+			return th.text('Solde');
+		},
+
+		renderCellRight: function(td, colID, lineData){
+			var self = this;
+			var sumPositive = 0;
+			var sumNegative = 0;
+			var cells = lineData.cells;
+			for(var i in cells){
+				var evt = cells[i].event;
+				for(var j in evt.amounts){
+					var amount = parseFloat(evt.amounts[j]);
+					if(amount > 0){
+						sumPositive += amount;
+					}
+					else{
+						sumNegative += amount;
+					}
+				}
+			}
+			if(colID == 1){
+				td.append($('<span>').addClass('red').text(sumPositive));
+				td.append($('<br>'));
+				td.append($('<span>').addClass('green').text(sumNegative));
+				this.addColSum(colID, sumPositive, sumNegative);
+			}
+			else if(colID == 2){
+				var sumLine = sumPositive + sumNegative;
+				var clazz = (sumLine > 0) ? 'red' : (sumLine == 0) ? 'black' : 'green';
+				td.append($('<span>').addClass(clazz).text(sumLine));
+				td.addClass('lightCell clickable text_link');
+				td.click(function(){
+					var data = self.getLineData($(this).parent());
+					var userID = data.lineID;
+					self.open_popup(userID);
+				});
+				this.addColSum(colID, sumLine, sumLine);
+			}
+			return td;
+		},
+
+		renderFooterCellLeft: function(th, lineID){
+			return th.text('Total');
+		},
+
+		renderFooterCell: function(td, lineID, cdate){
+			if(cdate in this.sumCols){
+				var sumPositive = this.sumCols[cdate]['sumPositive'];
+				var sumNegative = this.sumCols[cdate]['sumNegative'];
+
+				td.append($('<span>').addClass('red').text(sumPositive));
+				td.append($('<br>'));
+				td.append($('<span>').addClass('green').text(sumNegative));
+			}
+			return td;
+		},
+
+		renderFooterCellRight: function(td, lineID, colID){
+			if(colID in this.sumCols){
+				var sumPositive = this.sumCols[colID]['sumPositive'];
+				var sumNegative = this.sumCols[colID]['sumNegative'];
+
+				if(colID == 1){
+					td.append($('<span>').addClass('red').text(sumPositive));
+					td.append($('<br>'));
+					td.append($('<span>').addClass('green').text(sumNegative));
+				}
+				else if(colID == 2){
+					var sumTotal = sumPositive;
+					var clazz = (sumTotal > 0) ? 'red' : (sumTotal == 0) ? 'black' : 'green';
+					td.append($('<span>').addClass(clazz).text(sumTotal));
+				}
+			}
+			else if(colID == 2){
+				td.append($('<span>').addClass('black').text(0));
+			}
+			return td;
+		},
+
+		cellClicked: function(lineID, date, cellDataList){
+			// nothing
+		},
+
+
+		open_popup: function(userID){
+			var self = this;
+
+			var format = instance.web.date_to_str;
+	        var date = this.range_stop;
+	        if(this.range_stop > Date.today()){
+		        date = Date.today();
+	        }
+	        
+			this.dataset.call("get_form_context",[userID, format(date)]).then(function(context) {
+				var defaults = {};
+		        _.each(context, function(val, field_name) {
+		            defaults['default_' + field_name] = val;
+		        });
+		        
+
+		        var pop = new instance.web.form.FormOpenPopup(self);
+		        var pop_infos = self.get_form_popup_infos();
+		        pop.show_element(self.dataset.model, null, self.dataset.get_context(defaults), {
+		            title: _.str.sprintf(_t("Create: %s"), pop_infos.title),
+		            disable_multiple_selection: true,
+		            view_id: pop_infos.view_id,
+		        });
+		        pop.on('closed', self, function() {
+		            
+		        });
+		        pop.on('create_completed', self, function(id) {
+		            self.refresh_events();
+		        });
+			});
+
+		},
+
+		get_form_popup_infos: function() {
+	        var parent = this.getParent();
+	        var infos = {
+	            view_id: false,
+	            title: this.name,
+	        };
+	        if (parent instanceof instance.web.ViewManager) {
+	            infos.view_id = parent.get_view_id('form');
+	            if (parent instanceof instance.web.ViewManagerAction && parent.action && parent.action.name) {
+	                infos.title = parent.action.name;
+	            }
+	        }
+	        return infos;
+	    },
+
 
 	});
 }

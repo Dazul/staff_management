@@ -97,7 +97,11 @@ openerp_staff_management_general_schedule = function(instance) {
 			return td;
 		},
 		
-		renderLeftCell: function(th, data){
+		renderHeaderCellLeft: function(th, lineID){
+			return th.text('Utilisateur');
+		},
+
+		renderCellLeft: function(th, data){
 			return th.append(data['username']);
 		},
 		

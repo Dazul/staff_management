@@ -41,11 +41,23 @@
 	text-align: center;
 }
 
+.stimeline_table tr.lastHeaderLine td, .stimeline_table tr.lastHeaderLine th{
+	border-bottom: none;
+}
+
 .stimeline_table .stimeline_leftcol{
 	width: 200px;
 }
 
 .stimeline_table tbody tr:hover .stimeline_leftcol{
+	background: rgb(222,239,255);
+}
+
+.stimeline_table tbody tr:hover .lightCell{
+	background: rgb(222,239,255);
+}
+
+.stimeline_table tfoot tr td, .stimeline_table tfoot tr th.stimeline_leftcol{
 	background: rgb(222,239,255);
 }
 
@@ -68,6 +80,18 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#deefff', endColorstr='#98bede',GradientType=0 );
 }
 
+.stimeline_table .text_link:hover{
+	text-decoration: underline;
+}
+
 .stimeline_table .clickable{
 	cursor: pointer;
+}
+
+.stimeline_table .red{
+	color: #900;
+}
+
+.stimeline_table .green{
+	color: #090;
 }

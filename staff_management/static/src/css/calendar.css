@@ -20,6 +20,10 @@
 	margin-top: 8px!important;
 }
 
+.staff_calendar .fc-day{
+	cursor: pointer;
+}
+
 .staff_available{
 	background: rgb(222,239,255);
 	background: -moz-linear-gradient(top,  rgba(222,239,255,1) 0%, rgba(152,190,222,1) 100%);
