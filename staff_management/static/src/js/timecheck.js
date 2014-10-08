@@ -24,12 +24,13 @@ openerp_staff_management_timecheck = function(instance) {
 				if(evt.confirm){
 					td.addClass('staff_assigned');
 					td.text(self.format_hour(evt.work_time));
+					td.addClass('clickable');
 				}
 				else if(evt.task_id){
 					td.addClass('staff_available');
 					td.text(self.format_hour(evt.hour_from)+' à '+self.format_hour(evt.hour_to));
+					td.addClass('clickable');
 				}
-
 			}
 			return td;
 		},

@@ -41,12 +41,19 @@
 	text-align: center;
 }
 
+.stimeline_table table td{
+	min-width: 36px;
+	width: 200px;
+}
+
 .stimeline_table tr.lastHeaderLine td, .stimeline_table tr.lastHeaderLine th{
 	border-bottom: none;
 }
 
 .stimeline_table .stimeline_leftcol{
+	min-width: 200px;
 	width: 200px;
+	max-width: 200px;
 }
 
 .stimeline_table tbody tr:hover .stimeline_leftcol{
@@ -94,4 +101,11 @@
 
 .stimeline_table .green{
 	color: #090;
+}
+
+
+.stimeline_table td, .stimeline_table th{
+	padding: 0;
+	border-collapse: collapse;
+	margin: 0;
 }

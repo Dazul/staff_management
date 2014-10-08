@@ -432,9 +432,42 @@ openerp_staff_management_timeline_base = function(instance) {
 					$(e).height(tr_height);
 				});	
 			}
+
+			this.align_cols();
 			
 		},
 		
+		align_cols: function(){
+			
+			var head_tr = $('.stimeline_table .dataTables_scrollHeadInner thead tr'); // get the clone from datatable displayed
+			var body_tr = $('.stimeline_table tbody tr');
+			var foot_tr = $('.stimeline_table .dataTables_scrollFootInner tfoot tr'); // get the clone from datatable displayed
+			
+			var tds_head = head_tr.find('th, td');
+			var tds_body = body_tr.find('th, td');
+			var tds_foot = foot_tr.find('th, td');
+						
+			nbr_tds = tds_head.length;
+
+			for(var i=1 ; i<nbr_tds ; i++){
+				var maxWidth = tds_head.eq(i).width();
+				if(tds_body.eq(i).width() > maxWidth){
+					maxWidth = tds_body.eq(i).width();
+				}
+				if(tds_foot.eq(i).width() > maxWidth){
+					maxWidth = tds_foot.eq(i).width();
+				}
+				
+				maxWidth += 2;
+
+				tds_head.eq(i).css({'width': maxWidth, 'min-width': maxWidth, 'max-width': maxWidth});
+				tds_body.eq(i).css({'width': maxWidth, 'min-width': maxWidth, 'max-width': maxWidth});
+				tds_foot.eq(i).css({'width': maxWidth, 'min-width': maxWidth, 'max-width': maxWidth});
+				//tds_foot.eq(i).width(maxWidth);
+				
+			}
+			
+		},
 		
 		
 		
