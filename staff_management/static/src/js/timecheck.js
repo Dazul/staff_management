@@ -15,6 +15,17 @@ openerp_staff_management_timecheck = function(instance) {
 			this._super.apply(this, arguments);	
 		},
 
+		get_range_domain: function(domain, start, end) {
+			var format = instance.web.date_to_str;
+			
+			extend_domain = [
+				[this.date_field, '>=', format(start.clone())],
+				[this.date_field, '<=', format(end.clone())],
+				['task_id', '!=', null]
+			];
+
+			return new instance.web.CompoundDomain(domain, extend_domain);
+		},
 
 
 		renderCell: function(td, cellDataList){

@@ -152,13 +152,8 @@ openerp_staff_management_salary_timeline = function(instance) {
 						sumNegative += amount;
 					}
 				}
-
-				td.append($('<span>').addClass('red').text(sumPositive));
-				td.append($('<br>'));
-				td.append($('<span>').addClass('green').text(sumNegative));
-
+				this.renderSalaryCell(td, sumPositive, sumNegative);
 				td.addClass('staff_available');
-
 				this.addColSum(date, sumPositive, sumNegative);
 			}
 			return td;
@@ -186,9 +181,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 				}
 			}
 			if(colID == 1){
-				td.append($('<span>').addClass('red').text(sumPositive));
-				td.append($('<br>'));
-				td.append($('<span>').addClass('green').text(sumNegative));
+				this.renderSalaryCell(td, sumPositive, sumNegative);
 				this.addColSum(colID, sumPositive, sumNegative);
 			}
 			else if(colID == 2){
@@ -215,9 +208,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 				var sumPositive = this.sumCols[cdate]['sumPositive'];
 				var sumNegative = this.sumCols[cdate]['sumNegative'];
 
-				td.append($('<span>').addClass('red').text(sumPositive));
-				td.append($('<br>'));
-				td.append($('<span>').addClass('green').text(sumNegative));
+				this.renderSalaryCell(td, sumPositive, sumNegative);
 			}
 			return td;
 		},
@@ -228,9 +219,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 				var sumNegative = this.sumCols[colID]['sumNegative'];
 
 				if(colID == 1){
-					td.append($('<span>').addClass('red').text(sumPositive));
-					td.append($('<br>'));
-					td.append($('<span>').addClass('green').text(sumNegative));
+					this.renderSalaryCell(td, sumPositive, sumNegative);
 				}
 				else if(colID == 2){
 					var sumTotal = sumPositive;
@@ -243,6 +232,21 @@ openerp_staff_management_salary_timeline = function(instance) {
 			}
 			return td;
 		},
+
+
+
+		renderSalaryCell: function(td, sumPositive, sumNegative){
+			if(sumPositive > 0){
+				td.append($('<span>').addClass('red').text(sprintf("%.0f", Math.abs(sumPositive))));
+			}
+			if(sumPositive > 0 && sumNegative < 0){
+				td.append($('<br>'));
+			}
+			if(sumNegative < 0){
+				td.append($('<span>').addClass('green').text(sprintf("%.0f", Math.abs(sumNegative))));
+			}
+		},
+
 
 		cellClicked: function(lineID, date, cellDataList){
 			// nothing
