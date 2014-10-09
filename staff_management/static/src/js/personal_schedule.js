@@ -70,11 +70,7 @@ openerp_staff_management_personal_schedule = function(instance) {
 			});
 			
 			if(isAlreadyAnEvent){
-				this.remove_event(parseInt(eventData.id)).then(function(){
-					var strDate = $.fullCalendar.formatDate(eventData.start, "yyyy-MM-dd");
-					self.$calendar.fullCalendar('unselect');
-					$('.fc-day[data-date|="'+strDate+'"]').removeClass('staff_available');
-				});
+				this.remove_availability(eventData);
 				return;  
 			}
 						
@@ -96,8 +92,6 @@ openerp_staff_management_personal_schedule = function(instance) {
 						self.quick_create_error = true;
 						setTimeout(function(){self.quick_create_error = false},200);
 					}
-					var strDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
-					$('.fc-day[data-date|="'+strDate+'"]').removeClass('staff_available');
 					self.$calendar.fullCalendar('unselect');
 				});
 			
@@ -109,6 +103,25 @@ openerp_staff_management_personal_schedule = function(instance) {
 			r.comment = evt.comment;
 			r.hour_from = evt.hour_from;
 			return r;
+		},
+
+		remove_availability: function(eventData) {
+			var self = this;
+			this.dataset.unlink([eventData.id]).then(function() {
+				self.$calendar.fullCalendar('removeEvents', eventData.id);
+				var strDate = $.fullCalendar.formatDate(eventData.start, "yyyy-MM-dd");
+				self.$calendar.fullCalendar('unselect');
+				$('.fc-day[data-date|="'+strDate+'"]').removeClass('staff_available');
+			}).fail(function(r, event) {				
+				if(self.quick_create_error){
+					event.preventDefault(); // don't show multiple warning messages
+				}
+				else{
+					self.quick_create_error = true;
+					setTimeout(function(){self.quick_create_error = false},200);
+				}
+				self.$calendar.fullCalendar('unselect');
+			});
 		},
 		
 		
