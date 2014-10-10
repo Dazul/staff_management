@@ -43,31 +43,70 @@ openerp_staff_management_general_schedule = function(instance) {
 			
 				var lines = {};
 				
-				 _.each(events, function(e){
+				_.each(events, function(e){
 
-					 var event_date = instance.web.auto_str_to_date(e[self.date_field]);
-					 
-					 var event_data = {
-						 'date': event_date,
-						 'event': e,
-					 };
-					 
-					 var lid = e['user_id'][0];
-					 if(lid in lines){
-						 lines[lid]['cells'].push(event_data);
-					 }
-					 else{	            	 	
-						 lines[lid] = {
-							 'cells': [event_data],
-							 'lineID': lid,
-							 'username': e['user_id'][1],
-						 };
-					 }
-					 
-				 });
-				 				 
-				 self.update_datas(lines);
+					var event_date = instance.web.auto_str_to_date(e[self.date_field]);
+					
+					var event_data = {
+						'date': event_date,
+						'event': e,
+					};
+					
+					var lid = e['user_id'][0];
+					if(lid in lines){
+						lines[lid]['cells'].push(event_data);
+					}
+					else{
+						lines[lid] = {
+							'cells': [event_data],
+							'lineID': lid,
+							'username': e['user_id'][1],
+						};
+					}
+					
+				});
+
+				if(!context['usershow'] && !context['default_task_id']){
+					self.load_all_users(lines, domain);	
+				}
+				else{			 
+					self.update_datas(lines);
+				}
 			});
+		},
+
+		load_all_users: function(lines, domain){
+			var self = this;
+			// load all other users
+			var Users = new instance.web.Model('res.users');
+			// check if there is a filter on user
+			var user_domain = new Array();			
+			for(i=0 ; i<domain.length ; i++){
+				if(domain[i][0] == 'user_id'){
+					if($.isNumeric(domain[i][2])){
+						user_domain.push(['id', domain[i][1], domain[i][2]]);
+					}
+					else{
+						user_domain.push(['name', domain[i][1], domain[i][2]]);
+					}
+				}
+			}
+			user_domain.push(['active', '=', true]);
+			
+			Users.query(['id', 'name']).filter(user_domain).order_by('name').all().then(function(users){
+				for(var i=0 ; i<users.length ; i++){
+					var u = users[i];
+					if(!(u.id in lines)){
+						lines[u.id] = {
+							'cells': [],
+							'lineID': u.id,
+							'username': u.name,
+						};
+					}
+				}
+				self.update_datas(lines);
+			});
+
 		},
 		
 		view_loading: function (fv) {
