@@ -137,6 +137,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 		},
 
 		renderCell: function(td, cellDataList, date){
+			var self = this;
 			if(cellDataList.length == 1){
 				var data = cellDataList[0].event;
 				
@@ -236,6 +237,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 
 
 		renderSalaryCell: function(td, sumPositive, sumNegative){
+			var self = this;
 			if(sumPositive > 0){
 				td.append($('<span>').addClass('red').text(sprintf("%.0f", Math.abs(sumPositive))));
 			}
@@ -245,6 +247,16 @@ openerp_staff_management_salary_timeline = function(instance) {
 			if(sumNegative < 0){
 				td.append($('<span>').addClass('green').text(sprintf("%.0f", Math.abs(sumNegative))));
 			}
+
+			var tooltip_data = {
+				'sumPositive': sumPositive,
+				'sumNegative': sumNegative,
+			};
+
+			td.mouseenter(tooltip_data, function(evt){
+				instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
+			}).mouseleave(instance.staff_management.tooltip.hide);
+
 		},
 
 
@@ -257,49 +269,64 @@ openerp_staff_management_salary_timeline = function(instance) {
 			var self = this;
 
 			var format = instance.web.date_to_str;
-	        var date = this.range_stop;
-	        if(this.range_stop > Date.today()){
-		        date = Date.today();
-	        }
-	        
+			var date = this.range_stop;
+			if(this.range_stop > Date.today()){
+				date = Date.today();
+			}
+			
 			this.dataset.call("get_form_context",[userID, format(date)]).then(function(context) {
 				var defaults = {};
-		        _.each(context, function(val, field_name) {
-		            defaults['default_' + field_name] = val;
-		        });
-		        
+				_.each(context, function(val, field_name) {
+					defaults['default_' + field_name] = val;
+				});
+				
 
-		        var pop = new instance.web.form.FormOpenPopup(self);
-		        var pop_infos = self.get_form_popup_infos();
-		        pop.show_element(self.dataset.model, null, self.dataset.get_context(defaults), {
-		            title: _.str.sprintf(_t("Create: %s"), pop_infos.title),
-		            disable_multiple_selection: true,
-		            view_id: pop_infos.view_id,
-		        });
-		        pop.on('closed', self, function() {
-		            
-		        });
-		        pop.on('create_completed', self, function(id) {
-		            self.refresh_events();
-		        });
+				var pop = new instance.web.form.FormOpenPopup(self);
+				var pop_infos = self.get_form_popup_infos();
+				pop.show_element(self.dataset.model, null, self.dataset.get_context(defaults), {
+					title: _.str.sprintf(_t("Create: %s"), pop_infos.title),
+					disable_multiple_selection: true,
+					view_id: pop_infos.view_id,
+				});
+				pop.on('closed', self, function() {
+					
+				});
+				pop.on('create_completed', self, function(id) {
+					self.refresh_events();
+				});
 			});
 
 		},
 
 		get_form_popup_infos: function() {
-	        var parent = this.getParent();
-	        var infos = {
-	            view_id: false,
-	            title: this.name,
-	        };
-	        if (parent instanceof instance.web.ViewManager) {
-	            infos.view_id = parent.get_view_id('form');
-	            if (parent instanceof instance.web.ViewManagerAction && parent.action && parent.action.name) {
-	                infos.title = parent.action.name;
-	            }
-	        }
-	        return infos;
-	    },
+			var parent = this.getParent();
+			var infos = {
+				view_id: false,
+				title: this.name,
+			};
+			if (parent instanceof instance.web.ViewManager) {
+				infos.view_id = parent.get_view_id('form');
+				if (parent instanceof instance.web.ViewManagerAction && parent.action && parent.action.name) {
+					infos.title = parent.action.name;
+				}
+			}
+			return infos;
+		},
+
+		get_tooltip_content: function(data){
+			var div = $('<div>');
+
+			if(data.sumPositive > 0){
+				div.append($('<div>').append($('<span>').text(_t('Amount due:')+' ')).append($('<span>').addClass('red').text(sprintf("%.2f", Math.abs(data.sumPositive)))));
+			}
+			if(data.sumNegative < 0){
+				div.append($('<div>').append($('<span>').text(_t('Versed amount:')+' ')).append($('<span>').addClass('green').text(sprintf("%.2f", Math.abs(data.sumNegative)))));
+			}
+
+			// TODO - add working time
+
+			return div;
+		},
 
 
 	});
@@ -413,57 +440,57 @@ openerp_staff_management_salary_timeline = function(instance) {
 		},
 		
 		get_form_popup_infos: function() {
-	        var parent = this.getParent();
-	        var infos = {
-	            view_id: false,
-	            title: this.name,
-	        };
-	        if (parent instanceof instance.web.ViewManager) {
-	            infos.view_id = parent.get_view_id('form');
-	            if (parent instanceof instance.web.ViewManagerAction && parent.action && parent.action.name) {
-	                infos.title = parent.action.name;
-	            }
-	        }
-	        return infos;
-	    },
+			var parent = this.getParent();
+			var infos = {
+				view_id: false,
+				title: this.name,
+			};
+			if (parent instanceof instance.web.ViewManager) {
+				infos.view_id = parent.get_view_id('form');
+				if (parent instanceof instance.web.ViewManagerAction && parent.action && parent.action.name) {
+					infos.title = parent.action.name;
+				}
+			}
+			return infos;
+		},
 		slow_create: function(userId) {
-	        var self = this;
+			var self = this;
 
 			var format = instance.web.date_to_str;
-	        var date = this.range_stop;
-	        if(this.range_stop > Date.today()){
-		        date = Date.today();
-	        }
-	        
-	        
+			var date = this.range_stop;
+			if(this.range_stop > Date.today()){
+				date = Date.today();
+			}
+			
+			
 			this.dataset.call("get_form_context",[userId, format(date)]).then(function(context) {
 				var defaults = {};
-		        _.each(context, function(val, field_name) {
-		            defaults['default_' + field_name] = val;
-		        });
-		        
+				_.each(context, function(val, field_name) {
+					defaults['default_' + field_name] = val;
+				});
+				
 
-		        var pop = new instance.web.form.FormOpenPopup(self);
-		        var pop_infos = self.get_form_popup_infos();
-		        pop.show_element(self.dataset.model, null, self.dataset.get_context(defaults), {
-		            title: _.str.sprintf(_t("Create: %s"), pop_infos.title),
-		            disable_multiple_selection: true,
-		            view_id: pop_infos.view_id,
-		        });
-		        pop.on('closed', self, function() {
-		            
-		        });
-		        pop.on('create_completed', self, function(id) {
-		            self.update_view();
-		        });
+				var pop = new instance.web.form.FormOpenPopup(self);
+				var pop_infos = self.get_form_popup_infos();
+				pop.show_element(self.dataset.model, null, self.dataset.get_context(defaults), {
+					title: _.str.sprintf(_t("Create: %s"), pop_infos.title),
+					disable_multiple_selection: true,
+					view_id: pop_infos.view_id,
+				});
+				pop.on('closed', self, function() {
+					
+				});
+				pop.on('create_completed', self, function(id) {
+					self.update_view();
+				});
 			});
-	    },
-	    
-	    
-	    add_cell_amount: function(dom_tr, positive, negative, worktime, style){
-	    	textPos = (positive > 0) ? '<span class="red">'+sprintf("%.0f", Math.abs(positive))+'</span>' : '';
+		},
+		
+		
+		add_cell_amount: function(dom_tr, positive, negative, worktime, style){
+			textPos = (positive > 0) ? '<span class="red">'+sprintf("%.0f", Math.abs(positive))+'</span>' : '';
 			textNeg = (negative < 0) ? '<span class="green">'+sprintf("%.0f", Math.abs(negative))+'</span>' : '';
-	    
+		
 			if(textPos != '' && textNeg != ''){
 				text = textPos+'<br/>'+textNeg;
 			}
@@ -479,9 +506,9 @@ openerp_staff_management_salary_timeline = function(instance) {
 			else{
 				dom_tr.append($('<td>'));
 			}
-	    },
-	    
-	    // Format number for hour
+		},
+		
+		// Format number for hour
 		FormatNumberLength: function(num, length) {
 			var r = "" + num;
 			while (r.length < length) {
@@ -489,8 +516,8 @@ openerp_staff_management_salary_timeline = function(instance) {
 			}
 			return r;
 		},
-	    
-	    // convert hour from 9.5 to 09:30
+		
+		// convert hour from 9.5 to 09:30
 		convert_hour: function(hour){
 			hour = parseFloat(hour);
 			if(hour == undefined || isNaN(hour)){
@@ -500,7 +527,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 			var m = Math.round((hour-h) * 60);
 			return this.FormatNumberLength(h, 2)+':'+this.FormatNumberLength(m, 2);
 		},
-	    
+		
 		render_table_content: function(datas){
 			var self = this;
 			

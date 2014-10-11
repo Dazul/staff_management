@@ -36,14 +36,36 @@ openerp_staff_management_timecheck = function(instance) {
 					td.addClass('staff_assigned');
 					td.text(self.format_hour(evt.work_time));
 					td.addClass('clickable');
+					td.mouseenter(evt, function(evt){
+						instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
+					}).mouseleave(instance.staff_management.tooltip.hide);
 				}
 				else if(evt.task_id){
 					td.addClass('staff_available');
 					td.text(self.format_hour(evt.hour_from)+' à '+self.format_hour(evt.hour_to));
 					td.addClass('clickable');
+					td.mouseenter(evt, function(evt){
+						instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
+					}).mouseleave(instance.staff_management.tooltip.hide);
 				}
 			}
 			return td;
+		},
+
+		get_tooltip_content: function(event){
+			var div = $('<div>');
+			div.append($('<div>').text(this.format_hour(event.hour_from)+' - '+this.format_hour(event.hour_to)+' ('+_t('duration')+' '+this.format_hour_duration(event.hour_from, event.hour_to)+')'));
+			div.append($('<div>').text(event.task_id[1]));
+			if(event.confirm){
+				div.append($('<div>').text(_t("Entered:")+' '+this.format_hour(event.work_time)));
+			}
+			else{
+				div.append($('<div>').text(_t("No hour entered")+' ('+this.format_hour(event.work_time)+')'));
+			}
+			if(event.comment){
+				div.append($('<div>').text(event.comment));
+			}
+			return div;
 		},
 
 		cellClicked: function(lineID, date, cellDataList){

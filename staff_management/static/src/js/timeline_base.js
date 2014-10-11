@@ -51,7 +51,7 @@ openerp_staff_management_timeline_base = function(instance) {
 			if(isNaN(hour_end)){
 				hour_end = 0;
 			}
-			return this.convert_hour(hour_end-hour_start);
+			return this.format_hour(hour_end-hour_start);
 		},
 
 		get_week_start: function(date){

@@ -1,6 +1,8 @@
 
 openerp.staff_management = function(instance) {
 
+	openerp_staff_management_tooltip(instance);
+
 	openerp_staff_management_calendar(instance); // import calendar (parent class)
 	
 	openerp_staff_management_timeline_base(instance);

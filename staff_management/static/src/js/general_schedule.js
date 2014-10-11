@@ -121,12 +121,16 @@ openerp_staff_management_general_schedule = function(instance) {
 		},
 		
 		renderCell: function(td, cellDataList){
+			var self = this;
 			if(cellDataList.length == 1){
 				var evt = cellDataList[0].event;
 
 				if(evt.task_id){
 					td.addClass('staff_assigned');
 					td.text(this.format_hour(evt.hour_from)+' '+evt.task_id[1]);
+					td.mouseenter(evt, function(evt){
+						instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
+					}).mouseleave(instance.staff_management.tooltip.hide);
 				}
 				else{
 					td.addClass('staff_available');
@@ -134,6 +138,18 @@ openerp_staff_management_general_schedule = function(instance) {
 
 			}
 			return td;
+		},
+
+		get_tooltip_content: function(event){
+
+			var div = $('<div>');
+			div.append($('<div>').text(this.format_hour(event.hour_from)+' - '+this.format_hour(event.hour_to)));
+			div.append($('<div>').text(event.task_id[1]));
+			if(event.comment){
+				div.append($('<div>').text(event.comment));
+			}
+
+			return div;
 		},
 		
 		renderHeaderCellLeft: function(th, lineID){

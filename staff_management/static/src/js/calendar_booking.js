@@ -60,11 +60,43 @@ openerp_staff_management_calendar_booking = function(instance) {
 					});
 					self.slow_create(data_template);
 				},
+				eventRender: function(event, element) {		
+					
+					element.text(self.format_hour(event.hour_from)+' '+event.booking_name);
+					element.mouseenter(event, function(evt){
+						instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
+					}).mouseleave(instance.staff_management.tooltip.hide);
+				},
 			});
 		},
 	
+		get_tooltip_content: function(event){
+			var div = $('<div>');
+			div.append($('<div>').text(this.format_hour(event.hour_from)+' - '+this.format_hour(event.hour_to)));
+			div.append($('<div>').text(event.booking_name));
+			div.append($('<div>').text(event.nbr_adult+' '+_t('adults')));
+			div.append($('<div>').text(event.nbr_child+' '+_t('children')));
+			if(event.meal_included){
+				div.append($('<div>').text(_t('Meal included')));
+			}
+			if(event.observation){
+				div.append($('<div>').text(event.observation));
+			}
+			return div;
+		},
 		
-		
+		event_data_transform: function(evt) {
+			var r = this._super.apply(this,arguments);
+			r.booking_name = evt.booking_name;
+			r.hour_from = evt.hour_from;
+			r.hour_to = evt.hour_to;
+			r.observation = evt.observation;
+			r.nbr_adult = evt.nbr_adult;
+			r.nbr_child = evt.nbr_child;
+			r.meal_included = evt.meal_included;
+			return r;
+		},
+
 		get_title: function () {
 			var title = (_.isUndefined(this.field_widget)) ?
 					(this.string || this.name) :

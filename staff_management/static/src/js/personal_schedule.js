@@ -32,6 +32,9 @@ openerp_staff_management_personal_schedule = function(instance) {
 					$('.fc-day[data-date|="'+strDate+'"]').addClass('staff_available');
 					if(event.task_id){
 						element.text(self.format_hour(event.hour_from)+' '+event.task_id[1]);
+						element.mouseenter(event, function(evt){
+							instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
+						}).mouseleave(instance.staff_management.tooltip.hide);
 					}else{
 						element.css({'display': 'none'});
 					}
@@ -43,6 +46,18 @@ openerp_staff_management_personal_schedule = function(instance) {
 			});
 		},
 		
+		get_tooltip_content: function(event){
+
+			var div = $('<div>');
+			div.append($('<div>').text(this.format_hour(event.hour_from)+' - '+this.format_hour(event.hour_to)));
+			div.append($('<div>').text(event.task_id[1]));
+			if(event.comment){
+				div.append($('<div>').text(event.comment));
+			}
+
+			return div;
+		},
+
 		toggle_availabilities: function(start_date, end_date){
 			start_day = start_date;
 			stop_day = end_date;
@@ -102,6 +117,7 @@ openerp_staff_management_personal_schedule = function(instance) {
 			r.task_id = evt.task_id;
 			r.comment = evt.comment;
 			r.hour_from = evt.hour_from;
+			r.hour_to = evt.hour_to;
 			return r;
 		},
 

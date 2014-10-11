@@ -37,7 +37,13 @@
 							
 		</div>
 	
-		<div class="staff_tooltip"></div>
+		<div class="staff_tooltip">
+			<div class="staff_tooltip_content"></div>
+			<div class="staff_tooltip_arrow">
+				<div class="border"></div>
+				<div class="background"></div>
+			</div>
+		</div>
 	
 	</div>
 
