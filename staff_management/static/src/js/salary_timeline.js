@@ -124,14 +124,16 @@ openerp_staff_management_salary_timeline = function(instance) {
 			return th;
 		},
 
-		addColSum: function(key, sumPositive, sumNegative){
+		addColSum: function(key, sumPositive, sumNegative, sumTimework){
 			if(key in this.sumCols){
 				this.sumCols[key]['sumPositive'] += sumPositive;
 				this.sumCols[key]['sumNegative'] += sumNegative;
+				this.sumCols[key]['sumTimework'] += sumTimework;
 			}else{
 				this.sumCols[key] = {
 					'sumPositive': sumPositive,
 					'sumNegative': sumNegative,
+					'sumTimework': sumTimework,
 				};
 			}
 		},
@@ -143,6 +145,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 				
 				var sumPositive = 0;
 				var sumNegative = 0;
+				var sumTimework = 0;
 
 				for(i in data.amounts){
 					var amount = data.amounts[i];
@@ -153,9 +156,13 @@ openerp_staff_management_salary_timeline = function(instance) {
 						sumNegative += amount;
 					}
 				}
-				this.renderSalaryCell(td, sumPositive, sumNegative);
+				for(i in data.timework){
+					sumTimework += parseFloat(data.timework[i]);
+				}
+
+				this.renderSalaryCell(td, sumPositive, sumNegative, sumTimework);
 				td.addClass('staff_available');
-				this.addColSum(date, sumPositive, sumNegative);
+				this.addColSum(date, sumPositive, sumNegative, sumTimework);
 			}
 			return td;
 		},
@@ -168,6 +175,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 			var self = this;
 			var sumPositive = 0;
 			var sumNegative = 0;
+			var sumTimework = 0;
 			var cells = lineData.cells;
 			for(var i in cells){
 				var evt = cells[i].event;
@@ -180,10 +188,13 @@ openerp_staff_management_salary_timeline = function(instance) {
 						sumNegative += amount;
 					}
 				}
+				for(i in evt.timework){
+					sumTimework += parseFloat(evt.timework[i]);
+				}
 			}
 			if(colID == 1){
-				this.renderSalaryCell(td, sumPositive, sumNegative);
-				this.addColSum(colID, sumPositive, sumNegative);
+				this.renderSalaryCell(td, sumPositive, sumNegative, sumTimework);
+				this.addColSum(colID, sumPositive, sumNegative, sumTimework);
 			}
 			else if(colID == 2){
 				var sumLine = sumPositive + sumNegative;
@@ -195,7 +206,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 					var userID = data.lineID;
 					self.open_popup(userID);
 				});
-				this.addColSum(colID, sumLine, sumLine);
+				this.addColSum(colID, sumLine, sumLine, sumTimework);
 			}
 			return td;
 		},
@@ -208,8 +219,9 @@ openerp_staff_management_salary_timeline = function(instance) {
 			if(cdate in this.sumCols){
 				var sumPositive = this.sumCols[cdate]['sumPositive'];
 				var sumNegative = this.sumCols[cdate]['sumNegative'];
+				var sumTimework = this.sumCols[cdate]['sumTimework'];
 
-				this.renderSalaryCell(td, sumPositive, sumNegative);
+				this.renderSalaryCell(td, sumPositive, sumNegative, sumTimework);
 			}
 			return td;
 		},
@@ -218,9 +230,10 @@ openerp_staff_management_salary_timeline = function(instance) {
 			if(colID in this.sumCols){
 				var sumPositive = this.sumCols[colID]['sumPositive'];
 				var sumNegative = this.sumCols[colID]['sumNegative'];
+				var sumTimework = this.sumCols[colID]['sumTimework'];
 
 				if(colID == 1){
-					this.renderSalaryCell(td, sumPositive, sumNegative);
+					this.renderSalaryCell(td, sumPositive, sumNegative, sumTimework);
 				}
 				else if(colID == 2){
 					var sumTotal = sumPositive;
@@ -236,7 +249,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 
 
 
-		renderSalaryCell: function(td, sumPositive, sumNegative){
+		renderSalaryCell: function(td, sumPositive, sumNegative, sumTimework){
 			var self = this;
 			if(sumPositive > 0){
 				td.append($('<span>').addClass('red').text(sprintf("%.0f", Math.abs(sumPositive))));
@@ -251,6 +264,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 			var tooltip_data = {
 				'sumPositive': sumPositive,
 				'sumNegative': sumNegative,
+				'sumTimework': sumTimework,
 			};
 
 			td.mouseenter(tooltip_data, function(evt){
@@ -324,6 +338,10 @@ openerp_staff_management_salary_timeline = function(instance) {
 			}
 
 			// TODO - add working time
+
+			if(data.sumTimework > 0){
+				div.append($('<div>').append($('<span>').text(_t('Working time:')+' ')).append($('<span>').text(this.format_hour(data.sumTimework))));
+			}
 
 			return div;
 		},
