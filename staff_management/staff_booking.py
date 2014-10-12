@@ -70,6 +70,8 @@ class staff_booking(orm.Model):
 	_constraints = [(_check_hour_from,'Start hour must be between 0 and 24.', ['hour_from']), 
 				(_check_hour_to,'End hour must be between 0 and 24.', ['hour_to'])]
 	
+	# Return a dictionary from the list of date received.
+	# Dic is: {key, total_people}
 	def count_nbr_people(self, cr, uid, date):
 		ret = {};
 		for d in date
