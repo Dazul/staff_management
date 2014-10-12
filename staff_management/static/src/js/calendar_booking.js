@@ -1,31 +1,3 @@
-(function ($) {
-
-/**
-* @function
-* @property {object} jQuery plugin which runs handler function once specified element is inserted into the DOM
-* @param {function} handler A function to execute at the time when the element is inserted
-* @param {bool} shouldRunHandlerOnce Optional: if true, handler is unbound after its first invocation
-* @example $(selector).waitUntilExists(function);
-*/
-$.fn.waitUntilExists    = function (handler, shouldRunHandlerOnce, isChild) {
-	var found       = 'found';
-	var $this       = $(this.selector);
-	var $elements   = $this.not(function () { return $(this).data(found); }).each(handler).data(found, true);
-
-	if (!isChild)
-	{
-		(window.waitUntilExists_Intervals = window.waitUntilExists_Intervals || {})[this.selector] = window.setInterval(function () { $this.waitUntilExists(handler, shouldRunHandlerOnce, true); }, 500);
-	}
-	else if (shouldRunHandlerOnce && $elements.length)
-	{
-		window.clearInterval(window.waitUntilExists_Intervals[this.selector]);
-	}
-
-	return $this;
-}
-
-}(jQuery));
-
 openerp_staff_management_calendar_booking = function(instance) {
 	var _t = instance.web._t; // For text translations
 	
@@ -123,7 +95,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 			});
 			
 			var pop_infos = self.get_form_popup_infos();
-			var pop = new instance.staff_management.FormOpenPopup(this);
+			var pop = new instance.web.form.FormOpenPopup(this);
 			var context = new instance.web.CompoundContext(this.dataset.context, defaults);
 			pop.show_element(this.dataset.model, null, this.dataset.get_context(defaults), {
 				title: this.get_title(),
@@ -147,6 +119,10 @@ openerp_staff_management_calendar_booking = function(instance) {
 					});
 				},
 			});
+			var form_controller = pop.view_form;
+			form_controller.on("load_record", self, function(){
+				self.setPopupFieldsAction(pop);
+			});
 			pop.on('closed', self, function() {
 				self.$calendar.fullCalendar('unselect');
 			});
@@ -169,7 +145,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 				}
 			}
 			else {
-				var pop = new instance.staff_management.FormOpenPopup(this);
+				var pop = new instance.web.form.FormOpenPopup(this);
 				pop.show_element(this.dataset.model, id, this.dataset.get_context(), {
 					title: _.str.sprintf(_t("View: %s"),title),
 					view_id: +this.open_popup_action,
@@ -181,6 +157,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 				form_controller.on("load_record", self, function(){
 					button_delete = _.str.sprintf("<button class='oe_button oe_bold delme'><span> %s </span></button>",_t("Delete"));
 					
+					self.setPopupFieldsAction(pop);
 					pop.$el.closest(".modal").find(".modal-footer").prepend(button_delete);
 					
 					$('.delme').click(
@@ -198,17 +175,11 @@ openerp_staff_management_calendar_booking = function(instance) {
 			}
 			return false;
 		},
-	
-	});
-	
-	
-	instance.staff_management.FormOpenPopup = instance.web.form.FormOpenPopup.extend({
-		init_popup: function() {
-			this._super.apply(this,arguments);
-			this.init_totalPrice_update();
-		},
 
-		init_totalPrice_update: function(){
+		setPopupFieldsAction: function(pop){
+			var self = this;
+			var jdom = pop.$el;
+
 			var fields = [
 				// adults
 				'staff_nbr_adult',
@@ -223,81 +194,75 @@ openerp_staff_management_calendar_booking = function(instance) {
 				'staff_meal_price_adult',
 				'staff_meal_price_child'
 			];
-			
-			var self = this;
-			
-			
-			fields.forEach(function(field){
-				 $('.'+field+' input').waitUntilExists(function(){
-					
-					var old_field_value = self.getFieldValue(field);
-					$('.'+field+' input').keyup(function(){
-						if(field == 'staff_meal_price_adult' || field == 'staff_meal_price_child'){
-							if(self.getFieldValue(field) != old_field_value){
-								self.view_form.set_values({'meal_included': true});
-								old_field_value = self.getFieldValue(field);
-							}
+
+			var field_values = {};
+
+			for(var i in fields){
+				var field = fields[i];
+				field_values[field] = this.getPopupFieldValue(pop, field);
+				jdom.find('.'+field+' input').keyup({'pop': pop, 'field': field}, function(evt){
+					if(evt.data.field.indexOf('staff_meal_price') == 0){
+						if(self.getPopupFieldValue(evt.data.pop, evt.data.field) != field_values[evt.data.field]){
+							evt.data.pop.view_form.set_values({'meal_included': true});
+							field_values[evt.data.field] = self.getPopupFieldValue(evt.data.pop, evt.data.field);
 						}
-						self.updateTotalPrice();
-					});
-				});
-			});
-			
-		   // meal checkbox
-		   $('.staff_meal_included input').waitUntilExists(function(){
-				$('.staff_meal_included input').change(function(){
-					self.updateTotalPrice();
-				});
-			});
-			
-			// meal observation for the checkbox
-			$('.staff_meal_observation textarea').waitUntilExists(function(){
-				var old_field_value = self.getFieldValue('staff_meal_observation');
-				$('.staff_meal_observation textarea').keyup(function(){
-					if($('.staff_meal_observation textarea').val() != old_field_value){
-						obj = self.view_form.set_values({'meal_included': true});
-						old_field_value = $('.staff_meal_observation textarea').val();
 					}
+					self.updatePopupTotalPrice(evt.data.pop);
 				});
+			}
+
+			// meal checkbox
+			jdom.find('.staff_meal_included input').change(function(){
+				self.updateTotalPrice();
+			});
+
+			// meal observation for the checkbox
+			var old_field_value = self.getPopupFieldValue(pop, 'staff_meal_observation');
+			jdom.find('.staff_meal_observation textarea').keyup(pop, function(evt){
+				if($(this).val() != old_field_value){
+					evt.data.view_form.set_values({'meal_included': true});
+					old_field_value = $(this).val();
+				}
 			});
 
 		},
 
-		updateTotalPrice: function(){
+		updatePopupTotalPrice: function(pop){
 			var totalPrice = 0;
 			
-			var nbr_adult = this.getFieldValue('staff_nbr_adult');
-			var price_adult = this.getFieldValue('staff_price_adult');
+			var nbr_adult = this.getPopupFieldValue(pop, 'staff_nbr_adult');
+			var price_adult = this.getPopupFieldValue(pop, 'staff_price_adult');
 			totalPrice += nbr_adult * price_adult;
 			
-			var nbr_child = this.getFieldValue('staff_nbr_child');
-			var price_child = this.getFieldValue('staff_price_child');
+			var nbr_child = this.getPopupFieldValue(pop, 'staff_nbr_child');
+			var price_child = this.getPopupFieldValue(pop, 'staff_price_child');
 			totalPrice += nbr_child * price_child;
 			
-			var nbr_wheelchair = this.getFieldValue('staff_nbr_wheelchair');
-			var price_wheelchair = this.getFieldValue('staff_price_wheelchair');
+			var nbr_wheelchair = this.getPopupFieldValue(pop, 'staff_nbr_wheelchair');
+			var price_wheelchair = this.getPopupFieldValue(pop, 'staff_price_wheelchair');
 			totalPrice += nbr_wheelchair * price_wheelchair;
 			
-			if($('.staff_meal_included input').is(':checked')){
-				var meal_price_adult = this.getFieldValue('staff_meal_price_adult');
+			if(pop.$el.find('.staff_meal_included input').is(':checked')){
+				var meal_price_adult = this.getPopupFieldValue(pop, 'staff_meal_price_adult');
 				totalPrice += nbr_adult * meal_price_adult;
 				
-				var meal_price_child = this.getFieldValue('staff_meal_price_child');
+				var meal_price_child = this.getPopupFieldValue(pop, 'staff_meal_price_child');
 				totalPrice += nbr_child * meal_price_child;
 			}
 			
-			this.view_form.set_values({'total_price': totalPrice});
+			pop.view_form.set_values({'total_price': totalPrice});
 		},
-		
-		getFieldValue: function(fieldClass){
-			var val = parseFloat($('.'+fieldClass+' input').val());
+
+		getPopupFieldValue: function(pop, fieldClass){
+			var val = parseFloat(pop.$el.find('.'+fieldClass+' input').val());
 			if(isNaN(val)){
 				return 0;
 			}
 			return val;
 		},
-
+	
 	});
+
 	
 	/*
 	instance.web.views.add('staff_booking_form', 'instance.web.StaffFormView');
