@@ -212,8 +212,8 @@ openerp_staff_management_calendar_booking = function(instance) {
 			}
 
 			// meal checkbox
-			jdom.find('.staff_meal_included input').change(function(){
-				self.updateTotalPrice();
+			jdom.find('.staff_meal_included input').change(pop, function(evt){
+				self.updatePopupTotalPrice(evt.data);
 			});
 
 			// meal observation for the checkbox
