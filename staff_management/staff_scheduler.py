@@ -194,11 +194,11 @@ class staff_scheduler(orm.Model):
 	#User_id is the planner, start and and are the first and last day for the search pool.
 	def countActivitie(self, cr, uid, user_id, start, end, context=None):
 		ret = {}
-		for user in user_id
+		for user in user_id:
 			listGet = self.search(cr, uid, [('user_id','=',user),('date','>=',start),('date', '<=', end), ('task_id','!=',False)])
 			listTot = self.search(cr, uid, [('user_id','=',user),('date','>=',start),('date', '<=', end)])
-			ret[uder] = [listGet, listTot];
-		return ret;
+			ret[user] = [len(listGet), len(listTot)]
+		return ret
 
 		
 staff_scheduler()

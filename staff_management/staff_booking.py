@@ -72,16 +72,16 @@ class staff_booking(orm.Model):
 	
 	# Return a dictionary from the list of date received.
 	# Dic is: {key, total_people}
-	def count_nbr_people(self, cr, uid, date):
+	def count_nbr_people(self, cr, uid, *args):
 		ret = {};
-		for d in date
-			bookings = self.search(cr, uid, [('date', '=', str(date))])
+		for d in args:
+			bookings = self.search(cr, uid, [('date', '=', str(d))])
 			total_people = 0
 			for booking in bookings:
 				total_people += self.browse(cr, uid, booking).nbr_adult
 				total_people += self.browse(cr, uid, booking).nbr_child
 				total_people += self.browse(cr, uid, booking).nbr_wheelchair
-			ret[d] = total_people;
-		return ret;
+			ret[d] = total_people
+		return ret
 	
 staff_booking()

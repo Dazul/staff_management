@@ -103,6 +103,10 @@
 	color: #090;
 }
 
+.stimeline_table .light-weight{
+	font-weight: normal;
+}
+
 
 .stimeline_table td, .stimeline_table th{
 	padding: 0;

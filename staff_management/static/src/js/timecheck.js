@@ -13,6 +13,8 @@ openerp_staff_management_timecheck = function(instance) {
 				self.form_timecheck_id = result.id;
 			});	
 			this._super.apply(this, arguments);	
+			this.set_nbrOfHeaderLines(1);
+			this.loadSchedulerData = false;
 		},
 
 		get_range_domain: function(domain, start, end) {
@@ -27,6 +29,10 @@ openerp_staff_management_timecheck = function(instance) {
 			return new instance.web.CompoundDomain(domain, extend_domain);
 		},
 
+
+		renderCellLeft: function(th, data){
+			return th.append($('<span>').text(data['username']));
+		},
 
 		renderCell: function(td, cellDataList){
 			var self = this;
