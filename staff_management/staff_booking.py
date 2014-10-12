@@ -71,12 +71,15 @@ class staff_booking(orm.Model):
 				(_check_hour_to,'End hour must be between 0 and 24.', ['hour_to'])]
 	
 	def count_nbr_people(self, cr, uid, date):
-		bookings = self.search(cr, uid, [('date', '=', str(date))])
-		total_people = 0
-		for booking in bookings:
-			total_people += self.browse(cr, uid, booking).nbr_adult
-			total_people += self.browse(cr, uid, booking).nbr_child
-			total_people += self.browse(cr, uid, booking).nbr_wheelchair
-		return total_people
+		ret = {};
+		for d in date
+			bookings = self.search(cr, uid, [('date', '=', str(date))])
+			total_people = 0
+			for booking in bookings:
+				total_people += self.browse(cr, uid, booking).nbr_adult
+				total_people += self.browse(cr, uid, booking).nbr_child
+				total_people += self.browse(cr, uid, booking).nbr_wheelchair
+			ret[d] = total_people;
+		return ret;
 	
 staff_booking()

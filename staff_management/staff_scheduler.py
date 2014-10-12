@@ -190,12 +190,15 @@ class staff_scheduler(orm.Model):
 		return super(staff_scheduler, self).unlink(cr, uid, ids, context)
 	
 	#Count the activities of the mounth for selected user
-	#Return a String like "nb get for a task" / "nb available"
+	#Return a dictonary of { key [ day with activity, day available.] }
 	#User_id is the planner, start and and are the first and last day for the search pool.
 	def countActivitie(self, cr, uid, user_id, start, end, context=None):
-		listGet = self.search(cr, uid, [('user_id','=',user_id),('date','>=',start),('date', '<=', end), ('task_id','!=',False)])
-		listTot = self.search(cr, uid, [('user_id','=',user_id),('date','>=',start),('date', '<=', end)])
-		return str(len(listGet)) + " / " + str(len(listTot))
+		ret = {}
+		for user in user_id
+			listGet = self.search(cr, uid, [('user_id','=',user),('date','>=',start),('date', '<=', end), ('task_id','!=',False)])
+			listTot = self.search(cr, uid, [('user_id','=',user),('date','>=',start),('date', '<=', end)])
+			ret[uder] = [listGet, listTot];
+		return ret;
 
 		
 staff_scheduler()
