@@ -8,9 +8,11 @@
             <field name="model">staff.scheduler</field>
             <field name="arch" type="xml">
                 <search string="Scheduler">
-                	<field name="task_id"/>
-                    <field name="user_id"/>
-                    <filter name="usershow" string="Only with event" context="{'usershow':'only'}"  help="Only users with events" icon="terp-project"/>
+                	<group>
+		            	<field name="task_id"/>
+		                <field name="user_id"/>
+		                <filter name="usershow" string="Only with event" context="{'usershow':'only'}"  help="Only users with events" icon="terp-project"/>
+		            </group>
                 </search>
             </field>
         </record>
@@ -20,7 +22,9 @@
             <field name="model">staff.scheduler</field>
             <field name="arch" type="xml">
                 <search string="Scheduler">
-                    <field name="date" />
+                	<group>
+                    	<field name="date" />
+                    </group>
                 </search>
             </field>
         </record>
@@ -49,12 +53,14 @@
 			<field name="priority" eval="1"/>
 			<field name="arch" type="xml">
 				<form string="Schedule">
-					<field name="user_id" />
-					<field name="date" />
-					<field name="hour_from" widget="float_time" />
-					<field name="hour_to" widget="float_time" />
-					<field name="task_id" domain="[('user_id_for_task', '=', user_id)]"/>
-					<field name="comment" />
+					<group>
+						<field name="user_id" />
+						<field name="date" />
+						<field name="hour_from" widget="float_time" />
+						<field name="hour_to" widget="float_time" />
+						<field name="task_id" domain="[('user_id_for_task', '=', user_id)]"/>
+						<field name="comment" />
+					</group>
 				</form>
 			</field>
 		</record>
@@ -65,13 +71,15 @@
 			<field name="priority" eval="2"/>
 			<field name="arch" type="xml">
 				<form string="Schedule">
-					<field name="user_id" />
-					<field name="date" />
-					<field name="hour_from" widget="float_time" readonly="1"/>
-					<field name="hour_to" widget="float_time" readonly="1"/>
-					<field name="task_id" domain="[('user_id_for_task', '=', user_id)]" readonly="1"/> <!-- readonly -->
-					<field name="work_time" widget="float_time" attrs="{'required':True}"/>
-					<field name="confirm" attrs="{'required':True}"/>
+					<group>
+						<field name="user_id" />
+						<field name="date" />
+						<field name="hour_from" widget="float_time" readonly="1"/>
+						<field name="hour_to" widget="float_time" readonly="1"/>
+						<field name="task_id" domain="[('user_id_for_task', '=', user_id)]" readonly="1"/> <!-- readonly -->
+						<field name="work_time" widget="float_time" attrs="{'required':True}"/>
+						<field name="confirm" attrs="{'required':True}"/>
+					</group>
 				</form>
 			</field>
 		</record>

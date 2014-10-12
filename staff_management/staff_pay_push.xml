@@ -7,7 +7,9 @@
 			<field name="model">staff.pay.push</field>
 			<field name="arch" type="xml">
 			<search string="Pay Push">
-				<field name="user_id" readonly="1"/>
+				<group>
+					<field name="user_id" readonly="1"/>
+				</group>
 			</search>
 			</field>
 		</record>
@@ -19,17 +21,17 @@
 			<field name="type">form</field>
 			<field name="arch" type="xml">
 				<form string="Pay Push">
-
-					<field name="user_id_read" readonly="1"/>
-					<field name="creditMonth" readonly="1"/>
-					<field name="amount" />  
-					<field name="creditTotal" readonly="1"/>
-					<field name="date" />
-					<field name="comment" attrs="{'required':True}"/>
-					<field name="analytic_account" />
-					<field name="account"/>
-					<field name="journal"/>
-
+					<group>
+						<field name="user_id_read" readonly="1"/>
+						<field name="creditMonth" readonly="1"/>
+						<field name="amount" />  
+						<field name="creditTotal" readonly="1"/>
+						<field name="date" />
+						<field name="comment" attrs="{'required':True}"/>
+						<field name="analytic_account" />
+						<field name="account"/>
+						<field name="journal"/>
+					</group>
 				</form>
 			</field>
 		</record>
@@ -40,17 +42,17 @@
 			<field name="model">staff.pay.push</field>
 			<field name="arch" type="xml">
 				<calendar string="Pay Push" date_start="date" mode="month">
-
-					<field name="user_id_read" readonly="1"/>
-					<field name="creditMonth" readonly="1"/>
-					<field name="amount" />  
-					<field name="creditTotal" readonly="1"/>
-					<field name="date" />
-					<field name="comment" attrs="{'required':True}"/>
-					<field name="analytic_account" />
-					<field name="account"/>
-					<field name="journal"/>
-
+					<group>
+						<field name="user_id_read" readonly="1"/>
+						<field name="creditMonth" readonly="1"/>
+						<field name="amount" />  
+						<field name="creditTotal" readonly="1"/>
+						<field name="date" />
+						<field name="comment" attrs="{'required':True}"/>
+						<field name="analytic_account" />
+						<field name="account"/>
+						<field name="journal"/>
+					</group>
 				</calendar>
 			</field>
 		</record>
