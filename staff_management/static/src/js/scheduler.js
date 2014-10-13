@@ -117,14 +117,15 @@ openerp_staff_management_scheduler = function(instance) {
 
 				var form_controller = pop.view_form;
 				form_controller.on("load_record", self, function(){
-					button_remove = _.str.sprintf("<button class='oe_button oe_bold oe_highlight removeme'><span> %s </span></button>",_t("Remove Assignment"));
+					button_remove = _.str.sprintf("<button class='oe_button oe_bold removeme'><span> %s </span></button>",_t("Remove"));
 					
 					pop.$el.closest(".modal").find(".modal-footer").prepend(button_remove);
 					
 					$('.removeme').click(function() {
 						$('.oe_form_button_cancel').trigger('click');
-						//self.remove_event(id);
-						alert('not ready');
+						self.dataset.write(evt.id, {'task_id': false}, {}).done(function() {
+							self.refresh_events();
+						});
 					});
 				});
 
