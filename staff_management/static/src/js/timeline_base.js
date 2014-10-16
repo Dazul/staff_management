@@ -62,7 +62,7 @@ openerp_staff_management_timeline_base = function(instance) {
 			return new Date(d.getFullYear(), d.getMonth(), d.getDate() - d.getDay() + Date.CultureInfo.firstDayOfWeek);
 		},
 
-		view_loading: function (fv) {		
+		view_loading: function (fv) {
 			var self = this;
 			$('.fc-header-left .fc-button').hover(
 				function () {

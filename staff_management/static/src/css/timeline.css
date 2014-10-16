@@ -113,3 +113,8 @@
 	border-collapse: collapse;
 	margin: 0;
 }
+
+.stimeline_table td.staff_available.unselectable, .stimeline_table td.staff_assigned.unselectable{
+	background: #f0f0f0;
+	cursor: default;
+}
