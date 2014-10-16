@@ -15,7 +15,7 @@ openerp_staff_management_scheduler = function(instance) {
 		update_datas: function(datas, original){
 			if(!this.loadSchedulerData || original){
 				var ret = this._super.apply(this, arguments);
-				if(this.isQuickAssignEnabled()){
+				if(this.isQuickAssignEnabled() && this.quick_asign){
 					this.quick_asign.applyQuickAssign();
 				}
 				return ret;
