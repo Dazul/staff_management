@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Copyright (C) 2013 EIA-FR (https://eia-fr.ch/)
-#	 Copyright (C) 2014 The DoMo Team (https://launchpad.net/~domo)
+#    Copyright (C) 2014 The DoMo Team (https://launchpad.net/~domo)
 #    Luis Domingues & Romain Monnard
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -23,12 +23,12 @@ from openerp.osv import orm, fields
 import datetime
 
 class staff_authorization(orm.Model):
-	_name="staff.authorization"
-	_columns={
-		'task_id':fields.many2one('account.analytic.account', 'Task', readonly=False),
-		'user_id':fields.many2one('res.users', 'User', readonly=False, relate=True),
-		'create_uid': fields.many2one('res.users', 'Author', readonly=True),
-		'write_date':fields.date('Date of formation',readonly=True ),
-	}
-	
+    _name="staff.authorization"
+    _columns={
+        'task_id':fields.many2one('account.analytic.account', 'Task', readonly=False),
+        'user_id':fields.many2one('res.users', 'User', readonly=False, relate=True),
+        'create_uid': fields.many2one('res.users', 'Author', readonly=True),
+        'write_date':fields.date('Date of formation',readonly=True ),
+    }
+
 staff_authorization()
