@@ -21,10 +21,10 @@
 from openerp.osv import orm, fields
 
 class staff_comment_type(orm.Model):
-	_name="staff.comment.type"
-	_columns={
-		'comment_type':fields.char('Comment Type',size= 32 ,required=True),
-	}
-	_rec_name = 'comment_type'
-	
+    _name="staff.comment.type"
+    _columns={
+        'comment_type':fields.char('Comment Type',size= 32 ,required=True),
+    }
+    _rec_name = 'comment_type'
+
 staff_comment_type()

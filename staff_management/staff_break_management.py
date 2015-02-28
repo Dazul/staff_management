@@ -21,12 +21,12 @@
 from openerp.osv import orm, fields
 
 class staff_break_management(orm.Model):
-	_name="staff.break.management"
-	_columns={
-		'work_time_min': fields.float('Minimum work time', readonly=False),
-		'work_time_max': fields.float('Maximum work time', readonly=False),
-		'break_time': fields.float('Break time', readonly=False),
-	}
-	_rec_name = 'break_time'
-	
+    _name="staff.break.management"
+    _columns={
+        'work_time_min': fields.float('Minimum work time', readonly=False),
+        'work_time_max': fields.float('Maximum work time', readonly=False),
+        'break_time': fields.float('Break time', readonly=False),
+    }
+    _rec_name = 'break_time'
+
 staff_break_management()

@@ -21,10 +21,10 @@
 from openerp.osv import orm, fields
 
 class staff_booking_type(orm.Model):
-	_name="staff.booking.type"
-	_columns={
-		'booking_type':fields.char('Booking Type',size= 32 ,required=True),
-	}
-	_rec_name = 'booking_type'
-	
+    _name="staff.booking.type"
+    _columns={
+        'booking_type':fields.char('Booking Type',size= 32 ,required=True),
+    }
+    _rec_name = 'booking_type'
+
 staff_booking_type()
