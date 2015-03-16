@@ -218,11 +218,6 @@ openerp_staff_management_timeline_base = function(instance) {
 		},
 		*/
 
-		getLineData: function(trElement){
-			var lineID = this.lineIndex[parseInt(trElement.index())];
-			return this.datas[lineID];
-		},
-
 		render_timeline: function(){
 			var self = this;
 
@@ -250,23 +245,6 @@ openerp_staff_management_timeline_base = function(instance) {
 			table.append(thead);
 			table.append(tbody);
 			table.append(tfoot);
-
-
-			table.find('td').click(function(){
-
-				var i = $(this).parent().index();
-				var lineID = self.lineIndex[parseInt($(this).parent().index())];
-				var date = self.getNextDate(self.range_start, parseInt($(this).index())-1);
-
-				var data = self.datas[lineID];
-				var cellDataList = [];
-				for(var j=0 ; j<data['cells'].length ; j++){
-					if(self.isSameDate(data['cells'][j]['date'], date)){
-						cellDataList.push(data['cells'][j]);
-					}
-				}
-				self.cellClicked(lineID, date, cellDataList);
-			});
 
 			$('.stimeline_table').empty();
 			$('.stimeline_table').append(table);
@@ -315,10 +293,7 @@ openerp_staff_management_timeline_base = function(instance) {
 			var self = this;
 			var line_nbr = 0;
 			
-			this.lineIndex = [];
-
 			for(var i in this.datas){
-				this.lineIndex .push(i);
 				var data = this.datas[i];
 				line_nbr ++;
 				
@@ -339,6 +314,10 @@ openerp_staff_management_timeline_base = function(instance) {
 					
 					td = this.renderCell(td, cellDataList, cdate);
 					
+					td.bind('click', {cellDataList: cellDataList, date: cdate, lineID: i}, function(e){
+						self.cellClicked(e.data.lineID, e.data.date, e.data.cellDataList);
+					});
+
 					tr.append(td);
 				}
 				
