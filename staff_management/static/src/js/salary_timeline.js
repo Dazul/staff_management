@@ -199,13 +199,15 @@ openerp_staff_management_salary_timeline = function(instance) {
 			else if(colID == 2){
 				var sumLine = sumPositive + sumNegative;
 				var clazz = (sumLine > 0) ? 'red' : (sumLine == 0) ? 'black' : 'green';
-				td.append($('<span>').addClass(clazz).text(sumLine));
+				sumLineText = sprintf("%.2f", Math.abs(sumLine));
+				td.append($('<span>').addClass(clazz).text(sumLineText));
 				td.addClass('lightCell clickable text_link');
-				td.click(function(){
-					var data = self.getLineData($(this).parent());
+				td.bind('click', {lineData: lineData}, function(e){
+					var data = e.data.lineData;
 					var userID = data.lineID;
 					self.open_popup(userID);
 				});
+
 				this.addColSum(colID, sumLine, sumLine, sumTimework);
 			}
 			return td;
