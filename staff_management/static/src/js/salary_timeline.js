@@ -240,7 +240,8 @@ openerp_staff_management_salary_timeline = function(instance) {
 				else if(colID == 2){
 					var sumTotal = sumPositive;
 					var clazz = (sumTotal > 0) ? 'red' : (sumTotal == 0) ? 'black' : 'green';
-					td.append($('<span>').addClass(clazz).text(sumTotal));
+					sumTotalText = sprintf("%.2f", Math.abs(sumTotal));
+					td.append($('<span>').addClass(clazz).text(sumTotalText));
 				}
 			}
 			else if(colID == 2){
