@@ -103,9 +103,18 @@
 	color: #090;
 }
 
+.stimeline_table .light-weight{
+	font-weight: normal;
+}
+
 
 .stimeline_table td, .stimeline_table th{
 	padding: 0;
 	border-collapse: collapse;
 	margin: 0;
+}
+
+.stimeline_table td.staff_available.unselectable, .stimeline_table td.staff_assigned.unselectable{
+	background: #f0f0f0;
+	cursor: default;
 }

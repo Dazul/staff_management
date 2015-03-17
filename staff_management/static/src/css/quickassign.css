@@ -1,0 +1,53 @@
+
+.quickassign{
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	margin-top: -10px;
+}
+
+.quickassign .text{
+	text-align: right;
+	padding-right: 5px;
+}
+
+/* quickassign form inputs */
+.quickassign input[type="text"]{
+	width: 7em;
+	height: 25px;
+	line-height: 25px;
+}
+
+/* scheduler quick assign one2many container */
+.quickassign .taskcell{
+	padding: 2px 0 2px 8px;
+	width: 200px;
+}
+
+.quickassign .taskcell input{
+	width: 200px;
+	height: 25px;
+	line-height: 25px;
+	position: relative;
+}
+
+/* scheduler quick assign one2many span (dropdown image) */
+.quickassign .taskcell span{
+	position: relative;
+	display: inline-block;
+	margin-top: -2px;
+}
+
+/* quickassign many2one field button */
+.quickassign .oe_form_field_many2one .oe_m2o_cm_button {
+	position: absolute;
+	line-height: 14px;
+	float: right;
+	padding-left: 2px;
+}
+
+
+/* hide the quick assign form */
+.quickassign.hidden{
+	display: none;
+}

@@ -14,6 +14,7 @@
 				<link rel="stylesheet" href="/staff_management/static/src/css/calendar.css"/>
 				<link rel="stylesheet" href="/staff_management/static/src/css/timeline.css"/>
 				<link rel="stylesheet" href="/staff_management/static/src/css/tooltip.css"/>
+				<link rel="stylesheet" href="/staff_management/static/src/css/quickassign.css"/>
 				
 
 				<script type="text/javascript" src="/staff_management/static/src/js/tooltip.js"></script>

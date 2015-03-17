@@ -157,14 +157,11 @@ openerp_staff_management_general_schedule = function(instance) {
 		},
 
 		renderCellLeft: function(th, data){
-			return th.append(data['username']);
+			return th.text(data['username']);
 		},
 		
 		renderHeaderCell: function(th, lineID, cdate){
-			
-			if(lineID == 1){
-				th.append(this.format_date(cdate, "ddd dd MMM"));
-			}
+			th.text(this.format_date(cdate, "ddd dd MMM"));
 			return th;
 		},
 
