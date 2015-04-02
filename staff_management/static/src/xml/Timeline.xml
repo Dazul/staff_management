@@ -13,13 +13,13 @@
 								<span class="fc-text-arrow">«</span> Month
 							</span><span class="fc-button fc-button-prev-week fc-state-default" unselectable="on">
 								<span class="fc-text-arrow">‹</span> Week
+							</span><span class="fc-button fc-button-today fc-state-default fc-state-disabled" unselectable="on">
+								Aujourd'hui
 							</span><span class="fc-button fc-button-next-week fc-state-default" unselectable="on">
 								Week <span class="fc-text-arrow">›</span>
 							</span><span class="fc-button fc-button-next-month fc-state-default fc-corner-right" unselectable="on">
 								Month <span class="fc-text-arrow">»</span>
 							</span>
-							<span class="fc-header-space"></span>
-							<span class="fc-button fc-button-today fc-state-default fc-corner-left fc-corner-right fc-state-disabled" unselectable="on">Aujourd'hui</span>
 						</td>
 						<td class="fc-header-center">
 							<span class="fc-header-title">

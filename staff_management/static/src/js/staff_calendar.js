@@ -87,7 +87,7 @@ openerp_staff_management_calendar = function(instance) {
 				
 				defaultView: "month",
 				header: {
-					left: 'prev,next today',
+					left: 'prev,today,next',
 					center: 'title',
 					right: '' // 'month' Nothing, only one view
 				},
