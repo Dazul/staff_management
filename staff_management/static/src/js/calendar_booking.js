@@ -22,7 +22,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 			return  $.extend({}, this._super(), {
 				
 				eventClick: function(event){
-					self.open_event_staff(event.id,event.title);
+					self.open_event_staff(event.id,event.booking_name);
 				},
 				select: function (start_date, end_date, all_day, _js_event, _view) {
 					var data_template = self.get_event_data({
@@ -70,10 +70,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 		},
 
 		get_title: function () {
-			var title = (_.isUndefined(this.field_widget)) ?
-					(this.string || this.name) :
-					this.field_widget.string || this.field_widget.name || '';
-			return _t("Create: ") + title;
+			return _t("Create booking");
 		},
 		get_form_popup_infos: function() {
 			var infos = {
