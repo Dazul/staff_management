@@ -6,7 +6,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 	instance.staff_management.BookingCalendar = instance.staff_management.Calendar.extend({
 	
 		template: "PersonalScheduleView",
-		
+
 		init:function(){
 			this._super.apply(this,arguments);
 		},
@@ -34,7 +34,14 @@ openerp_staff_management_calendar_booking = function(instance) {
 				},
 				eventRender: function(event, element) {		
 					
+					color = self.color_palette[0];
+					if(event.meal_included){
+						color = self.color_palette[1];
+					}
+
 					element.text(self.format_hour(event.hour_from)+' '+event.booking_name);
+					element.css({'background': color});
+					element.css({'border-color': color});
 					element.mouseenter(event, function(evt){
 						instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
 					}).mouseleave(instance.staff_management.tooltip.hide);

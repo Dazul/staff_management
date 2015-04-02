@@ -27,11 +27,16 @@ openerp_staff_management_personal_schedule = function(instance) {
 				select: function (start_date, end_date, all_day, _js_event, _view) {
 					self.toggle_availabilities(start_date, end_date);
 				},
-				eventRender: function(event, element) {			        
+				eventRender: function(event, element) {	        
 					var strDate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
 					$('.fc-day[data-date|="'+strDate+'"]').addClass('staff_available');
 					if(event.task_id){
+
+						color = self.color_palette[event.task_id[0]%self.color_palette.length];
+
 						element.text(self.format_hour(event.hour_from)+' '+event.task_id[1]);
+						element.css({'background': color});
+						element.css({'border-color': color});
 						element.mouseenter(event, function(evt){
 							instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
 						}).mouseleave(instance.staff_management.tooltip.hide);
