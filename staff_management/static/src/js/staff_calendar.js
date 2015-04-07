@@ -32,6 +32,28 @@ openerp_staff_management_calendar = function(instance) {
 	}
 
 	instance.staff_management.Calendar = instance.web_calendar.CalendarView.extend({
+
+		color_palette: [
+			'#804040',
+			'#008080',
+			'#004080',
+			'#8080FF',
+			'#800040',
+			'#FF0080',
+			'#804000',
+			'#FF8000',
+			'#008000',
+			'#008040',
+			'#0000FF',
+			'#000040',
+			'#800080',
+			'#8000FF',
+			'#400040',
+			'#808000',
+			'#004040',
+			'#800000'
+		],
+
 		init:function(){
 			this._super.apply(this,arguments);
 		},
@@ -87,7 +109,7 @@ openerp_staff_management_calendar = function(instance) {
 				
 				defaultView: "month",
 				header: {
-					left: 'prev,next today',
+					left: 'prev,today,next',
 					center: 'title',
 					right: '' // 'month' Nothing, only one view
 				},

@@ -6,7 +6,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 	instance.staff_management.BookingCalendar = instance.staff_management.Calendar.extend({
 	
 		template: "PersonalScheduleView",
-		
+
 		init:function(){
 			this._super.apply(this,arguments);
 		},
@@ -22,7 +22,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 			return  $.extend({}, this._super(), {
 				
 				eventClick: function(event){
-					self.open_event_staff(event.id,event.title);
+					self.open_event_staff(event.id,event.booking_name);
 				},
 				select: function (start_date, end_date, all_day, _js_event, _view) {
 					var data_template = self.get_event_data({
@@ -34,7 +34,14 @@ openerp_staff_management_calendar_booking = function(instance) {
 				},
 				eventRender: function(event, element) {		
 					
+					color = self.color_palette[0];
+					if(event.meal_included){
+						color = self.color_palette[1];
+					}
+
 					element.text(self.format_hour(event.hour_from)+' '+event.booking_name);
+					element.css({'background': color});
+					element.css({'border-color': color});
 					element.mouseenter(event, function(evt){
 						instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
 					}).mouseleave(instance.staff_management.tooltip.hide);
@@ -70,10 +77,7 @@ openerp_staff_management_calendar_booking = function(instance) {
 		},
 
 		get_title: function () {
-			var title = (_.isUndefined(this.field_widget)) ?
-					(this.string || this.name) :
-					this.field_widget.string || this.field_widget.name || '';
-			return _t("Create: ") + title;
+			return _t("Create booking");
 		},
 		get_form_popup_infos: function() {
 			var infos = {
