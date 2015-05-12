@@ -178,7 +178,7 @@ class staff_scheduler(orm.Model):
 				auth_obj = authorizations.browse(cr, uid, auth_id)
 				task = tasks.browse(cr, uid, auth_obj.task_id.id)
 				auths.append(task.name)
-			ret[user] = {"name":partner.name, "mobile":partner.mobile,"auths":auths, "image":partner.image_medium}
+			ret[user] = {"name":partner.name, "mobile":partner.mobile,"auths":auths, "image":partner.image_small}
 		return ret
 	
 	
