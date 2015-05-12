@@ -4,6 +4,8 @@ openerp_staff_management_general_schedule = function(instance) {
 	
 	instance.staff_management.GeneralScheduler = instance.staff_management.Timeline.extend({
 		
+		user_information: {},
+
 		init:function(parent, dataset, view_id, options){
 			this._super.apply(this, arguments);
 			
@@ -72,7 +74,22 @@ openerp_staff_management_general_schedule = function(instance) {
 				else{			 
 					self.update_datas(lines);
 				}
+
 			});
+		},
+
+		update_datas: function(datas){
+			var users_id = [];
+			for(var k in datas){
+				users_id.push(parseInt(k));
+			}
+			var self = this;
+			model = new instance.web.Model("staff.scheduler");
+			model.call("getPersonalInfo",[users_id]).then(function(res){
+				self.user_information = res;
+			});
+
+			this._super.apply(this, arguments);
 		},
 
 		load_all_users: function(lines, domain){
@@ -157,6 +174,30 @@ openerp_staff_management_general_schedule = function(instance) {
 		},
 
 		renderCellLeft: function(th, data){
+			var self = this;
+
+			th.mouseenter(data, function(evt){
+				userID = evt.data.lineID;
+
+				if(self.user_information[userID]){
+					info = self.user_information[userID];
+
+					mobile = info.mobile;
+					if(mobile == false || mobile == 'false'){
+						mobile = '-';
+					}
+					auths = info.auths.join(', ');
+					if(info.auths.length == 0){
+						auths = '-';
+					}
+
+					instance.staff_management.tooltip.show_left($(this), '<span style="font-weight: bold;">'+info.name+'</span>'+'<br/>'+'<img src="data:image/png;base64,'+info.image+'"/>'+'<br/>'+mobile+'<br/>'+auths);
+				}
+
+			}).mouseleave(instance.staff_management.tooltip.hide);
+
+				
+
 			return th.text(data['username']);
 		},
 		

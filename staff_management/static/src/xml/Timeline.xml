@@ -44,6 +44,14 @@
 				<div class="background"></div>
 			</div>
 		</div>
+
+		<div class="staff_tooltip_left">
+			<div class="staff_tooltip_left_arrow">
+				<div class="border"></div>
+				<div class="background"></div>
+			</div>
+			<div class="staff_tooltip_left_content"></div>
+		</div>
 	
 	</div>
 
