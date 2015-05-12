@@ -161,6 +161,12 @@ class staff_scheduler(orm.Model):
 		stamp = datetime.now()
 		today = datetime(stamp.year, stamp.month, stamp.day)
 		return dayDate > today
+		
+	# Get user informations
+	def getPersonalInfo(self, cr, uid, users_id):
+		ret = {}
+		ret[1] = {"phone":"0761234567","function":["base","electrique","vapeur"],"name":"John Doe"}
+		return ret
 	
 	
 	# add user_id to create the elements
@@ -192,9 +198,9 @@ class staff_scheduler(orm.Model):
 	#Count the activities of the mounth for selected user
 	#Return a dictonary of { key [ day with activity, day available.] }
 	#User_id is the planner, start and and are the first and last day for the search pool.
-	def countActivitie(self, cr, uid, user_id, start, end, context=None):
+	def countActivitie(self, cr, uid, users_id, start, end, context=None):
 		ret = {}
-		for user in user_id:
+		for user in users_id:
 			listGet = self.search(cr, uid, [('user_id','=',user),('date','>=',start),('date', '<=', end), ('task_id','!=',False)])
 			listTot = self.search(cr, uid, [('user_id','=',user),('date','>=',start),('date', '<=', end)])
 			ret[user] = [len(listGet), len(listTot)]
