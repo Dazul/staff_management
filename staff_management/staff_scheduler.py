@@ -38,6 +38,7 @@ class staff_scheduler(orm.Model):
 		'comment':fields.char('Comment',size= 512 ,required=False),
 		'work_time':fields.float('Worked time', readonly=False),
 		'confirm':fields.boolean('Confirm', readonly=False),
+		'replaceable':fields.boolean('Replaceable', readonly=False, default=False),
 	}
 	
 	#Check if the hour from is between 0 and 24
