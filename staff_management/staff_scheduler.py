@@ -118,7 +118,7 @@ class staff_scheduler(orm.Model):
 		employee_id = employees.search(cr, user, [("user_id", "=", user_id)])[0]
 		employee = employees.browse(cr, user, employee_id)
 		products = self.pool.get('product.product')
-		product = products.browse(cr, user, employee.product_id.id)
+		pr(cr, user, employee.product_id.id)
 		hour_price = product.list_price
 		journal_id = employee.journal_id.id
 		task_id = schedule_row.task_id.id
@@ -165,7 +165,20 @@ class staff_scheduler(orm.Model):
 	# Get user informations
 	def getPersonalInfo(self, cr, uid, users_id):
 		ret = {}
-		ret[1] = {"phone":"0761234567","function":["base","electrique","vapeur"],"name":"John Doe"}
+		for user in users_id:
+			users = self.pool.get("res.users")
+			partner_id = users.browse(cr, uid, user).partner_id.id
+			partners = self.pool.get("res.partner")
+			partner = partners.browse(cr, uid, partner_id)
+			authorizations = self.pool.get("staff.authorization")
+			user_auth = authorizations.search(cr, uid, [("user_id", "=", user)])
+			auths = []
+			tasks = self.pool.get("account.analytic.account")
+			for auth_id in user_auth:
+				auth_obj = authorizations.browse(cr, uid, auth_id)
+				task = tasks.browse(cr, uid, auth_obj.task_id.id)
+				auths.append(task.name)
+			ret[user] = {"name":partner.name, "mobile":partner.mobile,"auths":auths, "image":partner.image}
 		return ret
 	
 	
