@@ -182,6 +182,22 @@ class staff_scheduler(orm.Model):
 			ret[user] = {"name":partner.name, "mobile":partner.mobile,"auths":auths, "image":partner.image_medium}
 		return ret
 	
+	# Swap activities for replacement
+	def swapUidTask(self, cr, uid, task_id):
+		# Check if task_id can is replaceable.
+		task = self.browse(cr, uid, task_id)
+		if not task.replaceable:
+			raise except_orm(_('Error'), _("This task is not replaceable."))
+		# Check if user has the right authorization. No -> raise error. Yes -> continue.
+		auths = self.pool.get("staff.authorization")
+		auth = auths.search(cr, uid, [("user_id","=", uid),("task_id","=",task.task_id.id)])
+		if len(auth) < 1:
+			raise except_orm(_('Error'), _("You do not have the authorization to replace this task.n"))
+		# Check if uid has empty task_id. No task -> create one, Task defined -> raise error.
+		task_self = self.search(cr, uid, [("user_id","=",uid),("date","=", task.date)])
+		if len(task_self) < 1:
+			#create the task
+			self.create(cr, uid, {"date":task.date})
 	
 	# add user_id to create the elements
 	def create(self, cr, user, vals, context=None):
