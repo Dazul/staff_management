@@ -192,12 +192,20 @@ class staff_scheduler(orm.Model):
 		auths = self.pool.get("staff.authorization")
 		auth = auths.search(cr, uid, [("user_id","=", uid),("task_id","=",task.task_id.id)])
 		if len(auth) < 1:
-			raise except_orm(_('Error'), _("You do not have the authorization to replace this task.n"))
+			raise except_orm(_('Error'), _("You do not have the authorization to replace this task."))
 		# Check if uid has empty task_id. No task -> create one, Task defined -> raise error.
 		task_self = self.search(cr, uid, [("user_id","=",uid),("date","=", task.date)])
 		if len(task_self) < 1:
-			#create the task
 			self.create(cr, uid, {"date":task.date})
+			task_self = self.search(cr, uid, [("user_id","=",uid),("date","=", task.date)])
+		elif task_self.task_id.id is False:
+			raise except_orm(_('Error'), _("You have already a task. You can not replace."))
+		#Swap user_ids, {'hour_from': 9.5, 'hour_to': 18.5, 'task_id': 14}
+		task_s = self.browse(cr, uid, task_self[0])
+		self.write(cr, uid, [task_s.id], {"user_id":task.user_id.id})
+		self.write(cr, uid, [task.id], {"user_id":uid})
+		
+		
 	
 	# add user_id to create the elements
 	def create(self, cr, user, vals, context=None):
