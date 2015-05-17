@@ -119,7 +119,7 @@ class staff_scheduler(orm.Model):
 		employee_id = employees.search(cr, user, [("user_id", "=", user_id)])[0]
 		employee = employees.browse(cr, user, employee_id)
 		products = self.pool.get('product.product')
-		pr(cr, user, employee.product_id.id)
+		product = products.browse(cr, user, employee.product_id.id)
 		hour_price = product.list_price
 		journal_id = employee.journal_id.id
 		task_id = schedule_row.task_id.id
