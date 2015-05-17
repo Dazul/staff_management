@@ -200,10 +200,10 @@ class staff_scheduler(orm.Model):
 			task_self = self.search(cr, uid, [("user_id","=",uid),("date","=", task.date)])
 		elif task_self.task_id.id is False:
 			raise except_orm(_('Error'), _("You have already a task. You can not replace."))
-		#Swap user_ids, {'hour_from': 9.5, 'hour_to': 18.5, 'task_id': 14}
+		#Swap user_ids
 		task_s = self.browse(cr, uid, task_self[0])
-		self.write(cr, uid, [task_s.id], {"user_id":task.user_id.id})
-		self.write(cr, uid, [task.id], {"user_id":uid})
+		self.write(cr, uid, [task_s.id], {"user_id":task.user_id.id, "replaceable":False})
+		self.write(cr, uid, [task.id], {"user_id":uid, ,"replaceable":False})
 		
 		
 	
