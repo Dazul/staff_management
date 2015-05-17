@@ -43,6 +43,7 @@
 					<field name="comment" />
 					<field name="work_time" />
 					<field name="confirm" />
+					<field name="replaceable" />
 				</calendar>
 			</field>
 		</record>
