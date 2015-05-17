@@ -203,7 +203,7 @@ class staff_scheduler(orm.Model):
 		#Swap user_ids
 		task_s = self.browse(cr, uid, task_self[0])
 		self.write(cr, uid, [task_s.id], {"user_id":task.user_id.id, "replaceable":False})
-		self.write(cr, uid, [task.id], {"user_id":uid, ,"replaceable":False})
+		self.write(cr, uid, [task.id], {"user_id":uid, "replaceable":False})
 		
 		
 	
