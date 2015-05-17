@@ -64,6 +64,9 @@ openerp_staff_management_personal_schedule = function(instance) {
 			if(event.comment){
 				div.append($('<div>').text(event.comment));
 			}
+			if(event.confirm){
+				div.append($('<div>').text(_t("Entered working time:")+' '+this.format_hour(event.work_time)));
+			}
 
 			return div;
 		},
@@ -133,6 +136,8 @@ openerp_staff_management_personal_schedule = function(instance) {
 			r.hour_from = evt.hour_from;
 			r.hour_to = evt.hour_to;
 			r.replaceable = evt.replaceable;
+			r.work_time = evt.work_time;
+			r.confirm = evt.confirm;
 			return r;
 		},
 
