@@ -17,5 +17,6 @@ openerp.staff_management = function(instance) {
 	
 	openerp_staff_management_salary_timeline(instance);
 
+	openerp_staff_management_replacement(instance);
 
 };
