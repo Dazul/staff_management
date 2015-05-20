@@ -191,7 +191,7 @@ openerp_staff_management_general_schedule = function(instance) {
 						auths = '-';
 					}
 
-					instance.staff_management.tooltip.show_left($(this), '<span style="font-weight: bold;">'+info.name+'</span>'+'<br/>'+'<img src="data:image/png;base64,'+info.image+'"/>'+'<br/>'+mobile+'<br/>'+auths);
+					instance.staff_management.tooltip.show_left($(this), '<div><span style="font-weight: bold;">'+info.name+'</span>'+'</div><div style="height: 130px;"><img src="data:image/png;base64,'+info.image+'"/></div>'+'<div>'+mobile+'</div><div>'+auths+'</div>');
 				}
 
 			}).mouseleave(instance.staff_management.tooltip.hide);

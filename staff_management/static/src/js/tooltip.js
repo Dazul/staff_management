@@ -80,7 +80,7 @@ openerp_staff_management_tooltip = function(instance) {
 
 			// Tooltip position
 			var position = $(element).offset();
-			var h = $('.staff_tooltip_left').height() + 130; // add 130 (height of the image)
+			var h = $('.staff_tooltip_left').height();
 			var w = $('.staff_tooltip_left').width();
 			var ew = $(element).width();
 			var eh = $(element).height();

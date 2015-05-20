@@ -283,7 +283,7 @@ msgstr "L'heure de fin doit être entre 0 et 24h."
 #: code:addons/staff_management/static/src/js/personal_schedule.js:68
 #, python-format
 msgid "Entered working time:"
-msgstr "Entrez temps de travail"
+msgstr "Temps de travail saisi:"
 
 #. module: staff_management
 #. openerp-web
