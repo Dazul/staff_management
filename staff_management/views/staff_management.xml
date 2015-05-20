@@ -36,6 +36,7 @@
 				<script type="text/javascript" src="/staff_management/static/src/js/salary_timeline.js"></script>
 				<script type="text/javascript" src="/staff_management/static/src/js/scheduler.js"></script>
 				<script type="text/javascript" src="/staff_management/static/src/js/timecheck.js"></script>
+				<script type="text/javascript" src="/staff_management/static/src/js/replacement.js"></script>
 				
 				<script type="text/javascript" src="/staff_management/static/src/js/staff_management.js"></script>
 			</xpath>

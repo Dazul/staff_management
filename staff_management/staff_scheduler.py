@@ -38,6 +38,7 @@ class staff_scheduler(orm.Model):
 		'comment':fields.char('Comment',size= 512 ,required=False),
 		'work_time':fields.float('Worked time', readonly=False),
 		'confirm':fields.boolean('Confirm', readonly=False),
+		'replaceable':fields.boolean('Replaceable', readonly=False, default=False),
 	}
 	
 	#Check if the hour from is between 0 and 24
@@ -161,7 +162,50 @@ class staff_scheduler(orm.Model):
 		stamp = datetime.now()
 		today = datetime(stamp.year, stamp.month, stamp.day)
 		return dayDate > today
+		
+	# Get user informations
+	def getPersonalInfo(self, cr, uid, users_id):
+		ret = {}
+		for user in users_id:
+			users = self.pool.get("res.users")
+			partner_id = users.browse(cr, uid, user).partner_id.id
+			partners = self.pool.get("res.partner")
+			partner = partners.browse(cr, uid, partner_id)
+			authorizations = self.pool.get("staff.authorization")
+			user_auth = authorizations.search(cr, uid, [("user_id", "=", user)])
+			auths = []
+			tasks = self.pool.get("account.analytic.account")
+			for auth_id in user_auth:
+				auth_obj = authorizations.browse(cr, uid, auth_id)
+				task = tasks.browse(cr, uid, auth_obj.task_id.id)
+				auths.append(task.name)
+			ret[user] = {"name":partner.name, "mobile":partner.mobile,"auths":auths, "image":partner.image_medium}
+		return ret
 	
+	# Swap activities for replacement
+	def swapUidTask(self, cr, uid, task_id):
+		# Check if task_id can is replaceable.
+		task = self.browse(cr, uid, task_id)
+		if not task.replaceable:
+			raise except_orm(_('Error'), _("This task is not replaceable."))
+		# Check if user has the right authorization. No -> raise error. Yes -> continue.
+		auths = self.pool.get("staff.authorization")
+		auth = auths.search(cr, uid, [("user_id","=", uid),("task_id","=",task.task_id.id)])
+		if len(auth) < 1:
+			raise except_orm(_('Error'), _("You do not have the authorization to replace this task."))
+		# Check if uid has empty task_id. No task -> create one, Task defined -> raise error.
+		task_self = self.search(cr, uid, [("user_id","=",uid),("date","=", task.date)])
+		if len(task_self) < 1:
+			self.create(cr, uid, {"date":task.date})
+			task_self = self.search(cr, uid, [("user_id","=",uid),("date","=", task.date)])
+		task_s = self.browse(cr, uid, task_self[0])
+		if task_s.task_id.id is not False:
+			raise except_orm(_('Error'), _("You have already a task. You can not replace."))
+		#Swap user_ids
+		self.write(cr, uid, [task_s.id], {"user_id":task.user_id.id, "replaceable":False})
+		self.write(cr, uid, [task.id], {"user_id":uid, "replaceable":False})
+		
+		
 	
 	# add user_id to create the elements
 	def create(self, cr, user, vals, context=None):
@@ -192,9 +236,9 @@ class staff_scheduler(orm.Model):
 	#Count the activities of the mounth for selected user
 	#Return a dictonary of { key [ day with activity, day available.] }
 	#User_id is the planner, start and and are the first and last day for the search pool.
-	def countActivitie(self, cr, uid, user_id, start, end, context=None):
+	def countActivitie(self, cr, uid, users_id, start, end, context=None):
 		ret = {}
-		for user in user_id:
+		for user in users_id:
 			listGet = self.search(cr, uid, [('user_id','=',user),('date','>=',start),('date', '<=', end), ('task_id','!=',False)])
 			listTot = self.search(cr, uid, [('user_id','=',user),('date','>=',start),('date', '<=', end)])
 			ret[user] = [len(listGet), len(listTot)]

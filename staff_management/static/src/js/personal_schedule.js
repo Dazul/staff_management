@@ -22,19 +22,24 @@ openerp_staff_management_personal_schedule = function(instance) {
 			var self = this;
 			return  $.extend({}, this._super(), {
 				eventClick: function (event){
-					self.toggle_availabilities(event.start, event.start);
+					self.toggle_replacement(event);
 				},
 				select: function (start_date, end_date, all_day, _js_event, _view) {
 					self.toggle_availabilities(start_date, end_date);
 				},
-				eventRender: function(event, element) {	        
+				eventRender: function(event, element) {
 					var strDate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
 					$('.fc-day[data-date|="'+strDate+'"]').addClass('staff_available');
 					if(event.task_id){
 
 						color = self.color_palette[event.task_id[0]%self.color_palette.length];
 
-						element.text(self.format_hour(event.hour_from)+' '+event.task_id[1]);
+						replacementText = '';
+						if(event.replaceable){
+							replacementText = _t('Waiting replacement');
+						}
+
+						element.html('<div>'+self.format_hour(event.hour_from)+' '+event.task_id[1]+'</div>'+'<div>'+replacementText+'</div>');
 						element.css({'background': color});
 						element.css({'border-color': color});
 						element.mouseenter(event, function(evt){
@@ -58,6 +63,9 @@ openerp_staff_management_personal_schedule = function(instance) {
 			div.append($('<div>').text(event.task_id[1]));
 			if(event.comment){
 				div.append($('<div>').text(event.comment));
+			}
+			if(event.confirm){
+				div.append($('<div>').text(_t("Entered working time:")+' '+this.format_hour(event.work_time)));
 			}
 
 			return div;
@@ -90,6 +98,10 @@ openerp_staff_management_personal_schedule = function(instance) {
 			});
 			
 			if(isAlreadyAnEvent){
+				if(eventData.task_id){
+					this.toggle_replacement(eventData);
+					return;
+				}
 				this.remove_availability(eventData);
 				return;  
 			}
@@ -123,6 +135,9 @@ openerp_staff_management_personal_schedule = function(instance) {
 			r.comment = evt.comment;
 			r.hour_from = evt.hour_from;
 			r.hour_to = evt.hour_to;
+			r.replaceable = evt.replaceable;
+			r.work_time = evt.work_time;
+			r.confirm = evt.confirm;
 			return r;
 		},
 
@@ -143,6 +158,10 @@ openerp_staff_management_personal_schedule = function(instance) {
 				}
 				self.$calendar.fullCalendar('unselect');
 			});
+		},
+
+		toggle_replacement: function(eventData){
+			this.update_record(eventData.id, {'replaceable': !eventData.replaceable});
 		},
 		
 		

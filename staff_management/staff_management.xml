@@ -43,6 +43,7 @@
 					<field name="comment" />
 					<field name="work_time" />
 					<field name="confirm" />
+					<field name="replaceable" />
 				</calendar>
 			</field>
 		</record>
@@ -112,6 +113,16 @@
 			<field name="search_view_id" ref="view_staff_management_calendar_search" />
 		</record>
 
+		<record model="ir.actions.act_window" id="show_replacement">
+			<field name="name">Replacement</field>
+			<field name="res_model">staff.scheduler</field>
+			<field name="view_mode">replacement</field>
+			<!--<field name="context">{'search_default_usershow':1}</field>-->
+			<field name="view_id" ref="view_staff_management_calendar"/>
+			<!--<field name="search_view_id" ref="view_staff_management_calendar_search" />-->
+			<field name="domain">[('replaceable','=','true')]</field>
+		</record>
+
 		<record model="ir.actions.act_window" id="show_time_check">
 			<field name="name">Time Check</field>
 			<field name="res_model">staff.scheduler</field>
@@ -148,6 +159,8 @@
 		<menuitem name="General Schedule" sequence="22" id="general_scheduler" action="show_general_schedule" parent="menu_staff_planification" groups="group_staff_management_user"/>
 		
 		<menuitem name="Scheduler" sequence="23" id="scheduler" action="show_scheduler" parent="menu_staff_planification" groups="group_staff_management_planner"/>
+
+		<menuitem name="Replacement" sequence="24" id="replacement" action="show_replacement" parent="menu_staff_planification" groups="group_staff_management_user"/>
 
 		<menuitem name="Time Check" sequence="31" id="time_check" action="show_time_check" parent="menu_staff_administrative" groups="group_staff_management_in_charge_time"/>
 

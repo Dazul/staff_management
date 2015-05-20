@@ -1,6 +1,6 @@
 {
 	"name" : "Staff Management",
-	"version" : "1.9.1",
+	"version" : "1.10",
 	"author" : "Luis Domingues & Romain Monnard",
 	"category" : "Staff Management",
 	"description" : "Management of time and task of staff.",

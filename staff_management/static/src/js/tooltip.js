@@ -5,6 +5,9 @@ openerp_staff_management_tooltip = function(instance) {
 		min_width: 200,
 		max_width: 400,
 
+		timeout_hide: 0,
+		timeout_left_hide: 0,
+
 		show: function(element, content){
 
 			// Set tooltip content and size
@@ -48,13 +51,70 @@ openerp_staff_management_tooltip = function(instance) {
 
 
 			// Display
+			clearTimeout(self.timeout_hide);
 			$('.staff_tooltip').fadeIn(100);
 		},
 
 		hide: function(){
-			$('.staff_tooltip').fadeOut(100);
+			self.timeout_hide = setTimeout(function(){
+				$('.staff_tooltip').fadeOut(100);
+			}, 50);
+
+			self.timeout_left_hide = setTimeout(function(){
+				$('.staff_tooltip_left').fadeOut(100);
+			}, 50);
 		},
 
+		show_left: function(element, content){
+
+			// Set tooltip content and size
+			$('.staff_tooltip_left').removeAttr('style');
+			$('.staff_tooltip_left_content').empty().append(content);
+
+			if($('.staff_tooltip_left').width() < this.min_width){
+				$('.staff_tooltip_left').css({'width': this.min_width});
+			}
+			if($('.staff_tooltip_left').width() > this.max_width){
+				$('.staff_tooltip_left').css({'width': this.max_width});
+			}
+
+			// Tooltip position
+			var position = $(element).offset();
+			var h = $('.staff_tooltip_left').height();
+			var w = $('.staff_tooltip_left').width();
+			var ew = $(element).width();
+			var eh = $(element).height();
+
+			var left = position.left + ew + 10;
+			var top = position.top + eh/2 - h/2;
+
+			var bottom = top + h;
+			if(top < 40){
+				top = 40;
+			}
+			if(bottom + 10 > $(window).height()){
+				top = $(window).height() - h - 10;
+			}
+
+			$('.staff_tooltip_left').css({
+				'top': top,
+				'left': left,
+			});
+
+			// Arrow position
+			var ah = $('.staff_tooltip_left_arrow').height();
+			var atop =  position.top - top + eh/2 - ah/2;
+			/*if(aleft + 25 > w){
+				aleft = w - 25;
+			}*/
+			$('.staff_tooltip_left_arrow').css({'top': atop});
+
+
+			// Display
+			clearTimeout(self.timeout_left_hide);
+			$('.staff_tooltip_left').fadeIn(100);
+
+		},
 
 
 	};
