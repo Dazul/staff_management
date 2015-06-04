@@ -28,9 +28,14 @@
 						</td>
 						<td class="fc-header-right">
 							<span class="fc-button fc-state-default fc-corner-left fc-button-export-pdf" unselectable="on">
-								Export PDF
+								PDF
 							</span><span class="fc-button fc-state-default fc-corner-right fc-button-export-print" unselectable="on">
 								Print
+							</span>
+							<span class="fc-button fc-state-default fc-corner-left fc-button-export-pdf-today" style="margin-left: 10px;" unselectable="on">
+								PDF Today
+							</span><span class="fc-button fc-state-default fc-corner-right fc-button-export-print-today" unselectable="on">
+								Print Today
 							</span>
 						</td>
 					</tr>

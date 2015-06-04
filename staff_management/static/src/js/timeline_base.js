@@ -82,72 +82,27 @@ openerp_staff_management_timeline_base = function(instance) {
 			);
 			$('.fc-button-export-pdf').click(function(e){
 				var d = self.get_export_table_data();
-
-				var doc = new jsPDF('l', 'pt');
-
-				var header = function (x, y, width, height, key, value, settings) {
-					doc.setFillColor(150, 150, 150);
-					doc.setTextColor(255, 255, 255);
-					doc.setFontStyle('bold');
-					doc.rect(x, y, width, height, 'F');
-					doc.setLineWidth(0.5);
-					doc.setDrawColor(30);
-					doc.rect(x, y, width, height, 's');
-					y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2;
-					doc.text('' + value, x + settings.padding, y);
-				};
-				var cell = function (x, y, width, height, key, value, row, settings) {
-					// See path-painting operators in the PDF spec, examples are
-					// 'S' for stroke, 'F' for fill, 'B' for both stroke and fill
-					var style = 'S';
-
-					if (key === 0) {
-						style = 'B';
-						doc.setFillColor(240);
-					}
-
-					if (key === 'expenses') {
-					if (parseInt(value.substring(1, value.length)) > 5) {
-					doc.setTextColor(200, 0, 0);
-					}
-					}
-
-					doc.setLineWidth(0.5);
-					doc.setDrawColor(30);
-
-					doc.rect(x, y, width, height, style);
-
-					if (key === 'expenses') {
-					var strWidth = doc.getStringUnitWidth('' + value) * doc.internal.getFontSize();
-					x += width;
-					x -= 2 * settings.padding;
-					x -= strWidth;
-					}
-
-					if (key === 'id') {
-					x -= 2 * settings.padding;
-					x += width / 2;
-					}
-
-					y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-					doc.text('' + value, x + settings.padding, y);
-					doc.setTextColor(50);
-				};
-				doc.autoTable(d.columns, d.data, {renderCell: cell, renderHeaderCell: header, padding: 2, lineHeight: 14, fontSize: 10});
-
-				//doc.autoTable(d.columns, d.data, {padding: 2, lineHeight: 14, fontSize: 10});
-
-
-				doc.save('table.pdf');
-
-
-				//$('.stimeline_table_export').css({'display': 'table'});
-				//$('.stimeline_table_export').tableExport({type:'excel',escape:'false'});
-				//$('.stimeline_table_export').css({'display': 'table'});
-				//$('.stimeline_table_print').tableExport({type:'pdf',escape:'false'});
+				self.generate_pdf(d.columns, d.data);
+			});
+			$('.fc-button-export-pdf-today').click(function(e){
+				var d = self.get_export_table_data();
+				var date = new Date();
+				var day = date.getDay() - Date.CultureInfo.firstDayOfWeek;
+				var column = day + 1;
+				columns = [];
+				columns.push(d.columns[0]);
+				columns.push(d.columns[column]);
+				self.generate_pdf(columns, d.data, 'p');
 			});
 			$('.fc-button-export-print').click(function(e){
 				self.generate_export_table();
+				window.print();
+			});
+			$('.fc-button-export-print-today').click(function(e){
+				var date = new Date();
+				var day = date.getDay() - Date.CultureInfo.firstDayOfWeek;
+				var column = day + 1;
+				self.generate_export_table(column);
 				window.print();
 			});
 			this.set_button_actions();
@@ -527,14 +482,21 @@ openerp_staff_management_timeline_base = function(instance) {
 		},
 		
 		
-		generate_export_table: function(){
+		generate_export_table: function(column){
+			if(!column){
+				column = -1;
+			}
 			var table = $('<table>');
 
 			var thead = $('<thead>');
 			$('.stimeline_table .dataTables_scrollHead thead tr').each(function(i){
 				var tr = $('<tr>');
+				var cell = 0;
 				$.each(this.cells, function(){
-					tr.append($('<th>').text($(this).text()));
+					if(column < 0 || column == cell || cell == 0){
+						tr.append($('<th>').text($(this).text()));
+					}
+					cell++;
 				});
 				thead.append(tr);
 			});
@@ -544,11 +506,15 @@ openerp_staff_management_timeline_base = function(instance) {
 			$('.stimeline_table .dataTables_scrollBody tbody tr').each(function(i){
 				var nbrData = 0;
 				var tr = $('<tr>');
+				var cell = 0;
 				$.each(this.cells, function(){
-					if($(this).text() != ''){
-						nbrData ++;
+					if(column < 0 || column == cell || cell == 0){
+						if($(this).text() != ''){
+							nbrData ++;
+						}
+						tr.append($('<td>').text($(this).text()));
 					}
-					tr.append($('<td>').text($(this).text()));
+					cell++;
 				});
 				if(nbrData >= 2){
 					tbody.append(tr);
@@ -559,8 +525,12 @@ openerp_staff_management_timeline_base = function(instance) {
 			var tfoot = $('<tfoot>');
 			$('.stimeline_table .dataTables_scrollFoot tfoot tr').each(function(i){
 				var tr = $('<tr>');
+				var cell = 0;
 				$.each(this.cells, function(){
-					tr.append($('<td>').text($(this).text()));
+					if(column < 0 || column == cell || cell == 0){
+						tr.append($('<td>').text($(this).text()));
+					}
+					cell++;
 				});
 				tfoot.append(tr);
 			});
@@ -571,12 +541,9 @@ openerp_staff_management_timeline_base = function(instance) {
 			$('.staff_timeline').append(table);
 		},
 
-		get_export_table_data: function(){
-			var columns = [
-				//{title: "Utilisateur", key: "user"},
-			];
+		get_export_table_data: function(column){
+			var columns = [];
 			var data = [];
-
 
 			var line = 0;
 			$('.stimeline_table .dataTables_scrollHead thead tr').each(function(i){
@@ -617,6 +584,46 @@ openerp_staff_management_timeline_base = function(instance) {
 			});
 
 			return {columns: columns, data: data};
+		},
+
+		generate_pdf: function(columns, data, mode){
+			if(!mode){
+				mode = 'l';
+			}
+			var doc = new jsPDF(mode, 'pt');
+			var header = function (x, y, width, height, key, value, settings) {
+				doc.setFillColor(150, 150, 150);
+				doc.setTextColor(255, 255, 255);
+				doc.setFontStyle('bold');
+				doc.rect(x, y, width, height, 'F');
+				doc.setLineWidth(0.5);
+				doc.setDrawColor(30);
+				doc.rect(x, y, width, height, 's');
+				y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2;
+				doc.text('' + value, x + settings.padding, y);
+			};
+			var cell = function (x, y, width, height, key, value, row, settings) {
+				// See path-painting operators in the PDF spec, examples are
+				// 'S' for stroke, 'F' for fill, 'B' for both stroke and fill
+				var style = 'S';
+
+				if (key === 0) {
+					style = 'B';
+					doc.setFillColor(240);
+				}
+
+				doc.setLineWidth(0.5);
+				doc.setDrawColor(30);
+
+				doc.rect(x, y, width, height, style);
+
+				y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
+				doc.text('' + value, x + settings.padding, y);
+				doc.setTextColor(50);
+			};
+			doc.autoTable(columns, data, {renderCell: cell, renderHeaderCell: header, padding: 2, lineHeight: 14, fontSize: 10});
+
+			doc.save('planing.pdf');
 		},
 
 
