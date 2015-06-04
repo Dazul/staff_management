@@ -26,7 +26,13 @@
 								<h2></h2>
 							</span>
 						</td>
-						<td class="fc-header-right"></td>
+						<td class="fc-header-right">
+							<span class="fc-button fc-state-default fc-corner-left fc-button-export-pdf" unselectable="on">
+								Export PDF
+							</span><span class="fc-button fc-state-default fc-corner-right fc-button-export-print" unselectable="on">
+								Print
+							</span>
+						</td>
 					</tr>
 				</tbody>
 			</table>

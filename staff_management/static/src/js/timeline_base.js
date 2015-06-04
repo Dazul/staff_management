@@ -6,7 +6,7 @@ openerp_staff_management_timeline_base = function(instance) {
 		template: "staff_timeline",
 		
 		init:function(parent, dataset, view_id, options){
-			this._super.apply(this, arguments);			
+			this._super.apply(this, arguments);
 		},
 		
 		destroy:function(){
@@ -72,6 +72,84 @@ openerp_staff_management_timeline_base = function(instance) {
 					$(this).removeClass('fc-state-hover');
 				}
 			);
+			$('.fc-header-right .fc-button').hover(
+				function () {
+					$(this).addClass('fc-state-hover');
+				}, 
+				function () {
+					$(this).removeClass('fc-state-hover');
+				}
+			);
+			$('.fc-button-export-pdf').click(function(e){
+				var d = self.get_export_table_data();
+
+				var doc = new jsPDF('l', 'pt');
+
+				var header = function (x, y, width, height, key, value, settings) {
+					doc.setFillColor(150, 150, 150);
+					doc.setTextColor(255, 255, 255);
+					doc.setFontStyle('bold');
+					doc.rect(x, y, width, height, 'F');
+					doc.setLineWidth(0.5);
+					doc.setDrawColor(30);
+					doc.rect(x, y, width, height, 's');
+					y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2;
+					doc.text('' + value, x + settings.padding, y);
+				};
+				var cell = function (x, y, width, height, key, value, row, settings) {
+					// See path-painting operators in the PDF spec, examples are
+					// 'S' for stroke, 'F' for fill, 'B' for both stroke and fill
+					var style = 'S';
+
+					if (key === 0) {
+						style = 'B';
+						doc.setFillColor(240);
+					}
+
+					if (key === 'expenses') {
+					if (parseInt(value.substring(1, value.length)) > 5) {
+					doc.setTextColor(200, 0, 0);
+					}
+					}
+
+					doc.setLineWidth(0.5);
+					doc.setDrawColor(30);
+
+					doc.rect(x, y, width, height, style);
+
+					if (key === 'expenses') {
+					var strWidth = doc.getStringUnitWidth('' + value) * doc.internal.getFontSize();
+					x += width;
+					x -= 2 * settings.padding;
+					x -= strWidth;
+					}
+
+					if (key === 'id') {
+					x -= 2 * settings.padding;
+					x += width / 2;
+					}
+
+					y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
+					doc.text('' + value, x + settings.padding, y);
+					doc.setTextColor(50);
+				};
+				doc.autoTable(d.columns, d.data, {renderCell: cell, renderHeaderCell: header, padding: 2, lineHeight: 14, fontSize: 10});
+
+				//doc.autoTable(d.columns, d.data, {padding: 2, lineHeight: 14, fontSize: 10});
+
+
+				doc.save('table.pdf');
+
+
+				//$('.stimeline_table_export').css({'display': 'table'});
+				//$('.stimeline_table_export').tableExport({type:'excel',escape:'false'});
+				//$('.stimeline_table_export').css({'display': 'table'});
+				//$('.stimeline_table_print').tableExport({type:'pdf',escape:'false'});
+			});
+			$('.fc-button-export-print').click(function(e){
+				self.generate_export_table();
+				window.print();
+			});
 			this.set_button_actions();
 		},
 
@@ -390,7 +468,7 @@ openerp_staff_management_timeline_base = function(instance) {
 				'width': width,
 			});
 		
-			table.dataTable({
+			dynamicTable = table.dataTable({
 				"searching": false,
 				"info": false,
 				"paging":   false,
@@ -400,8 +478,8 @@ openerp_staff_management_timeline_base = function(instance) {
 				"language": {
 					"emptyTable":     _t("No data available"),
 				},
-				"bSortCellsTop": true
-			});	
+				"bSortCellsTop": true,
+			});
 			
 			var realTbodyHeight = $('.stimeline_table tbody').height();
 			if(realTbodyHeight < tbodyHeight){
@@ -449,7 +527,164 @@ openerp_staff_management_timeline_base = function(instance) {
 		},
 		
 		
-		
+		generate_export_table: function(){
+			var table = $('<table>');
+
+			var thead = $('<thead>');
+			$('.stimeline_table .dataTables_scrollHead thead tr').each(function(i){
+				var tr = $('<tr>');
+				$.each(this.cells, function(){
+					tr.append($('<th>').text($(this).text()));
+				});
+				thead.append(tr);
+			});
+			table.append(thead);
+
+			var tbody = $('<tbody>');
+			$('.stimeline_table .dataTables_scrollBody tbody tr').each(function(i){
+				var nbrData = 0;
+				var tr = $('<tr>');
+				$.each(this.cells, function(){
+					if($(this).text() != ''){
+						nbrData ++;
+					}
+					tr.append($('<td>').text($(this).text()));
+				});
+				if(nbrData >= 2){
+					tbody.append(tr);
+				}
+			});
+			table.append(tbody);
+
+			var tfoot = $('<tfoot>');
+			$('.stimeline_table .dataTables_scrollFoot tfoot tr').each(function(i){
+				var tr = $('<tr>');
+				$.each(this.cells, function(){
+					tr.append($('<td>').text($(this).text()));
+				});
+				tfoot.append(tr);
+			});
+			table.append(tfoot);
+
+			$('.stimeline_table_export').remove();
+			table.addClass('stimeline_table_export');
+			$('.staff_timeline').append(table);
+		},
+
+		get_export_table_data: function(){
+			var columns = [
+				//{title: "Utilisateur", key: "user"},
+			];
+			var data = [];
+
+
+			var line = 0;
+			$('.stimeline_table .dataTables_scrollHead thead tr').each(function(i){
+				var cell = 0;
+				$.each(this.cells, function(){
+					if(line == 0){
+						columns.push({title: $(this).text(), key: cell});
+					}
+					cell ++;
+				});
+				line ++;
+			});
+
+			$('.stimeline_table .dataTables_scrollBody tbody tr').each(function(i){
+				var nbrData = 0;
+				var cell = 0;
+				var lineData = {};
+				$.each(this.cells, function(){
+					if($(this).text() != ''){
+						nbrData ++;
+					}
+					lineData[cell] = $(this).text();
+					cell ++;
+				});
+				if(nbrData >= 2){
+					data.push(lineData);
+				}
+			});
+
+			$('.stimeline_table .dataTables_scrollFoot tfoot tr').each(function(i){
+				var cell = 0;
+				var lineData = {};
+				$.each(this.cells, function(){
+					lineData[cell] = $(this).text();
+					cell ++;
+				});
+				data.push(lineData);
+			});
+
+			return {columns: columns, data: data};
+		},
+
+
 	});
+/*
+
+	var beforePrint = function() {
+		if($('.stimeline_table').length){
+			
+			var table = $('<table>');
+
+			var thead = $('<thead>');
+			$('.stimeline_table .dataTables_scrollHead thead tr').each(function(i){
+				var tr = $('<tr>');
+				$.each(this.cells, function(){
+					tr.append($('<th>').text($(this).text()));
+				});
+				thead.append(tr);
+			});
+			table.append(thead);
+
+			var tbody = $('<tbody>');
+			$('.stimeline_table .dataTables_scrollBody tbody tr').each(function(i){
+				var tr = $('<tr>');
+				$.each(this.cells, function(){
+					tr.append($('<td>').text($(this).text()));
+				});
+				tbody.append(tr);
+			});
+			table.append(tbody);
+
+			var tfoot = $('<tfoot>');
+			$('.stimeline_table .dataTables_scrollFoot tfoot tr').each(function(i){
+				var tr = $('<tr>');
+				$.each(this.cells, function(){
+					tr.append($('<td>').text($(this).text()));
+				});
+				tfoot.append(tr);
+			});
+			table.append(tfoot);
+
+			table.addClass('stimeline_table_print');
+			$('.stimeline_table_print').remove();
+			$('.staff_timeline').append(table);
+
+			$('.stimeline_table_print').tableExport({type:'pdf',escape:'false'});
+
+		}
+
+	};
+
+	var afterPrint = function() {
+		console.log('Functionality to run after printing');
+	};
+
+	if (window.matchMedia) {
+		var mediaQueryList = window.matchMedia('print');
+		mediaQueryList.addListener(function(mql) {
+			if (mql.matches) {
+				beforePrint();
+			} else {
+				afterPrint();
+			}
+		});
+	}
+
+	window.onbeforeprint = beforePrint;
+	window.onafterprint = afterPrint;
+*/
 
 };

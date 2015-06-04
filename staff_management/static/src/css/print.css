@@ -1,0 +1,47 @@
+
+.stimeline_table_export{
+	display: none;
+}
+
+@media print{
+
+/*
+ * Timeline
+ */
+
+	.fc-header-left{
+		display: none;
+	}
+
+	.fc-header-right{
+		display: none;
+	}
+
+	thead{
+		display: table-header-group;
+	}
+
+	.staff_tooltip{
+		display: none;
+	}
+	.staff_tooltip_left{
+		display: none;
+	}
+
+	.stimeline_table_export{
+		display: table;
+		border-collapse: collapse;
+		width:98%!important;
+	}
+
+	.stimeline_table_export th, .stimeline_table_export td{
+		border: 1px solid #000!important;
+		padding: 2px!important;
+	}
+
+	.stimeline_table{
+		display: none;
+	}
+
+
+}
