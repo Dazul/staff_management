@@ -50,6 +50,11 @@ openerp_staff_management_replacement = function(instance) {
 			});
 		},
 
+		set_button_actions: function(){
+			this._super.apply(this, arguments);
+			$('.fc-export-buttons').css({'display': 'none'});
+		},
+
 		renderCell: function(td, cellDataList){
 			td = this._super.apply(this,arguments);
 			if(cellDataList.length == 1){

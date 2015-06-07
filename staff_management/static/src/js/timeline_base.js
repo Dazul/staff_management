@@ -7,10 +7,31 @@ openerp_staff_management_timeline_base = function(instance) {
 		
 		init:function(parent, dataset, view_id, options){
 			this._super.apply(this, arguments);
+
+			this.before_print_generated = false;
+			var self = this;
+			if (window.matchMedia) {
+				var mediaQueryList = window.matchMedia('print');
+				mediaQueryList.addListener(function(mql) {
+					if (mql.matches) {
+						self.beforePrint();
+					}
+				});
+			}
+			window.onbeforeprint = function(){
+				self.beforePrint();
+			};
 		},
 		
 		destroy:function(){
 			this._super();
+		},
+
+		beforePrint: function(){
+			if(this.before_print_generated == false){
+				this.generate_export_table();
+			}
+			this.before_print_generated = false;
 		},
 		
 		format_date: function(date, format){
@@ -80,36 +101,12 @@ openerp_staff_management_timeline_base = function(instance) {
 					$(this).removeClass('fc-state-hover');
 				}
 			);
-			$('.fc-button-export-pdf').click(function(e){
-				var d = self.get_export_table_data();
-				self.generate_pdf(d.columns, d.data);
-			});
-			$('.fc-button-export-pdf-today').click(function(e){
-				var d = self.get_export_table_data();
-				var date = new Date();
-				var day = date.getDay() - Date.CultureInfo.firstDayOfWeek;
-				var column = day + 1;
-				columns = [];
-				columns.push(d.columns[0]);
-				columns.push(d.columns[column]);
-				self.generate_pdf(columns, d.data, 'p');
-			});
-			$('.fc-button-export-print').click(function(e){
-				self.generate_export_table();
-				window.print();
-			});
-			$('.fc-button-export-print-today').click(function(e){
-				var date = new Date();
-				var day = date.getDay() - Date.CultureInfo.firstDayOfWeek;
-				var column = day + 1;
-				self.generate_export_table(column);
-				window.print();
-			});
 			this.set_button_actions();
 		},
 
 		set_button_actions: function() {
 			var self = this;
+			$('.fc-export-buttons').css({'display': 'none'});
 			$('.fc-button-prev-month').click(function(){
 				var firstday = new Date(self.range_stop.getFullYear(), self.range_stop.getMonth() - 1, 1);
 				firstday = self.get_week_start(firstday);
@@ -488,6 +485,11 @@ openerp_staff_management_timeline_base = function(instance) {
 			}
 			var table = $('<table>');
 
+			var date = new Date();
+			var caption = $('<caption>').text(_t('Date of data export:')+' '+this.format_date(date, "dd MMM yyyy, HH:mm"));
+
+			table.append(caption);
+
 			var thead = $('<thead>');
 			$('.stimeline_table .dataTables_scrollHead thead tr').each(function(i){
 				var tr = $('<tr>');
@@ -586,7 +588,7 @@ openerp_staff_management_timeline_base = function(instance) {
 			return {columns: columns, data: data};
 		},
 
-		generate_pdf: function(columns, data, mode){
+		generate_pdf: function(columns, data, mode, title){
 			if(!mode){
 				mode = 'l';
 			}
@@ -621,77 +623,21 @@ openerp_staff_management_timeline_base = function(instance) {
 				doc.text('' + value, x + settings.padding, y);
 				doc.setTextColor(50);
 			};
-			doc.autoTable(columns, data, {renderCell: cell, renderHeaderCell: header, padding: 2, lineHeight: 14, fontSize: 10});
+
+			doc.setFontSize(22);
+			doc.text(title, 40, 60);
+			var date = new Date();
+			var caption = _t('Date of data export:')+' '+this.format_date(date, "dd MMM yyyy, HH:mm");
+			doc.setFontSize(12);
+			doc.text(caption, 40, 80);
+
+			doc.autoTable(columns, data, {startY: 90, renderCell: cell, renderHeaderCell: header, padding: 2, lineHeight: 14, fontSize: 10});
 
 			doc.save('planing.pdf');
 		},
 
 
 	});
-/*
 
-	var beforePrint = function() {
-		if($('.stimeline_table').length){
-			
-			var table = $('<table>');
-
-			var thead = $('<thead>');
-			$('.stimeline_table .dataTables_scrollHead thead tr').each(function(i){
-				var tr = $('<tr>');
-				$.each(this.cells, function(){
-					tr.append($('<th>').text($(this).text()));
-				});
-				thead.append(tr);
-			});
-			table.append(thead);
-
-			var tbody = $('<tbody>');
-			$('.stimeline_table .dataTables_scrollBody tbody tr').each(function(i){
-				var tr = $('<tr>');
-				$.each(this.cells, function(){
-					tr.append($('<td>').text($(this).text()));
-				});
-				tbody.append(tr);
-			});
-			table.append(tbody);
-
-			var tfoot = $('<tfoot>');
-			$('.stimeline_table .dataTables_scrollFoot tfoot tr').each(function(i){
-				var tr = $('<tr>');
-				$.each(this.cells, function(){
-					tr.append($('<td>').text($(this).text()));
-				});
-				tfoot.append(tr);
-			});
-			table.append(tfoot);
-
-			table.addClass('stimeline_table_print');
-			$('.stimeline_table_print').remove();
-			$('.staff_timeline').append(table);
-
-			$('.stimeline_table_print').tableExport({type:'pdf',escape:'false'});
-
-		}
-
-	};
-
-	var afterPrint = function() {
-		console.log('Functionality to run after printing');
-	};
-
-	if (window.matchMedia) {
-		var mediaQueryList = window.matchMedia('print');
-		mediaQueryList.addListener(function(mql) {
-			if (mql.matches) {
-				beforePrint();
-			} else {
-				afterPrint();
-			}
-		});
-	}
-
-	window.onbeforeprint = beforePrint;
-	window.onafterprint = afterPrint;
-*/
 
 };
