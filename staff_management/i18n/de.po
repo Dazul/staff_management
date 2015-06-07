@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-20 11:31+0000\n"
-"PO-Revision-Date: 2015-05-20 11:31+0000\n"
+"POT-Creation-Date: 2015-06-07 12:06+0000\n"
+"PO-Revision-Date: 2015-06-07 12:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr "Betrag"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/salary_timeline.js:337
+#: code:addons/staff_management/static/src/js/salary_timeline.js:338
 #, python-format
 msgid "Amount due:"
 msgstr "Amount due:"
@@ -178,7 +178,7 @@ msgstr "Create booking"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/salary_timeline.js:304
+#: code:addons/staff_management/static/src/js/salary_timeline.js:305
 #, python-format
 msgid "Create: %s"
 msgstr "Create: %s"
@@ -226,6 +226,14 @@ msgid "Date of comment"
 msgstr "Kommentar Datum"
 
 #. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/timeline_base.js:489
+#: code:addons/staff_management/static/src/js/timeline_base.js:630
+#, python-format
+msgid "Date of data export:"
+msgstr "Date of data export:"
+
+#. module: staff_management
 #: field:staff.authorization,write_date:0
 msgid "Date of formation"
 msgstr "Ausbildungsdatum"
@@ -246,14 +254,14 @@ msgstr "Delete"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/replacement.js:64
+#: code:addons/staff_management/static/src/js/replacement.js:69
 #, python-format
 msgid "Do you really want to replace this task ?"
 msgstr "Do you really want to replace this task ?"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/scheduler.js:119
+#: code:addons/staff_management/static/src/js/scheduler.js:124
 #, python-format
 msgid "Edit Assignment"
 msgstr "Edit Assignment"
@@ -274,7 +282,7 @@ msgstr "Endstunde"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/scheduler.js:239
+#: code:addons/staff_management/static/src/js/scheduler.js:244
 #, python-format
 msgid "End hour"
 msgstr "End hour"
@@ -466,7 +474,7 @@ msgstr "Month"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/timeline_base.js:401
+#: code:addons/staff_management/static/src/js/timeline_base.js:431
 #, python-format
 msgid "No data available"
 msgstr "No data available"
@@ -526,6 +534,20 @@ msgid "Options"
 msgstr "Optionen"
 
 #. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/Timeline.xml:36
+#, python-format
+msgid "PDF"
+msgstr "PDF"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/Timeline.xml:31
+#, python-format
+msgid "PDF Today"
+msgstr "PDF Today"
+
+#. module: staff_management
 #: model:ir.actions.act_window,name:staff_management.show_Field
 #: view:staff.pay.push:staff_management.view_staff_pay_push_form
 #: view:staff.pay.push:staff_management.view_staff_pay_push_search
@@ -572,7 +594,21 @@ msgstr "Preis je Rollstuhl"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/scheduler.js:179
+#: code:addons/staff_management/static/src/xml/Timeline.xml:38
+#, python-format
+msgid "Print"
+msgstr "Print"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/xml/Timeline.xml:33
+#, python-format
+msgid "Print Today"
+msgstr "Print Today"
+
+#. module: staff_management
+#. openerp-web
+#: code:addons/staff_management/static/src/js/scheduler.js:184
 #: code:addons/staff_management/static/src/js/timecheck.js:135
 #, python-format
 msgid "Quick assign"
@@ -580,7 +616,7 @@ msgstr "Quick assign"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/scheduler.js:132
+#: code:addons/staff_management/static/src/js/scheduler.js:137
 #, python-format
 msgid "Remove"
 msgstr "Remove"
@@ -625,7 +661,7 @@ msgstr "Anfangsstunde"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/scheduler.js:220
+#: code:addons/staff_management/static/src/js/scheduler.js:225
 #, python-format
 msgid "Start hour"
 msgstr "Start hour"
@@ -641,7 +677,7 @@ msgstr "Anfangsstunde muss zwischen 0 und 24 liegen."
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/scheduler.js:201
+#: code:addons/staff_management/static/src/js/scheduler.js:206
 #: field:staff.authorization,task_id:0
 #: field:staff.scheduler,task_id:0
 #, python-format
@@ -717,7 +753,7 @@ msgstr "Benutzer"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/salary_timeline.js:340
+#: code:addons/staff_management/static/src/js/salary_timeline.js:341
 #, python-format
 msgid "Versed amount:"
 msgstr "Versed amount:"
@@ -761,7 +797,7 @@ msgstr "Arbeitzteit"
 
 #. module: staff_management
 #. openerp-web
-#: code:addons/staff_management/static/src/js/salary_timeline.js:346
+#: code:addons/staff_management/static/src/js/salary_timeline.js:347
 #, python-format
 msgid "Working time:"
 msgstr "Working time:"
