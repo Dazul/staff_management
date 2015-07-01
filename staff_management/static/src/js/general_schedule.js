@@ -136,6 +136,64 @@ openerp_staff_management_general_schedule = function(instance) {
 			this.fields = fv.fields;
 			this.date_field = attrs.date_start;
 		},
+
+		set_button_actions: function(){
+			this._super.apply(this, arguments);
+			var self = this;
+
+			$('.fc-export-buttons').css({'display': 'inline'});
+
+			$('.fc-button-export-pdf').click(function(e){
+				var d = self.get_export_table_data();
+				var title = self.format_date(self.range_start, "dd MMM yyyy");
+				title += ' - ' + self.format_date(self.range_stop, "dd MMM yyyy");
+				self.generate_pdf(d.columns, d.data, 'l', title);
+			});
+			$('.fc-button-export-pdf-today').click(function(e){
+				var d = self.get_export_table_data();
+				var date = new Date();
+				var week_start = self.get_week_start(date);
+				var diff_day = Math.floor((date.getTime() - week_start.getTime())/86400000);
+				var column = diff_day + 1;
+				columns = [];
+				columns.push(d.columns[0]);
+				columns.push(d.columns[column]);
+
+				var date = self.get_week_start(new Date());
+				date.setDate(date.getDate()+diff_day);
+				var title = self.format_date(date, "dd MMM yyyy");
+				self.generate_pdf(columns, d.data, 'p', title);
+			});
+			$('.fc-button-export-print').click(function(e){
+				window.print();
+			});
+			$('.fc-button-export-print-today').click(function(e){
+				var date = new Date();
+				var week_start = self.get_week_start(date);
+				var diff_day = Math.floor((date.getTime() - week_start.getTime())/86400000);
+				var column = diff_day + 1;
+				self.generate_export_table(column);
+				self.before_print_generated = true; // do not erase print html
+				window.print();
+			});
+
+			
+		},
+
+		render_timeline: function(){
+			var self = this;
+			this._super.apply(this, arguments);
+			var today = new Date();
+			today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+			if(this.range_start <= today && today <= this.range_stop){
+				$('.fc-button-export-pdf-today').css({'display': 'inline-block'});
+				$('.fc-button-export-print-today').css({'display': 'inline-block'});
+			}
+			else{
+				$('.fc-button-export-pdf-today').css({'display': 'none'});
+				$('.fc-button-export-print-today').css({'display': 'none'});
+			}
+		},
 		
 		renderCell: function(td, cellDataList){
 			var self = this;

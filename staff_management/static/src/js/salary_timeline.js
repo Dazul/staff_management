@@ -80,6 +80,7 @@ openerp_staff_management_salary_timeline = function(instance) {
 
 		set_button_actions: function() {
 			var self = this;
+			$('.fc-export-buttons').css({'display': 'none'});
 			$('.fc-button-prev-month').click(function(){
 				var firstday = new Date(self.range_start.getFullYear(), self.range_start.getMonth() - 1, 1);
 				var lastday = new Date(firstday.getFullYear(), firstday.getMonth()+1, 0);

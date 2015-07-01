@@ -68,6 +68,11 @@ openerp_staff_management_scheduler = function(instance) {
 			});
 		},
 
+		set_button_actions: function(){
+			this._super.apply(this, arguments);
+			$('.fc-export-buttons').css({'display': 'none'});
+		},
+
 		renderHeaderCellLeft: function(th, lineID){
 			if(lineID == 1){
 				return th.text('Utilisateur');

@@ -5,39 +5,35 @@
 	<data>
 		<template id="assets_backend" name="staff_management assets" inherit_id="web.assets_backend">
 			<xpath expr="." position="inside">
-				<!--
-				<link rel="stylesheet" href="/staff_management/static/src/css/web_fullcalendar.css"/>
-				<link rel="stylesheet" href="/staff_management/static/lib/fullcalendar/css/fullcalendar.css"/>
-
-				<script type="text/javascript" src="/staff_management/static/lib/fullcalendar/js/fullcalendar.js"></script>
-				-->
+				<!-- Staff Management CSS -->
 				<link rel="stylesheet" href="/staff_management/static/src/css/calendar.css"/>
 				<link rel="stylesheet" href="/staff_management/static/src/css/timeline.css"/>
 				<link rel="stylesheet" href="/staff_management/static/src/css/tooltip.css"/>
 				<link rel="stylesheet" href="/staff_management/static/src/css/quickassign.css"/>
+				<link rel="stylesheet" href="/staff_management/static/src/css/print.css"/>
 				
-
+				<!-- Staff Management tooltip -->
 				<script type="text/javascript" src="/staff_management/static/src/js/tooltip.js"></script>
 
+				<!-- External libs -->
 				<script type="text/javascript" src="/staff_management/static/lib/jquery.dataTables.min.js"></script>
 				<script type="text/javascript" src="/staff_management/static/lib/sprintf.min.js"></script>
 				<script type="text/javascript" src="/staff_management/static/lib/trunk8.js"></script>
+				<script type="text/javascript" src="/staff_management/static/lib/jspdf.js"></script>
+				<script type="text/javascript" src="/staff_management/static/lib/jspdf.plugin.autotable.js"></script>
 				
+				<!-- Staff Management internal -->
 				<script type="text/javascript" src="/staff_management/static/src/js/staff_calendar.js"></script>
 				<script type="text/javascript" src="/staff_management/static/src/js/timeline_base.js"></script>
-				
 				<script type="text/javascript" src="/staff_management/static/src/js/personal_schedule.js"></script>
-				
-				
-				
 				<script type="text/javascript" src="/staff_management/static/src/js/calendar_booking.js"></script>
-				
 				<script type="text/javascript" src="/staff_management/static/src/js/general_schedule.js"></script>
 				<script type="text/javascript" src="/staff_management/static/src/js/salary_timeline.js"></script>
 				<script type="text/javascript" src="/staff_management/static/src/js/scheduler.js"></script>
 				<script type="text/javascript" src="/staff_management/static/src/js/timecheck.js"></script>
 				<script type="text/javascript" src="/staff_management/static/src/js/replacement.js"></script>
 				
+				<!-- Staff Management main -->
 				<script type="text/javascript" src="/staff_management/static/src/js/staff_management.js"></script>
 			</xpath>
 		</template>
