@@ -1,3 +1,4 @@
+// TODO - use new odoo9 pattern
 openerp_staff_management_calendar_booking = function(instance) {
 	var _t = instance.web._t; // For text translations
 	

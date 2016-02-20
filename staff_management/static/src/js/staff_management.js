@@ -1,4 +1,5 @@
-
+// TODO - Delete this file
+/*
 openerp.staff_management = function(instance) {
 
 	try {
@@ -25,3 +26,4 @@ openerp.staff_management = function(instance) {
 	}
 
 };
+*/
