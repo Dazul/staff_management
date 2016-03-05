@@ -246,16 +246,16 @@ var GeneralScheduler = Timeline.extend({
 		var self = this;
 
 		th.mouseenter(data, function(evt){
-			userID = evt.data.lineID;
+			var userID = evt.data.lineID;
 
 			if(self.user_information[userID]){
-				info = self.user_information[userID];
+				var info = self.user_information[userID];
 
-				mobile = info.mobile;
+				var mobile = info.mobile;
 				if(mobile == false || mobile == 'false'){
 					mobile = '-';
 				}
-				auths = info.auths.join(', ');
+				var auths = info.auths.join(', ');
 				if(info.auths.length == 0){
 					auths = '-';
 				}

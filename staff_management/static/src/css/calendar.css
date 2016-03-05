@@ -4,6 +4,14 @@
 }
 
 /* left top buttons on the calendar view */
+.staff_calendar{
+	padding-top: 0!important;
+	padding-bottom: 0!important;
+}
+
+.staff_calendar .fc-header{
+	background: #f0eeee;
+}
 .staff_calendar .fc-header .fc-button{
 	margin-top: 10px;
 }

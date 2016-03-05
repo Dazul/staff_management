@@ -7,17 +7,17 @@ var StaffCalendar = require('staff_management.StaffCalendar');
 var PersonalSchedule = StaffCalendar.extend({
 
 	template: "PersonalScheduleView",
-	
+
 	init:function(){
 		this._super.apply(this,arguments);
 		this.options.confirm_on_delete = false;
 	},
-	
+
 	// destroy, restore scheduler fonctions
 	destroy:function(){
 		this._super();
 	},
-	
+
 	get_fc_init_options: function () {
 		//Documentation here : http://arshaw.com/fullcalendar/docs/
 		var self = this;
@@ -56,7 +56,7 @@ var PersonalSchedule = StaffCalendar.extend({
 			}
 		});
 	},
-	
+
 	get_tooltip_content: function(event){
 
 		var div = $('<div>');
@@ -73,20 +73,20 @@ var PersonalSchedule = StaffCalendar.extend({
 	},
 
 	toggle_availabilities: function(start_date, end_date){
-		start_day = start_date;
-		stop_day = end_date;
+		var start_day = start_date;
+		var stop_day = end_date;
 		if (end_date == null || _.isUndefined(end_date)) {
 			stop_day = start_day;
-		}			
-		
+		}
+
 		for (var d=start_day; d<=stop_day; d.setDate(d.getDate() + 1)){
 			this.toggle_availability(d);
 		}
 	},
-	
+
 	toggle_availability: function(date){
 		var self = this;
-	
+
 		var isAlreadyAnEvent = false;
 		var eventData = {};
 		this.$calendar.fullCalendar('clientEvents', function(event) {
@@ -97,27 +97,27 @@ var PersonalSchedule = StaffCalendar.extend({
 				eventData = event;
 			}
 		});
-		
+
 		if(isAlreadyAnEvent){
 			if(eventData.task_id){
 				this.toggle_replacement(eventData);
 				return;
 			}
 			this.remove_availability(eventData);
-			return;  
+			return;
 		}
-					
-		data = {
+
+		var data = {
 			date: $.fullCalendar.formatDate(date, "yyyy-MM-dd"),
 			name: "Available"
 		};
-		
-			
+
+
 		this.dataset.create(data)
 			.then(function(id) {
 				self.refresh_event(id);
 				self.$calendar.fullCalendar('unselect');
-			}).fail(function(r, event) {				
+			}).fail(function(r, event) {
 				if(self.quick_create_error){
 					event.preventDefault(); // don't show multiple warning messages
 				}
@@ -127,7 +127,7 @@ var PersonalSchedule = StaffCalendar.extend({
 				}
 				self.$calendar.fullCalendar('unselect');
 			});
-		
+
 	},
 
 	event_data_transform: function(evt) {
@@ -149,7 +149,7 @@ var PersonalSchedule = StaffCalendar.extend({
 			var strDate = $.fullCalendar.formatDate(eventData.start, "yyyy-MM-dd");
 			self.$calendar.fullCalendar('unselect');
 			$('.fc-day[data-date|="'+strDate+'"]').removeClass('staff_available');
-		}).fail(function(r, event) {				
+		}).fail(function(r, event) {
 			if(self.quick_create_error){
 				event.preventDefault(); // don't show multiple warning messages
 			}

@@ -1,14 +1,45 @@
-<template> 
-	<t t-name="PersonalScheduleView"> 
+<template>
+    <div t-name="PersonalScheduleView" class="staff_calendar container-fluid o_calendar_container">
+        <div class="row">
+            <div class="o_calendar_view">
+                <div class="o_calendar_buttons"/>
+                <div class="o_calendar_widget" />
+            </div>
+        </div>
+    </div>
+
+    <t t-name="PersonalScheduleView.buttons">
+        <div class="o_calendar_buttons">
+            <button t-if="widget.options.action_buttons !== false &amp;&amp; widget.is_action_enabled('create') &amp;&amp; ((widget.field_widget &amp;&amp; (widget.field_widget.open_popup_add)) || (!widget.field_widget))" type="button" class="o_calendar_button_new o_highlight"><t t-esc="widget.options.create_text || _t('Create')"/></button>
+
+            <button class="o_calendar_button_prev btn btn-sm btn-primary"><span class="fa fa-arrow-left"/></button>
+            <button class="o_calendar_button_today btn btn-sm btn-primary">Today</button>
+            <button class="o_calendar_button_next btn btn-sm btn-primary"><span class="fa fa-arrow-right"/></button>
+
+        </div>
+    </t>
+
+    <div t-name="PersonalScheduleView.quick_create" class="o_calendar_quick_create">
+        <div class="form-group">
+            <label for='name' class='control-label'>Summary:</label>
+            <input type='text' name='name'/>
+        </div>
+    </div>
+</template>
+
+
+<!--
+<template>
+	<t t-name="PersonalScheduleView">
 		<table cellspacing="0" cellpadding="0" border="0" width="100%" class="staff_calendar">
 			<tr>
 				<td width="100%">
-					<div class="oe_calendar_view">        
+					<div class="oe_calendar_view">
 						<div class="oe_calendar_widget" />
 						<div class="oe_calendar_buttons"/>
-						<div class="oe_calendar_qc_placeholder"/>                    
-					</div>                
-				</td>          
+						<div class="oe_calendar_qc_placeholder"/>
+					</div>
+				</td>
 			</tr>
 		</table>
 
@@ -22,6 +53,7 @@
 
 	</t>
 </template>
+-->
 
 <!--
 <template>

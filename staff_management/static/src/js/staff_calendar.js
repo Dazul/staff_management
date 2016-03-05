@@ -6,6 +6,7 @@ var time = require('web.time');
 var CalendarView = require('web_calendar.CalendarView');
 
 var _t = core._t;
+var QWeb = core.qweb;
 
 // TODO - Check differences between old get_fc_defaultOptions & new
 /*
@@ -28,7 +29,7 @@ function get_fc_defaultOptions() {
 		weekNumbers: false,
 		axisFormat : shortTimeformat.replace(/:mm/,'(:mm)'),
 		timeFormat : {
-			// for agendaWeek and agendaDay               
+			// for agendaWeek and agendaDay
 			agenda: shortTimeformat + '{ - ' + shortTimeformat + '}', // 5:00 - 6:30
 			// for all other views
 			'': shortTimeformat.replace(/:mm/,'(:mm)')  // 7pm
@@ -107,18 +108,53 @@ var StaffCalendar = CalendarView.extend({
 	init:function(){
 		this._super.apply(this,arguments);
 	},
-	
+
 	// No slidebar
 	init_calendar: function() {
 		var self = this;
-		
+
 		self.$calendar.fullCalendar(self.get_fc_init_options());
 
-		$('.fc-button-next').empty().text('Mois').append($('<span>').addClass('fc-text-arrow').text('»'));
-		$('.fc-button-prev').empty().append($('<span>').addClass('fc-text-arrow').text('«')).append('Mois');
-		
+		//$('.fc-button-next').empty().text('Mois').append($('<span>').addClass('fc-text-arrow').text('»'));
+		//$('.fc-button-prev').empty().append($('<span>').addClass('fc-text-arrow').text('«')).append('Mois');
+
 		return $.when();
 	},
+
+	/**
+     * Render the buttons according to the CalendarView.buttons template and
+     * add listeners on it.
+     * Set this.$buttons with the produced jQuery element
+     * @param {jQuery} [$node] a jQuery node where the rendered buttons should be inserted
+     * $node may be undefined, in which case the ListView inserts them into this.options.$buttons
+     * or into a div of its template
+     */
+    render_buttons: function($node) {
+    	// TODO - use new buttons
+    	/*
+        var self = this;
+        this.$buttons = $(QWeb.render("PersonalScheduleView.buttons", {'widget': this}));
+        this.$buttons.on('click', 'button.o_calendar_button_new', function () {
+            self.dataset.index = null;
+            self.do_switch_view('form');
+        });
+
+        var bindCalendarButton = function(selector, arg1, arg2) {
+            self.$buttons.on('click', selector, _.bind(self.$calendar.fullCalendar, self.$calendar, arg1, arg2));
+        }
+        bindCalendarButton('.o_calendar_button_prev', 'prev');
+        bindCalendarButton('.o_calendar_button_today', 'today');
+        bindCalendarButton('.o_calendar_button_next', 'next');
+
+        this.$buttons.find('.o_calendar_button_' + this.mode).addClass('active');
+        $node = $node || this.options.$buttons;
+        if ($node) {
+            this.$buttons.appendTo($node);
+        } else {
+            this.$('.o_calendar_buttons').replaceWith(this.$buttons);
+        }
+        */
+    },
 
 	// Format number for hour
 	FormatNumberLength: function(num, length) {
@@ -135,11 +171,11 @@ var StaffCalendar = CalendarView.extend({
 		if(hour == undefined || isNaN(hour)){
 			return '00:00';
 		}
-		var h = Math.floor(hour);          
+		var h = Math.floor(hour);
 		var m = Math.round((hour-h) * 60);
 		return this.FormatNumberLength(h, 2)+':'+this.FormatNumberLength(m, 2);
 	},
-	
+
 	format_hour_duration: function(hour_start, hour_end){
 		hour_start = parseFloat(hour_start);
 		hour_end = parseFloat(hour_end);
@@ -151,12 +187,12 @@ var StaffCalendar = CalendarView.extend({
 		}
 		return this.convert_hour(hour_end-hour_start);
 	},
-	
+
 	get_fc_init_options: function () {
 		//Documentation here : http://arshaw.com/fullcalendar/docs/
 		var self = this;
 		return  $.extend({}, get_fc_defaultOptions(), {
-			
+
 			defaultView: "month",
 			header: {
 				left: 'prev,today,next',
@@ -170,7 +206,24 @@ var StaffCalendar = CalendarView.extend({
 			disableDragging: true,
 
 			// callbacks
+			viewRender: function(view) {
+                var mode = (view.name == "month")? "month" : ((view.name == "agendaWeek") ? "week" : "day");
+                if(self.$buttons !== undefined) {
+                    self.$buttons.find('.active').removeClass('active');
+                    self.$buttons.find('.o_calendar_button_' + mode).addClass('active');
+                }
 
+                var title = self.title + ' (' + ((mode === "week")? _t("Week ") : "") + view.title + ")";
+                //self.set({'title': title});
+
+                self.$calendar.fullCalendar('option', 'height', Math.max(290, parseInt(self.$('.o_calendar_view').height())));
+
+                setTimeout(function() {
+                    var $fc_view = self.$calendar.find('.fc-view');
+                    var width = $fc_view.find('> table').width();
+                    $fc_view.find('> div').css('width', (width > $fc_view.width())? width : '100%'); // 100% = fullCalendar default
+                }, 0);
+            },
 			eventDrop: function (event, _day_delta, _minute_delta, _all_day, _revertFunc) {
 				var data = self.get_event_data(event);
 				self.proxy('update_record')(event._id, data); // we don't revert the event, but update it.
@@ -204,13 +257,16 @@ var StaffCalendar = CalendarView.extend({
 			unselectAuto: false,
 			height: $('.oe_view_manager_body').height() - 5,
 			handleWindowResize: true,
+			windowResize: function() {
+                self.$calendar.fullCalendar('render');
+            }/*,
 			windowResize: function(view) {
 				self.$calendar.fullCalendar('option', 'height', $('.oe_view_manager_body').height() - 5);
-			}
+			}*/
 
 		});
 	},
-	
+
 	zeroPad: function(num, places) {
 		var zero = places - num.toString().length + 1;
 		return Array(+(zero > 0 && zero)).join("0") + num;
@@ -245,7 +301,7 @@ openerp_staff_management_calendar = function(instance) {
 			weekNumbers: false,
 			axisFormat : shortTimeformat.replace(/:mm/,'(:mm)'),
 			timeFormat : {
-				// for agendaWeek and agendaDay               
+				// for agendaWeek and agendaDay
 				agenda: shortTimeformat + '{ - ' + shortTimeformat + '}', // 5:00 - 6:30
 				// for all other views
 				'': shortTimeformat.replace(/:mm/,'(:mm)')  // 7pm
@@ -282,16 +338,16 @@ openerp_staff_management_calendar = function(instance) {
 		init:function(){
 			this._super.apply(this,arguments);
 		},
-		
+
 		// No slidebar
 		init_calendar: function() {
 			var self = this;
-			
+
 			self.$calendar.fullCalendar(self.get_fc_init_options());
 
 			$('.fc-button-next').empty().text('Mois').append($('<span>').addClass('fc-text-arrow').text('»'));
 			$('.fc-button-prev').empty().append($('<span>').addClass('fc-text-arrow').text('«')).append('Mois');
-			
+
 			return $.when();
 		},
 
@@ -303,18 +359,18 @@ openerp_staff_management_calendar = function(instance) {
 			}
 			return r;
 		},
-	
+
 		// convert hour from 9.5 to 09:30
 		format_hour: function(hour){
 			hour = parseFloat(hour);
 			if(hour == undefined || isNaN(hour)){
 				return '00:00';
 			}
-			var h = Math.floor(hour);          
+			var h = Math.floor(hour);
 			var m = Math.round((hour-h) * 60);
 			return this.FormatNumberLength(h, 2)+':'+this.FormatNumberLength(m, 2);
 		},
-		
+
 		format_hour_duration: function(hour_start, hour_end){
 			hour_start = parseFloat(hour_start);
 			hour_end = parseFloat(hour_end);
@@ -326,12 +382,12 @@ openerp_staff_management_calendar = function(instance) {
 			}
 			return this.convert_hour(hour_end-hour_start);
 		},
-		
+
 		get_fc_init_options: function () {
 			//Documentation here : http://arshaw.com/fullcalendar/docs/
 			var self = this;
 			return  $.extend({}, get_fc_defaultOptions(), {
-				
+
 				defaultView: "month",
 				header: {
 					left: 'prev,today,next',
@@ -385,12 +441,12 @@ openerp_staff_management_calendar = function(instance) {
 
 			});
 		},
-		
+
 		zeroPad: function(num, places) {
 			var zero = places - num.toString().length + 1;
 			return Array(+(zero > 0 && zero)).join("0") + num;
 		}
-		
+
 	});
 
 };
