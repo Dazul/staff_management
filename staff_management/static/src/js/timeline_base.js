@@ -91,7 +91,6 @@ var Timeline = View.extend({
 	},
 
 	view_loading: function (fv) {
-		console.log('view loading!!!');
 		var self = this;
 
 		this.$('.fc-header-left .fc-button').hover(
