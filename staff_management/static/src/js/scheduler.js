@@ -4,7 +4,10 @@ odoo.define('staff_management.Scheduler', function (require) {
 var core = require('web.core');
 var time = require('web.time');
 var Model = require('web.DataModel');
+var form_common = require('web.form_common');
 var GeneralScheduler = require('staff_management.GeneralScheduler');
+
+var _t = core._t;
 
 var Scheduler = GeneralScheduler.extend({
 	init:function(parent, dataset, view_id, options){
@@ -109,9 +112,6 @@ var Scheduler = GeneralScheduler.extend({
 	},
 
 	cellClicked: function(lineID, date, cellDataList){
-		// TODO - Check how to use FormOpenPopup
-		alert('not ready');
-		/*
 		var self = this;
 		if(cellDataList.length == 1){
 
@@ -124,35 +124,31 @@ var Scheduler = GeneralScheduler.extend({
 
 			var evt = cellDataList[0]['event'];
 
-			var pop = new instance.web.form.FormOpenPopup(this);
-			pop.show_element(this.dataset.model, evt.id, this.dataset.get_context(), {
-				title: _t("Edit Assignment"),
+			var dialog = new form_common.FormViewDialog(this, {
+				res_model: this.dataset.model,
 				res_id: evt.id,
-				target: 'new',
-				readonly:false,
+				context: this.dataset.get_context(),
+				title: _t("Edit Assignment"),
+				view_id: +this.open_popup_action,
+				readonly: false,
+				buttons: [
+					{text: _t("Save"), classes: 'btn-primary', close: true, click: function() {
+						this.view_form.save();
+					}},
+					{text: _t("Remove"), close: true, click: function() {
+						self.dataset.write(evt.id, {'task_id': false}, {}).done(function() {
+							self.refresh_events();
+						});
+					}},
+					{text: _t("Close"), close: true}
+				],
 				write_function: function(id, data, _options) {
 					return self.dataset.write(id, data, {}).done(function() {
 						self.refresh_events();
 					});
-				},
-			});
-
-			var form_controller = pop.view_form;
-			form_controller.on("load_record", self, function(){
-				button_remove = _.str.sprintf("<button class='oe_button oe_bold removeme'><span> %s </span></button>",_t("Remove"));
-
-				pop.$el.closest(".modal").find(".modal-footer").prepend(button_remove);
-
-				$('.removeme').click(function() {
-					$('.oe_form_button_cancel').trigger('click');
-					self.dataset.write(evt.id, {'task_id': false}, {}).done(function() {
-						self.refresh_events();
-					});
-				});
-			});
-
+				}
+			}).open();
 		}
-		*/
 	},
 
 	view_loading: function (fv) {
