@@ -15,12 +15,12 @@ var SalaryTimeline = Timeline.extend({
 
 	init:function(parent, dataset, view_id, options){
 		this._super.apply(this, arguments);
-		
+
 		this.dataset = dataset;
-		
+
 		this.view_id = view_id;
 		this.view_type = 'calendar';
-		
+
 		this.set_interval('day', 1);
 		this.set_nbrOfHeaderLines(1);
 		this.set_nbrOfRightCells(2);
@@ -35,13 +35,13 @@ var SalaryTimeline = Timeline.extend({
 
 	get_range_domain: function(domain, start, end) {
 		var format = time.date_to_str;
-		
+
 		var extend_domain = [[this.date_field, '>=', format(start)],
 				 [this.date_field, '<=', format(end)]];
 
 		return new CompoundDomain(domain, extend_domain);
 	},
-	
+
 	do_search: function(domain, context, _group_by) {
 		this._super.apply(this, arguments);
 		var self = this;
@@ -79,29 +79,29 @@ var SalaryTimeline = Timeline.extend({
 		if (!attrs.date_start) {
 			throw new Error("Calendar view has not defined 'date_start' attribute.");
 		}
-	
+
 		this.fields = fv.fields;
 		this.date_field = attrs.date_start;
 	},
 
 	set_button_actions: function() {
 		var self = this;
-		$('.fc-export-buttons').css({'display': 'none'});
-		$('.fc-button-prev-month').click(function(){
+		this.$('.fc-export-buttons').css({'display': 'none'});
+		this.$('.fc-button-prev-month').click(function(){
 			var firstday = new Date(self.range_start.getFullYear(), self.range_start.getMonth() - 1, 1);
 			var lastday = new Date(firstday.getFullYear(), firstday.getMonth()+1, 0);
 			self.update_range_dates(firstday, lastday);
 		});
-		$('.fc-button-next-month').click(function(){
+		this.$('.fc-button-next-month').click(function(){
 			var firstday = new Date(self.range_start.getFullYear(), self.range_start.getMonth() + 1, 1);
 			var lastday = new Date(firstday.getFullYear(), firstday.getMonth()+1, 0);
 			self.update_range_dates(firstday, lastday);
 		});
 
-		$('.fc-button-prev-week').css({'display': 'none'});
-		$('.fc-button-next-week').css({'display': 'none'});
+		this.$('.fc-button-prev-week').css({'display': 'none'});
+		this.$('.fc-button-next-week').css({'display': 'none'});
 
-		$('.fc-button-today').click(function(){
+		this.$('.fc-button-today').click(function(){
 			if(!$(this).hasClass('fc-state-disabled')){
 				var now = new Date();
 				var firstday = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -149,7 +149,7 @@ var SalaryTimeline = Timeline.extend({
 		var self = this;
 		if(cellDataList.length == 1){
 			var data = cellDataList[0].event;
-			
+
 			var sumPositive = 0;
 			var sumNegative = 0;
 			var sumTimework = 0;
@@ -302,13 +302,13 @@ var SalaryTimeline = Timeline.extend({
 		if(this.range_stop > Date.today()){
 			date = Date.today();
 		}
-		
+
 		this.dataset.call("get_form_context",[userID, format(date)]).then(function(context) {
 			var defaults = {};
 			_.each(context, function(val, field_name) {
 				defaults['default_' + field_name] = val;
 			});
-			
+
 
 			var pop = new instance.web.form.FormOpenPopup(self);
 			var pop_infos = self.get_form_popup_infos();
@@ -318,7 +318,7 @@ var SalaryTimeline = Timeline.extend({
 				view_id: pop_infos.view_id,
 			});
 			pop.on('closed', self, function() {
-				
+
 			});
 			pop.on('create_completed', self, function(id) {
 				self.refresh_events();

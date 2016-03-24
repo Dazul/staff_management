@@ -18,12 +18,12 @@ var GeneralScheduler = Timeline.extend({
 
 	init:function(parent, dataset, view_id, options){
 		this._super.apply(this, arguments);
-		
+
 		this.dataset = dataset;
-		
+
 		this.view_id = view_id;
 		this.view_type = 'calendar';
-		
+
 		this.set_interval('day', 1);
 		this.set_nbrOfHeaderLines(1);
 
@@ -33,37 +33,37 @@ var GeneralScheduler = Timeline.extend({
 
 		this.set_range_dates(firstday, lastday);
 	},
-	
+
 	get_range_domain: function(domain, start, end) {
 		var format = time.date_to_str;
-		
+
 		var extend_domain = [[this.date_field, '>=', format(start)],
 				 [this.date_field, '<=', format(end)]];
 
 		return new CompoundDomain(domain, extend_domain);
 	},
-	
+
 	do_search: function(domain, context, _group_by) {
 		this._super.apply(this, arguments);
 		var self = this;
-		
+
 		this.dataset.read_slice(_.keys(this.fields), {
 			offset: 0,
 			domain: this.get_range_domain(domain, this.range_start, this.range_stop),
 			context: context,
 		}).done(function(events) {
-		
+
 			var lines = {};
-			
+
 			_.each(events, function(e){
 
 				var event_date = time.auto_str_to_date(e[self.date_field]);
-				
+
 				var event_data = {
 					'date': event_date,
 					'event': e,
 				};
-				
+
 				var lid = e['user_id'][0];
 				if(lid in lines){
 					lines[lid]['cells'].push(event_data);
@@ -75,13 +75,13 @@ var GeneralScheduler = Timeline.extend({
 						'username': e['user_id'][1],
 					};
 				}
-				
+
 			});
 
 			if(!context['usershow'] && !context['default_task_id']){
-				self.load_all_users(lines, domain);	
+				self.load_all_users(lines, domain);
 			}
-			else{			 
+			else{
 				self.update_datas(lines);
 			}
 
@@ -107,7 +107,7 @@ var GeneralScheduler = Timeline.extend({
 		// load all other users
 		var Users = new Model('res.users');
 		// check if there is a filter on user
-		var user_domain = new Array();			
+		var user_domain = new Array();
 		for(i=0 ; i<domain.length ; i++){
 			if(domain[i][0] == 'user_id'){
 				if($.isNumeric(domain[i][2])){
@@ -119,7 +119,7 @@ var GeneralScheduler = Timeline.extend({
 			}
 		}
 		user_domain.push(['active', '=', true]);
-		
+
 		Users.query(['id', 'name']).filter(user_domain).order_by('name').all().then(function(users){
 			for(var i=0 ; i<users.length ; i++){
 				var u = users[i];
@@ -135,14 +135,14 @@ var GeneralScheduler = Timeline.extend({
 		});
 
 	},
-	
+
 	view_loading: function (fv) {
 		this._super.apply(this,arguments);
 		var attrs = fv.arch.attrs;
 		if (!attrs.date_start) {
 			throw new Error("Calendar view has not defined 'date_start' attribute.");
 		}
-	
+
 		this.fields = fv.fields;
 		this.date_field = attrs.date_start;
 	},
@@ -151,15 +151,15 @@ var GeneralScheduler = Timeline.extend({
 		this._super.apply(this, arguments);
 		var self = this;
 
-		$('.fc-export-buttons').css({'display': 'inline'});
+		this.$('.fc-export-buttons').css({'display': 'inline'});
 
-		$('.fc-button-export-pdf').click(function(e){
+		this.$('.fc-button-export-pdf').click(function(e){
 			var d = self.get_export_table_data();
 			var title = self.format_date(self.range_start, "dd MMM yyyy");
 			title += ' - ' + self.format_date(self.range_stop, "dd MMM yyyy");
 			self.generate_pdf(d.columns, d.data, 'l', title);
 		});
-		$('.fc-button-export-pdf-today').click(function(e){
+		this.$('.fc-button-export-pdf-today').click(function(e){
 			var d = self.get_export_table_data();
 			var date = new Date();
 			var week_start = self.get_week_start(date);
@@ -174,10 +174,10 @@ var GeneralScheduler = Timeline.extend({
 			var title = self.format_date(date, "dd MMM yyyy");
 			self.generate_pdf(columns, d.data, 'p', title);
 		});
-		$('.fc-button-export-print').click(function(e){
+		this.$('.fc-button-export-print').click(function(e){
 			window.print();
 		});
-		$('.fc-button-export-print-today').click(function(e){
+		this.$('.fc-button-export-print-today').click(function(e){
 			var date = new Date();
 			var week_start = self.get_week_start(date);
 			var diff_day = Math.floor((date.getTime() - week_start.getTime())/86400000);
@@ -187,7 +187,7 @@ var GeneralScheduler = Timeline.extend({
 			window.print();
 		});
 
-		
+
 	},
 
 	render_timeline: function(){
@@ -196,15 +196,15 @@ var GeneralScheduler = Timeline.extend({
 		var today = new Date();
 		today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 		if(this.range_start <= today && today <= this.range_stop){
-			$('.fc-button-export-pdf-today').css({'display': 'inline-block'});
-			$('.fc-button-export-print-today').css({'display': 'inline-block'});
+			this.$('.fc-button-export-pdf-today').css({'display': 'inline-block'});
+			this.$('.fc-button-export-print-today').css({'display': 'inline-block'});
 		}
 		else{
-			$('.fc-button-export-pdf-today').css({'display': 'none'});
-			$('.fc-button-export-print-today').css({'display': 'none'});
+			this.$('.fc-button-export-pdf-today').css({'display': 'none'});
+			this.$('.fc-button-export-print-today').css({'display': 'none'});
 		}
 	},
-	
+
 	renderCell: function(td, cellDataList){
 		var self = this;
 		if(cellDataList.length == 1){
@@ -237,7 +237,8 @@ var GeneralScheduler = Timeline.extend({
 
 		return div;
 	},
-	
+
+
 	renderHeaderCellLeft: function(th, lineID){
 		return th.text('Utilisateur');
 	},
@@ -265,11 +266,11 @@ var GeneralScheduler = Timeline.extend({
 
 		}).mouseleave(/*instance.staff_management.tooltip.hide*/);
 
-			
+
 
 		return th.text(data['username']);
 	},
-	
+
 	renderHeaderCell: function(th, lineID, cdate){
 		th.text(this.format_date(cdate, "ddd dd MMM"));
 		return th;
@@ -279,7 +280,7 @@ var GeneralScheduler = Timeline.extend({
 
 		var txt = this.format_date(date_start, "dd MMM yyyy");
 		txt += ' - ' + this.format_date(date_stop, "dd MMM yyyy");
-		
+
 
 		elmt.text(txt);
 	},
@@ -287,7 +288,7 @@ var GeneralScheduler = Timeline.extend({
 	cellClicked: function(lineID, date, cellDataList){
 		// no click action
 	},
-	
+
 });
 
 core.view_registry.add('calendar_general', GeneralScheduler);

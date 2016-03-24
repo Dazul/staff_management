@@ -28,7 +28,7 @@ var Scheduler = GeneralScheduler.extend({
 		var def_booking = $.Deferred();
 
 		// Get number of assigned on number of availabilities for the month of this.range_start
-		
+
 		var list_userID = [];
 		this.work_ratio = {};
 		for(var i in datas){
@@ -47,7 +47,7 @@ var Scheduler = GeneralScheduler.extend({
 		});
 
 		// Get the number of people in reservation for each days between this.range_start and this.range_stop
-		
+
 		var list_dates = [];
 		this.booking_numbers = {};
 		for(var d = new Date(this.range_start) ; d<=this.range_stop ; d = this.getNextDate(d)){
@@ -55,7 +55,7 @@ var Scheduler = GeneralScheduler.extend({
 			this.booking_numbers[d] = 10;
 		}
 		var booking = new Model('staff.booking');
-		
+
 		booking.call("count_nbr_people",list_dates).then(function(res) {
 			self.booking_numbers = {};
 			for(var d = new Date(self.range_start) ; d<=self.range_stop ; d = self.getNextDate(d)){
@@ -63,7 +63,7 @@ var Scheduler = GeneralScheduler.extend({
 			}
 			def_booking.resolve();
 		});
-		
+
 		// Call the super method when all new data are loaded
 		$.when(def_workratio, def_booking).then(function(){
 			self.update_datas(datas, true);
@@ -72,7 +72,7 @@ var Scheduler = GeneralScheduler.extend({
 
 	set_button_actions: function(){
 		this._super.apply(this, arguments);
-		$('.fc-export-buttons').css({'display': 'none'});
+		this.$('.fc-export-buttons').css({'display': 'none'});
 	},
 
 	renderHeaderCellLeft: function(th, lineID){
@@ -114,14 +114,14 @@ var Scheduler = GeneralScheduler.extend({
 		/*
 		var self = this;
 		if(cellDataList.length == 1){
-			
+
 			if(this.isQuickAssignEnabled()){
 				if(this.quick_asign.isUserIDAuthorized(cellDataList[0].event.user_id[0]) == true){
 					this.apply_quickAssignToEvent(cellDataList[0].event);
 				}
 				return;
 			}
-			
+
 			var evt = cellDataList[0]['event'];
 
 			var pop = new instance.web.form.FormOpenPopup(this);
@@ -140,9 +140,9 @@ var Scheduler = GeneralScheduler.extend({
 			var form_controller = pop.view_form;
 			form_controller.on("load_record", self, function(){
 				button_remove = _.str.sprintf("<button class='oe_button oe_bold removeme'><span> %s </span></button>",_t("Remove"));
-				
+
 				pop.$el.closest(".modal").find(".modal-footer").prepend(button_remove);
-				
+
 				$('.removeme').click(function() {
 					$('.oe_form_button_cancel').trigger('click');
 					self.dataset.write(evt.id, {'task_id': false}, {}).done(function() {
@@ -159,12 +159,12 @@ var Scheduler = GeneralScheduler.extend({
 		this._super.apply(this, arguments);
 		this.load_quickAssign();
 	},
-	
+
 	apply_quickAssignToEvent: function(event){
 		// TODO - refactor method
 		alert('not ready');
 		/*
-		var self = this;			
+		var self = this;
 		var data = {
 			'task_id': this.quick_asign.get_value(),
 			'hour_from': this.quick_asign_hour_start.get_value(),
@@ -175,11 +175,11 @@ var Scheduler = GeneralScheduler.extend({
 			self.refresh_events();
 		});
 		*/
-		
+
 	},
 
 	isQuickAssignEnabled: function(){
-		return $('.quickassignCheckbox').is(':checked');
+		return this.$('.quickassignCheckbox').is(':checked');
 	},
 
 	load_quickAssign: function(){
@@ -289,14 +289,14 @@ return Scheduler;
 		applyQuickAssign: function(){
 			if(this.quickAssignAuth && this.get_value() !== false){
 				$('.staff_assigned,.staff_available').addClass('unselectable');
-				
+
 				for(var i=0 ; i<this.quickAssignAuth.length ; i++){
 					auth_class = 'evt_user_'+this.quickAssignAuth[i].user_id;
 					$('.'+auth_class).removeClass('unselectable');
 				}
 			}
 		},
-		
+
 		isUserIDAuthorized: function(userID){
 			var ret = false;
 			if(this.quickAssignAuth && this.get_value() !== false){
@@ -312,7 +312,7 @@ return Scheduler;
 			}
 			return ret;
 		},
-		
+
 		// change value, reload autorisations
 		internal_set_value: function(value_) {
 			this._super.apply(this, arguments);
@@ -320,21 +320,21 @@ return Scheduler;
 				$('.unselectable').removeClass('unselectable');
 				return;
 			}
-			var authorization = new instance.web.Model('staff.authorization');		
+			var authorization = new instance.web.Model('staff.authorization');
 			var filter = new Array();
 			filter.push(['task_id', '=', this.get_value()]);
-			var self = this;			
+			var self = this;
 			authorization.query(['task_id', 'user_id']).filter(filter).all().then(function(auth){
 				self.quickAssignAuth = auth;
 				self.applyQuickAssign();
 			});
 		},
-		
+
 		// instanciation
 		initialize_field: function() {
 			this.is_started = true;
 			instance.web.form.ReinitializeFieldMixin.initialize_field.call(this);
 		},
-		
+
 	});
 */

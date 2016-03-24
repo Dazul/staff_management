@@ -10,7 +10,7 @@ var _t = core._t;
 
 var Timeline = View.extend({
 	template: "staff_timeline",
-	
+
 	init:function(parent, dataset, view_id, options){
 		this._super.apply(this, arguments);
 
@@ -28,7 +28,7 @@ var Timeline = View.extend({
 			self.beforePrint();
 		};
 	},
-	
+
 	destroy:function(){
 		this._super();
 	},
@@ -39,7 +39,7 @@ var Timeline = View.extend({
 		}
 		this.before_print_generated = false;
 	},
-	
+
 	format_date: function(date, format){
 		return $.fullCalendar.formatDate(date, format, {
 			monthNames: moment.months(),
@@ -64,11 +64,11 @@ var Timeline = View.extend({
 		if(hour == undefined || isNaN(hour)){
 			return '00:00';
 		}
-		var h = Math.floor(hour);          
+		var h = Math.floor(hour);
 		var m = Math.round((hour-h) * 60);
 		return this.FormatNumberLength(h, 2)+':'+this.FormatNumberLength(m, 2);
 	},
-	
+
 	format_hour_duration: function(hour_start, hour_end){
 		hour_start = parseFloat(hour_start);
 		hour_end = parseFloat(hour_end);
@@ -91,19 +91,21 @@ var Timeline = View.extend({
 	},
 
 	view_loading: function (fv) {
+		console.log('view loading!!!');
 		var self = this;
-		$('.fc-header-left .fc-button').hover(
+
+		this.$('.fc-header-left .fc-button').hover(
 			function () {
 				$(this).addClass('fc-state-hover');
-			}, 
+			},
 			function () {
 				$(this).removeClass('fc-state-hover');
 			}
 		);
-		$('.fc-header-right .fc-button').hover(
+		this.$('.fc-header-right .fc-button').hover(
 			function () {
 				$(this).addClass('fc-state-hover');
-			}, 
+			},
 			function () {
 				$(this).removeClass('fc-state-hover');
 			}
@@ -113,32 +115,32 @@ var Timeline = View.extend({
 
 	set_button_actions: function() {
 		var self = this;
-		$('.fc-export-buttons').css({'display': 'none'});
-		$('.fc-button-prev-month').click(function(){
+		this.$('.fc-export-buttons').css({'display': 'none'});
+		this.$('.fc-button-prev-month').click(function(){
 			var firstday = new Date(self.range_stop.getFullYear(), self.range_stop.getMonth() - 1, 1);
 			firstday = self.get_week_start(firstday);
 			var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
 			self.update_range_dates(firstday, lastday);
 		});
-		$('.fc-button-next-month').click(function(){
+		this.$('.fc-button-next-month').click(function(){
 			var firstday = new Date(self.range_stop.getFullYear(), self.range_stop.getMonth() + 1, 1);
 			firstday = self.get_week_start(firstday);
 			var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
 			self.update_range_dates(firstday, lastday);
 		});
 
-		$('.fc-button-prev-week').click(function(){
+		this.$('.fc-button-prev-week').click(function(){
 			var firstday = new Date(self.range_start.getFullYear(), self.range_start.getMonth(), self.range_start.getDate() - 7);
 			var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
 			self.update_range_dates(firstday, lastday);
 		});
-		$('.fc-button-next-week').click(function(){
+		this.$('.fc-button-next-week').click(function(){
 			var firstday = new Date(self.range_start.getFullYear(), self.range_start.getMonth(), self.range_start.getDate() + 7);
 			var lastday = new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate() + 6);
 			self.update_range_dates(firstday, lastday);
 		});
 
-		$('.fc-button-today').click(function(){
+		this.$('.fc-button-today').click(function(){
 			if(!$(this).hasClass('fc-state-disabled')){
 				var now = new Date();
 				var firstday = self.get_week_start(now);
@@ -156,7 +158,7 @@ var Timeline = View.extend({
 		this.interval_mode = interval_mode;
 		this.interval_nbr = interval_nbr;
 	},
-	
+
 	/*
 		datas = [{
 			 'cells': [event_data],
@@ -168,7 +170,7 @@ var Timeline = View.extend({
 		this.datas = datas;
 		this.render_timeline();
 	},
-	
+
 	set_nbrOfHeaderLines: function(nbrOfHeaderLines){
 		this.nbrOfHeaderLines = nbrOfHeaderLines;
 	},
@@ -180,12 +182,12 @@ var Timeline = View.extend({
 	set_nbrOfFooterLines: function(nbrOfFooterLines){
 		this.nbrOfFooterLines = nbrOfFooterLines;
 	},
-	
+
 	set_range_dates: function(date_start, date_stop) {
 		this.range_start = new Date(date_start);
 		this.range_stop = new Date(date_stop);
 	},
-	
+
 	do_search: function(domain, context, _group_by) {
 		this.lastSearch = {
 			'domain': domain,
@@ -198,7 +200,7 @@ var Timeline = View.extend({
 		this.set_range_dates(date_start, date_stop);
 		this.do_search(this.lastSearch.domain, this.lastSearch.context, this.lastSearch._group_by);
 	},
-	
+
 	getNextDate: function(date, index){
 		var index = (typeof index === "undefined") ? 1 : index;
 
@@ -214,7 +216,7 @@ var Timeline = View.extend({
 		}
 		return d;
 	},
-	
+
 	isSameDate: function(d1, d2){
 		var format = "yyyy-MM-dd";
 		if(this.interval_mode == 'month'){
@@ -269,30 +271,30 @@ var Timeline = View.extend({
 
 		var titleElmt = $('.fc-header-title h2');
 		this.renderTitle(titleElmt, this.range_start, this.range_stop);
-		
+
 		var table = $('<table>').attr('width', '100%');
 		var thead = $('<thead>');
 		var tbody = $('<tbody>');
 		var tfoot = $('<tfoot>');
-		
+
 		thead = this.header_rendering(thead);
 		tbody = this.body_rendering(tbody);
 		tfoot = this.footer_rendering(tfoot);
-					
+
 		table.append(thead);
 		table.append(tbody);
 		table.append(tfoot);
 
 		$('.stimeline_table').empty();
 		$('.stimeline_table').append(table);
-		
+
 		this.final_table_rendering(table);
 	},
-	
+
 	header_rendering: function(thead){
-		
+
 		for(var lineID=1 ; lineID<=this.nbrOfHeaderLines ; lineID ++){
-			
+
 			var tr = $('<tr>');
 			if(lineID == 1){
 				tr.addClass('firstHeaderLine');
@@ -303,15 +305,15 @@ var Timeline = View.extend({
 			var th = $('<th>').addClass('stimeline_leftcol');
 			th = this.renderHeaderCellLeft(th, lineID);
 			tr.append(th);
-			
+
 			for(var cdate=this.range_start ; cdate<=this.range_stop ; cdate=this.getNextDate(cdate)){
 				var th = $('<th>');
-				
+
 				th = this.renderHeaderCell(th, lineID, cdate);
-				
+
 				tr.append(th);
 			}
-			
+
 			if(this.nbrOfRightCells){
 				for(var i=1; i<=this.nbrOfRightCells; i++){
 					var th = $('<th>');
@@ -321,43 +323,43 @@ var Timeline = View.extend({
 			}
 
 			thead.append(tr);
-			
+
 		}
 		return thead;
 	},
-	
+
 	body_rendering: function(tbody){
 		var self = this;
 		var line_nbr = 0;
-		
+
 		for(var i in this.datas){
 			var data = this.datas[i];
 			line_nbr ++;
-			
+
 			var tr = $('<tr>');
 			var th = $('<th>').addClass('stimeline_leftcol');
 			th = this.renderCellLeft(th, data);
 			tr.append(th);
-			
+
 			for(var cdate=this.range_start ; cdate<=this.range_stop ; cdate=this.getNextDate(cdate)){
 				var td = $('<td>');
-				
+
 				var cellDataList = [];
 				for(var j=0 ; j<data['cells'].length ; j++){
 					if(this.isSameDate(data['cells'][j]['date'], cdate)){
 						cellDataList.push(data['cells'][j]);
 					}
 				}
-				
+
 				td = this.renderCell(td, cellDataList, cdate);
-				
+
 				td.bind('click', {cellDataList: cellDataList, date: cdate, lineID: i}, function(e){
 					self.cellClicked(e.data.lineID, e.data.date, e.data.cellDataList);
 				});
 
 				tr.append(td);
 			}
-			
+
 			if(this.nbrOfRightCells){
 				for(var i=1; i<=this.nbrOfRightCells; i++){
 					var td = $('<td>');
@@ -365,13 +367,13 @@ var Timeline = View.extend({
 					tr.append(td);
 				}
 			}
-			
+
 			tbody.append(tr);
-			
+
 		}
-		
+
 		this.line_number = line_nbr;
-		
+
 		return tbody;
 	},
 
@@ -379,7 +381,7 @@ var Timeline = View.extend({
 		if(this.nbrOfFooterLines && this.nbrOfFooterLines > 0){
 
 			for(var lineID=1 ; lineID<=this.nbrOfFooterLines ; lineID ++){
-				
+
 				var tr = $('<tr>');
 				if(lineID == 1){
 					tr.addClass('firstFooterLine');
@@ -390,13 +392,13 @@ var Timeline = View.extend({
 				var th = $('<th>').addClass('stimeline_leftcol');
 				th = this.renderFooterCellLeft(th, lineID);
 				tr.append(th);
-				
+
 				for(var cdate=this.range_start ; cdate<=this.range_stop ; cdate=this.getNextDate(cdate)){
 					var td = $('<td>');
-					td = this.renderFooterCell(td, lineID, cdate);						
+					td = this.renderFooterCell(td, lineID, cdate);
 					tr.append(td);
 				}
-				
+
 				if(this.nbrOfRightCells){
 					for(var i=1; i<=this.nbrOfRightCells; i++){
 						var td = $('<td>');
@@ -406,27 +408,27 @@ var Timeline = View.extend({
 				}
 
 				tfoot.append(tr);
-				
+
 			}
 
 		}
 		return tfoot;
 	},
-	
+
 	final_table_rendering: function(table){
-	
+
 		var viewHeight = $('.openerp_webclient_container').height() - $('.announcement_bar').height() - $('.oe_topbar').height() - $('.oe_view_manager_header').height();
-		
-		
+
+
 		var tableHeight = viewHeight - $('.stimeline_header').height();
-		
+
 		var tbodyHeight = tableHeight - $('.stimeline_table thead').height() - $('.stimeline_table tfoot').height() - 10;
-		
+
 		var width = $(window).width() - $('.oe_leftbar').width() - 1;
 		$('.salary_timeline').css({
 			'width': width,
 		});
-	
+
 		var dynamicTable = table.dataTable({
 			"searching": false,
 			"info": false,
@@ -439,30 +441,30 @@ var Timeline = View.extend({
 			},
 			"bSortCellsTop": true,
 		});
-		
+
 		var realTbodyHeight = $('.stimeline_table tbody').height();
 		if(realTbodyHeight < tbodyHeight){
 			var nbrLines = (this.line_number == 0) ? 1 : this.line_number;
 			var tr_height = tbodyHeight / nbrLines - 2;
 			$('.stimeline_table tbody tr').each(function(i, e){
 				$(e).height(tr_height);
-			});	
+			});
 		}
 
 		this.align_cols();
-		
+
 	},
-	
+
 	align_cols: function(){
-		
+
 		var head_tr = $('.stimeline_table .dataTables_scrollHeadInner thead tr'); // get the clone from datatable displayed
 		var body_tr = $('.stimeline_table tbody tr');
 		var foot_tr = $('.stimeline_table .dataTables_scrollFootInner tfoot tr'); // get the clone from datatable displayed
-		
+
 		var tds_head = head_tr.find('th, td');
 		var tds_body = body_tr.find('th, td');
 		var tds_foot = foot_tr.find('th, td');
-					
+
 		var nbr_tds = tds_head.length;
 
 		for(var i=1 ; i<nbr_tds ; i++){
@@ -473,19 +475,19 @@ var Timeline = View.extend({
 			if(tds_foot.eq(i).width() > maxWidth){
 				maxWidth = tds_foot.eq(i).width();
 			}
-			
+
 			maxWidth += 2;
 
 			tds_head.eq(i).css({'width': maxWidth, 'min-width': maxWidth, 'max-width': maxWidth});
 			tds_body.eq(i).css({'width': maxWidth, 'min-width': maxWidth, 'max-width': maxWidth});
 			tds_foot.eq(i).css({'width': maxWidth, 'min-width': maxWidth, 'max-width': maxWidth});
 			//tds_foot.eq(i).width(maxWidth);
-			
+
 		}
-		
+
 	},
-	
-	
+
+
 	generate_export_table: function(column){
 		if(!column){
 			column = -1;

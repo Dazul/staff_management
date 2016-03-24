@@ -15,24 +15,24 @@ var Replacement = GeneralScheduler.extend({
 			'context': context,
 			'_group_by': _group_by
 		};
-		
+
 		this.dataset.read_slice(_.keys(this.fields), {
 			offset: 0,
 			domain: this.get_range_domain(domain, this.range_start, this.range_stop),
 			context: context,
 		}).done(function(events) {
-		
+
 			var lines = {};
-			
+
 			_.each(events, function(e){
 
 				var event_date = instance.web.auto_str_to_date(e[self.date_field]);
-				
+
 				var event_data = {
 					'date': event_date,
 					'event': e,
 				};
-				
+
 				var lid = e['user_id'][0];
 				if(lid in lines){
 					lines[lid]['cells'].push(event_data);
@@ -44,7 +44,7 @@ var Replacement = GeneralScheduler.extend({
 						'username': e['user_id'][1],
 					};
 				}
-				
+
 			});
 
 			self.update_datas(lines);
@@ -54,7 +54,7 @@ var Replacement = GeneralScheduler.extend({
 
 	set_button_actions: function(){
 		this._super.apply(this, arguments);
-		$('.fc-export-buttons').css({'display': 'none'});
+		this.$('.fc-export-buttons').css({'display': 'none'});
 	},
 
 	renderCell: function(td, cellDataList){

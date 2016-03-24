@@ -18,15 +18,15 @@ var TimeCheck = Scheduler.extend({
 		var views = new Model('ir.ui.view');
 		views.query('id').filter([['model', '=', 'staff.scheduler'], ['name', '=', 'timecheck_popup']]).first().then(function(result){
 			self.form_timecheck_id = result.id;
-		});	
-		this._super.apply(this, arguments);	
+		});
+		this._super.apply(this, arguments);
 		this.set_nbrOfHeaderLines(1);
 		this.loadSchedulerData = false;
 	},
 
 	get_range_domain: function(domain, start, end) {
 		var format = time.date_to_str;
-		
+
 		var extend_domain = [
 			[this.date_field, '>=', format(start)],
 			[this.date_field, '<=', format(end)],
@@ -94,12 +94,12 @@ var TimeCheck = Scheduler.extend({
 		var self = this;
 		if(cellDataList.length == 1){
 			var evt = cellDataList[0].event;
-			
+
 			if(this.isQuickAssignEnabled()){
 				this.apply_quickAssignToEvent(evt);
 				return;
 			}
-			
+
 			if(evt.task_id){
 				var pop = new instance.web.form.FormOpenPopup(this);
 				pop.show_element(this.dataset.model, evt.id, this.dataset.get_context(), {
@@ -115,12 +115,12 @@ var TimeCheck = Scheduler.extend({
 					},
 				});
 
-				
+
 			}
 		}
 		*/
 	},
-	
+
 	apply_quickAssignToEvent: function(event){
 		var self = this;
 		var data = {
@@ -131,14 +131,14 @@ var TimeCheck = Scheduler.extend({
 			instance.staff_management.tooltip.hide();
 			self.refresh_events();
 		});
-		
+
 	},
-	
+
 	load_quickAssign: function(){
 		// TODO - refactor method
 		/*
 		var self = this;
-		
+
 		dfm_mine = new instance.web.form.DefaultFieldManager(this);
 		dfm_mine.extend_field_desc({
 			quicktask: {
@@ -172,7 +172,7 @@ var TimeCheck = Scheduler.extend({
 		var td_start = $('<td>').addClass('hidden qa_hide');
 		this.quick_asign_work_time.prependTo(td_start);
 		tr.append(td_start);
-		
+
 		tr.append($('<td>').css({'width': '50%'}));
 
 		input.click(function(){
