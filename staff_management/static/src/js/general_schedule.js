@@ -108,7 +108,7 @@ var GeneralScheduler = Timeline.extend({
 		var Users = new Model('res.users');
 		// check if there is a filter on user
 		var user_domain = new Array();
-		for(i=0 ; i<domain.length ; i++){
+		for(var i=0 ; i<domain.length ; i++){
 			if(domain[i][0] == 'user_id'){
 				if($.isNumeric(domain[i][2])){
 					user_domain.push(['id', domain[i][1], domain[i][2]]);

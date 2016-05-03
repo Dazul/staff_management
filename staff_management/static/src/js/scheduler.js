@@ -7,8 +7,6 @@ var Model = require('web.DataModel');
 var form_common = require('web.form_common');
 var GeneralScheduler = require('staff_management.GeneralScheduler');
 
-var form_common = require('web.form_common');
-
 var _t = core._t;
 
 var Scheduler = GeneralScheduler.extend({
