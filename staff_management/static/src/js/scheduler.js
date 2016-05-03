@@ -7,6 +7,8 @@ var Model = require('web.DataModel');
 var form_common = require('web.form_common');
 var GeneralScheduler = require('staff_management.GeneralScheduler');
 
+var form_common = require('web.form_common');
+
 var _t = core._t;
 
 var Scheduler = GeneralScheduler.extend({
@@ -157,9 +159,6 @@ var Scheduler = GeneralScheduler.extend({
 	},
 
 	apply_quickAssignToEvent: function(event){
-		// TODO - refactor method
-		alert('not ready');
-		/*
 		var self = this;
 		var data = {
 			'task_id': this.quick_asign.get_value(),
@@ -167,11 +166,9 @@ var Scheduler = GeneralScheduler.extend({
 			'hour_to': this.quick_asign_hour_stop.get_value(),
 		};
 		this.dataset.write(event.id, data, {}).done(function() {
-			instance.staff_management.tooltip.hide();
+			//instance.staff_management.tooltip.hide();
 			self.refresh_events();
 		});
-		*/
-
 	},
 
 	isQuickAssignEnabled: function(){
@@ -179,8 +176,6 @@ var Scheduler = GeneralScheduler.extend({
 	},
 
 	load_quickAssign: function(){
-		// TODO - refactor method
-		/*
 		var self = this;
 
 		var table = $('<table>').addClass('quickassign');
@@ -191,13 +186,15 @@ var Scheduler = GeneralScheduler.extend({
 		td.append($('<label>').attr('for', 'quickassignInput').text(_t('Quick assign')));
 		tr.append(td);
 
-		dfm_mine = new instance.web.form.DefaultFieldManager(this);
+		var dfm_mine = new form_common.DefaultFieldManager(self);
 		dfm_mine.extend_field_desc({
 			quicktask: {
 				relation: "account.analytic.account",
 			},
 		});
-		this.quick_asign = new instance.staff_management.QuickAssign(dfm_mine, // task select
+
+		var QuickAssignFloat = core.form_widget_registry.get('quick_assign');
+		this.quick_asign = new QuickAssignFloat(dfm_mine, // task select
 			{
 			attrs: {
 				name: "quicktask",
@@ -216,7 +213,9 @@ var Scheduler = GeneralScheduler.extend({
 		this.quick_asign.prependTo(td_task);
 		tr.append(td_task);
 
-		this.quick_asign_hour_start = new instance.web.form.FieldFloat(dfm_mine, // start hour
+		var FieldFloat = core.form_widget_registry.get('float');
+
+		this.quick_asign_hour_start = new FieldFloat(dfm_mine, // start hour
 			{
 			attrs: {
 				name: "hour_start",
@@ -235,7 +234,7 @@ var Scheduler = GeneralScheduler.extend({
 		this.quick_asign_hour_start.prependTo(td_start);
 		tr.append(td_start);
 
-		this.quick_asign_hour_stop = new instance.web.form.FieldFloat(dfm_mine, // end hour
+		this.quick_asign_hour_stop = new FieldFloat(dfm_mine, // end hour
 			{
 			attrs: {
 				name: "hour_start",
@@ -267,8 +266,7 @@ var Scheduler = GeneralScheduler.extend({
 		});
 
 		table.append(tr);
-		$('.stimeline_header').append(table);
-		*/
+		this.$('.stimeline_header').append(table);
 	}
 });
 
@@ -276,61 +274,3 @@ core.view_registry.add('calendar_scheduler', Scheduler);
 
 return Scheduler;
 });
-
-// TODO - Refactor QuickAssign
-/*
-	// extend a FieldMany2One for the quick assign function
-	instance.staff_management.QuickAssign = instance.web.form.FieldMany2One.extend({
-		// color the cells
-		applyQuickAssign: function(){
-			if(this.quickAssignAuth && this.get_value() !== false){
-				$('.staff_assigned,.staff_available').addClass('unselectable');
-
-				for(var i=0 ; i<this.quickAssignAuth.length ; i++){
-					auth_class = 'evt_user_'+this.quickAssignAuth[i].user_id;
-					$('.'+auth_class).removeClass('unselectable');
-				}
-			}
-		},
-
-		isUserIDAuthorized: function(userID){
-			var ret = false;
-			if(this.quickAssignAuth && this.get_value() !== false){
-				for(var i in this.quickAssignAuth){
-					if(this.quickAssignAuth[i].user_id[0] == userID){
-						ret = true;
-						break;
-					}
-				}
-			}
-			else{
-				ret = true; // Allow to remove an assignation quickly.
-			}
-			return ret;
-		},
-
-		// change value, reload autorisations
-		internal_set_value: function(value_) {
-			this._super.apply(this, arguments);
-			if(value_ === false){
-				$('.unselectable').removeClass('unselectable');
-				return;
-			}
-			var authorization = new instance.web.Model('staff.authorization');
-			var filter = new Array();
-			filter.push(['task_id', '=', this.get_value()]);
-			var self = this;
-			authorization.query(['task_id', 'user_id']).filter(filter).all().then(function(auth){
-				self.quickAssignAuth = auth;
-				self.applyQuickAssign();
-			});
-		},
-
-		// instanciation
-		initialize_field: function() {
-			this.is_started = true;
-			instance.web.form.ReinitializeFieldMixin.initialize_field.call(this);
-		},
-
-	});
-*/
