@@ -18,16 +18,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, fields
+from openerp import api, fields, models
 
-class staff_task_accounts(orm.Model):
+
+class staff_task_accounts(models.Model):
 	_name="account.analytic.account"
 	_inherit="account.analytic.account"
 	_rec_name = 'name'
-	
-	
-	#Search the datas in database.
-	def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=100):
+
+	@api.model
+	def name_search(self, name='', args=None, operator='ilike', limit=100):
 		user_id = None
 		#Control if the domain user_id_for_task is set
 		for arg in args:
@@ -36,17 +36,15 @@ class staff_task_accounts(orm.Model):
 				break
 		#If user_id is none, the domain is not set. So return the parent without changes.
 		if user_id is None:
-			return super(staff_task_accounts, self).name_search(cr, user, name, args, operator, context, limit)
+			return super(staff_task_accounts, self).name_search(name, args, operator, limit)
 		#Read the datas, and do the filter befor send it to JavaScript
-		records = super(staff_task_accounts, self).name_search(cr, user, name, None, operator, context, limit)
+		records = super(staff_task_accounts, self).name_search(name, None, operator, limit)
 		goodValues = []
-		#Get the authorizations
-		obj = self.pool.get('staff.authorization')
 		#If the user is authorized to do a task, add it to the return list
 		for record in records:
-			ids = obj.search(cr, user, [('user_id','=',user_id),('task_id','=',record[0])])
+			ids = self.env['staff.authorization'].search([('user_id','=',user_id),('task_id','=',record[0])])
 			if len(ids) != 0:
 				goodValues.append(record)
 		return goodValues
-	
+
 staff_task_accounts()
