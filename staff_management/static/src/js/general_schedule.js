@@ -213,7 +213,6 @@ var GeneralScheduler = Timeline.extend({
 			if(evt.task_id){
 				td.addClass('staff_assigned');
 				td.text(this.format_hour(evt.hour_from)+' '+evt.task_id[1]);
-				// TODO - Check tooltip
 				td.mouseenter(evt, function(evt){
 					Tooltip.show($(this), self.get_tooltip_content(evt.data));
 				}).mouseleave(Tooltip.hide);
@@ -261,10 +260,10 @@ var GeneralScheduler = Timeline.extend({
 					auths = '-';
 				}
 
-				//instance.staff_management.tooltip.show_left($(this), '<div><span style="font-weight: bold;">'+info.name+'</span>'+'</div><div style="height: 130px;"><img src="data:image/png;base64,'+info.image+'"/></div>'+'<div>'+mobile+'</div><div>'+auths+'</div>');
+				Tooltip.show_left($(this), '<div><span style="font-weight: bold;">'+info.name+'</span>'+'</div><div style="height: 130px;"><img src="data:image/png;base64,'+info.image+'"/></div>'+'<div>'+mobile+'</div><div>'+auths+'</div>');
 			}
 
-		}).mouseleave(/*instance.staff_management.tooltip.hide*/);
+		}).mouseleave(Tooltip.hide);
 
 
 

@@ -1,10 +1,10 @@
 <template>
 <t t-name="staff_timeline">
-	
+
 	<div class="staff_timeline fc fc-ltr oe_calendar_view">
-	
+
 		<div class="stimeline_header">
-			
+
 			<table class="fc-header" style="width:100%">
 				<tbody>
 					<tr>
@@ -43,13 +43,13 @@
 					</tr>
 				</tbody>
 			</table>
-			
+
 		</div>
-		
+
 		<div class="stimeline_table">
-							
+
 		</div>
-	
+
 		<div class="staff_tooltip">
 			<div class="staff_tooltip_content"></div>
 			<div class="staff_tooltip_arrow">
@@ -65,7 +65,7 @@
 			</div>
 			<div class="staff_tooltip_left_content"></div>
 		</div>
-	
+
 	</div>
 
 </t>

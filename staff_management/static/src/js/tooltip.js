@@ -3,7 +3,7 @@ odoo.define('staff_management.Tooltip', function (require) {
 
 var core = require('web.core');
 
-var Tooltip = core.Class.extend({
+var Tooltip = {
 	min_width: 200,
 	max_width: 400,
 
@@ -118,7 +118,7 @@ var Tooltip = core.Class.extend({
 
 	},
 
-});
+};
 
 return Tooltip;
 });

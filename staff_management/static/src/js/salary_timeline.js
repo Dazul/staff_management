@@ -6,6 +6,7 @@ var data = require('web.data');
 var time = require('web.time');
 var Model = require('web.DataModel');
 var Timeline = require('staff_management.Timeline');
+var Tooltip = require('staff_management.Tooltip');
 
 var CompoundDomain = data.CompoundDomain;
 
@@ -277,12 +278,9 @@ var SalaryTimeline = Timeline.extend({
 			'sumTimework': sumTimework,
 		};
 
-		// TODO - refactor Tooltip
-		/*
 		td.mouseenter(tooltip_data, function(evt){
-			instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
-		}).mouseleave(instance.staff_management.tooltip.hide);
-		*/
+			Tooltip.show($(this), self.get_tooltip_content(evt.data));
+		}).mouseleave(Tooltip.hide);
 	},
 
 

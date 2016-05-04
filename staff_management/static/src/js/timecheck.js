@@ -6,6 +6,7 @@ var data = require('web.data');
 var time = require('web.time');
 var Model = require('web.DataModel');
 var Scheduler = require('staff_management.Scheduler');
+var Tooltip = require('staff_management.Tooltip');
 
 var CompoundDomain = data.CompoundDomain;
 
@@ -52,8 +53,8 @@ var TimeCheck = Scheduler.extend({
 				// TODO - Refactor Tooltip
 				/*
 				td.mouseenter(evt, function(evt){
-					instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
-				}).mouseleave(instance.staff_management.tooltip.hide);
+					Tooltip.show($(this), self.get_tooltip_content(evt.data));
+				}).mouseleave(Tooltip.hide);
 				*/
 			}
 			else if(evt.task_id){
@@ -63,8 +64,8 @@ var TimeCheck = Scheduler.extend({
 				// TODO - Refactor Tooltip
 				/*
 				td.mouseenter(evt, function(evt){
-					instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
-				}).mouseleave(instance.staff_management.tooltip.hide);
+					Tooltip.show($(this), self.get_tooltip_content(evt.data));
+				}).mouseleave(Tooltip.hide);
 				*/
 			}
 		}
@@ -128,7 +129,7 @@ var TimeCheck = Scheduler.extend({
 			'confirm': true,
 		};
 		this.dataset.write(event.id, data, {}).done(function() {
-			instance.staff_management.tooltip.hide();
+			Tooltip.hide();
 			self.refresh_events();
 		});
 

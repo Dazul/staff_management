@@ -3,6 +3,7 @@ odoo.define('staff_management.PersonalSchedule', function (require) {
 
 var core = require('web.core');
 var StaffCalendar = require('staff_management.StaffCalendar');
+var Tooltip = require('staff_management.Tooltip');
 
 var PersonalSchedule = StaffCalendar.extend({
 
@@ -44,8 +45,8 @@ var PersonalSchedule = StaffCalendar.extend({
 					element.css({'background': color});
 					element.css({'border-color': color});
 					element.mouseenter(event, function(evt){
-						instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
-					}).mouseleave(instance.staff_management.tooltip.hide);
+						Tooltip.show($(this), self.get_tooltip_content(evt.data));
+					}).mouseleave(Tooltip.hide);
 				}else{
 					element.css({'display': 'none'});
 				}

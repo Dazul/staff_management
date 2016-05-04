@@ -6,6 +6,7 @@ var time = require('web.time');
 var Model = require('web.DataModel');
 var form_common = require('web.form_common');
 var GeneralScheduler = require('staff_management.GeneralScheduler');
+var Tooltip = require('staff_management.Tooltip');
 
 var _t = core._t;
 
@@ -164,7 +165,7 @@ var Scheduler = GeneralScheduler.extend({
 			'hour_to': this.quick_asign_hour_stop.get_value(),
 		};
 		this.dataset.write(event.id, data, {}).done(function() {
-			//instance.staff_management.tooltip.hide();
+			Tooltip.hide();
 			self.refresh_events();
 		});
 	},

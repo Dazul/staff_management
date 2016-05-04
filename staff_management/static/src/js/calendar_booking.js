@@ -8,6 +8,7 @@ var Model = require('web.DataModel');
 */
 var form_common = require('web.form_common');
 var StaffCalendar = require('staff_management.StaffCalendar');
+var Tooltip = require('staff_management.Tooltip');
 
 var _t = core._t;
 
@@ -50,11 +51,11 @@ var BookingCalendar = StaffCalendar.extend({
 				element.text(self.format_hour(event.hour_from)+' '+event.booking_name);
 				element.css({'background': color});
 				element.css({'border-color': color});
-				/*
+
 				element.mouseenter(event, function(evt){
-					instance.staff_management.tooltip.show($(this), self.get_tooltip_content(evt.data));
-				}).mouseleave(instance.staff_management.tooltip.hide);
-				*/
+					Tooltip.show($(this), self.get_tooltip_content(evt.data));
+				}).mouseleave(Tooltip.hide);
+
 			},
 		});
 	},
