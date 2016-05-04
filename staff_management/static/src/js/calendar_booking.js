@@ -2,10 +2,6 @@ odoo.define('staff_management.BookingCalendar', function (require) {
 "use strict";
 
 var core = require('web.core');
-/*
-var time = require('web.time');
-var Model = require('web.DataModel');
-*/
 var form_common = require('web.form_common');
 var StaffCalendar = require('staff_management.StaffCalendar');
 var Tooltip = require('staff_management.Tooltip');
@@ -101,9 +97,6 @@ var BookingCalendar = StaffCalendar.extend({
 		return infos;
 	},
 	slow_create: function(data){
-		// TODO - refactor
-		alert('not ready');
-		/*
 		var self = this;
 		var defaults = {};
 
@@ -112,42 +105,25 @@ var BookingCalendar = StaffCalendar.extend({
 		});
 
 		var pop_infos = self.get_form_popup_infos();
-		var pop = new instance.web.form.FormOpenPopup(this);
-		var context = new instance.web.CompoundContext(this.dataset.context, defaults);
-		pop.show_element(this.dataset.model, null, this.dataset.get_context(defaults), {
+
+		var dialog = new form_common.FormViewDialog(this, {
+			res_model: this.dataset.model,
+			context: defaults,
 			title: this.get_title(),
-			disable_multiple_selection: true,
 			view_id: pop_infos.view_id,
-			// Ensuring we use ``self.dataset`` and DO NOT create a new one.
-			create_function: function(data, options) {
-				return self.dataset.create(data, options).done(function(r) {
-				}).fail(function (r, event) {
-				   if (!r.data.message) { //else manage by openerp
-						throw new Error(r);
-				   }
-				});
-			},
-			read_function: function(id, fields, options) {
-				return self.dataset.read_ids.apply(self.dataset, arguments).done(function() {
-				}).fail(function (r, event) {
-					if (!r.data.message) { //else manage by openerp
-						throw new Error(r);
-					}
-				});
-			},
-		});
-		var form_controller = pop.view_form;
-		form_controller.on("load_record", self, function(){
-			self.setPopupFieldsAction(pop);
-		});
-		pop.on('closed', self, function() {
-			self.$calendar.fullCalendar('unselect');
-		});
-		pop.on('create_completed', self, function(id) {
-			self.$calendar.fullCalendar('unselect');
+			readonly: false,
+			disable_multiple_selection: true
+		}).open();
+		dialog.on('record_saved', this, function(){
 			self.$calendar.fullCalendar('refetchEvents');
+			self.$calendar.fullCalendar('unselect');
 		});
-		*/
+		dialog.on('closed', this, function(){
+			self.$calendar.fullCalendar('unselect');
+		});
+		dialog.view_form.on("load_record", this, function(){
+			self.setPopupFieldsAction(dialog);
+		});
 	},
 
 	open_event_staff: function(id, title) {
@@ -162,35 +138,6 @@ var BookingCalendar = StaffCalendar.extend({
 			}
 		}
 		else {
-			// TODO - check
-			/*
-			var pop = new instance.web.form.FormOpenPopup(this);
-			pop.show_element(this.dataset.model, id, this.dataset.get_context(), {
-				title: _.str.sprintf(_t("View: %s"),title),
-				view_id: +this.open_popup_action,
-				res_id: id,
-				target: 'new',
-			});
-
-			var form_controller = pop.view_form;
-			form_controller.on("load_record", self, function(){
-				button_delete = _.str.sprintf("<button class='oe_button oe_bold delme'><span> %s </span></button>",_t("Delete"));
-
-				self.setPopupFieldsAction(pop);
-				pop.$el.closest(".modal").find(".modal-footer").prepend(button_delete);
-
-				$('.delme').click(
-					function() {
-						$('.oe_form_button_cancel').trigger('click');
-						self.remove_event(id);
-					}
-				);
-			});
-
-			pop.on("saved", self, function(){
-				self.$calendar.fullCalendar('refetchEvents');
-			});
-			*/
 			var dialog = new form_common.FormViewDialog(this, {
 				res_model: this.dataset.model,
 				res_id: id,
@@ -204,11 +151,6 @@ var BookingCalendar = StaffCalendar.extend({
 					}},
 					{text: _t("Remove"), close: true, click: function() {
 						self.remove_event(id);
-						/*
-						self.dataset.write(evt.id, {'task_id': false}, {}).done(function() {
-							self.refresh_events();
-						});
-						*/
 					}},
 					{text: _t("Close"), close: true}
 				],
@@ -218,7 +160,9 @@ var BookingCalendar = StaffCalendar.extend({
 					});
 				}
 			}).open();
-
+			dialog.view_form.on("load_record", this, function(){
+				self.setPopupFieldsAction(dialog);
+			});
 		}
 		return false;
 	},
