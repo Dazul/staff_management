@@ -3,6 +3,8 @@ odoo.define('staff_management.Replacement', function (require) {
 
 var core = require('web.core');
 var GeneralScheduler = require('staff_management.GeneralScheduler');
+var Model = require('web.DataModel');
+var time = require('web.time');
 
 var _t = core._t;
 
@@ -26,7 +28,7 @@ var Replacement = GeneralScheduler.extend({
 
 			_.each(events, function(e){
 
-				var event_date = instance.web.auto_str_to_date(e[self.date_field]);
+				var event_date = time.auto_str_to_date(e[self.date_field]);
 
 				var event_data = {
 					'date': event_date,
@@ -69,8 +71,8 @@ var Replacement = GeneralScheduler.extend({
 		var self = this;
 		if(cellDataList.length == 1){
 			if (confirm(_t("Do you really want to replace this task ?"))) {
-				task_id = cellDataList[0].event.id;
-				model = new instance.web.Model("staff.scheduler");
+				var task_id = cellDataList[0].event.id;
+				var model = new Model("staff.scheduler");
 				model.call("swapUidTask",[task_id]).then(function(res){
 					self.refresh_events();
 				});

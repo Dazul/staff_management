@@ -5,6 +5,8 @@ var core = require('web.core');
 var StaffCalendar = require('staff_management.StaffCalendar');
 var Tooltip = require('staff_management.Tooltip');
 
+var _t = core._t;
+
 var PersonalSchedule = StaffCalendar.extend({
 
 	template: "PersonalScheduleView",
@@ -34,9 +36,9 @@ var PersonalSchedule = StaffCalendar.extend({
 				$('.fc-day[data-date|="'+strDate+'"]').addClass('staff_available');
 				if(event.task_id){
 
-					color = self.color_palette[event.task_id[0]%self.color_palette.length];
+					var color = self.color_palette[event.task_id[0]%self.color_palette.length];
 
-					replacementText = '';
+					var replacementText = '';
 					if(event.replaceable){
 						replacementText = _t('Waiting replacement');
 					}

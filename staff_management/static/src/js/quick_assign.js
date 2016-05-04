@@ -14,7 +14,7 @@ var FieldQuickAssign = FieldMany2One.extend({
 			$('.staff_assigned,.staff_available').addClass('unselectable');
 
 			for(var i=0 ; i<this.quickAssignAuth.length ; i++){
-				auth_class = 'evt_user_'+this.quickAssignAuth[i].user_id;
+				var auth_class = 'evt_user_'+this.quickAssignAuth[i].user_id;
 				$('.'+auth_class).removeClass('unselectable');
 			}
 		}
