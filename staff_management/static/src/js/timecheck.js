@@ -5,6 +5,7 @@ var core = require('web.core');
 var data = require('web.data');
 var time = require('web.time');
 var Model = require('web.DataModel');
+var form_common = require('web.form_common');
 var Scheduler = require('staff_management.Scheduler');
 var Tooltip = require('staff_management.Tooltip');
 
@@ -50,23 +51,17 @@ var TimeCheck = Scheduler.extend({
 				td.addClass('staff_assigned');
 				td.text(self.format_hour(evt.work_time));
 				td.addClass('clickable');
-				// TODO - Refactor Tooltip
-				/*
 				td.mouseenter(evt, function(evt){
 					Tooltip.show($(this), self.get_tooltip_content(evt.data));
 				}).mouseleave(Tooltip.hide);
-				*/
 			}
 			else if(evt.task_id){
 				td.addClass('staff_available');
 				td.text(self.format_hour(evt.hour_from)+' à '+self.format_hour(evt.hour_to));
 				td.addClass('clickable');
-				// TODO - Refactor Tooltip
-				/*
 				td.mouseenter(evt, function(evt){
 					Tooltip.show($(this), self.get_tooltip_content(evt.data));
 				}).mouseleave(Tooltip.hide);
-				*/
 			}
 		}
 		return td;
@@ -89,9 +84,6 @@ var TimeCheck = Scheduler.extend({
 	},
 
 	cellClicked: function(lineID, date, cellDataList){
-		// TODO - Check how to use FormOpenPopup
-		alert('not ready');
-		/*
 		var self = this;
 		if(cellDataList.length == 1){
 			var evt = cellDataList[0].event;
@@ -102,24 +94,28 @@ var TimeCheck = Scheduler.extend({
 			}
 
 			if(evt.task_id){
-				var pop = new instance.web.form.FormOpenPopup(this);
-				pop.show_element(this.dataset.model, evt.id, this.dataset.get_context(), {
+				var dialog = new form_common.FormViewDialog(this, {
+					res_model: this.dataset.model,
+					res_id: evt.id,
+					context: this.dataset.get_context(),
 					title: _t("Edit working time"),
 					view_id: this.form_timecheck_id,
-					res_id: evt.id,
+					readonly: false,
 					target: 'new',
-					readonly:false,
+					buttons: [
+						{text: _t("Save"), classes: 'btn-primary', close: true, click: function() {
+							this.view_form.save();
+						}},
+						{text: _t("Close"), close: true}
+					],
 					write_function: function(id, data, _options) {
 						return self.dataset.write(id, data, {}).done(function() {
 							self.refresh_events();
 						});
-					},
-				});
-
-
+					}
+				}).open();
 			}
 		}
-		*/
 	},
 
 	apply_quickAssignToEvent: function(event){
@@ -136,11 +132,9 @@ var TimeCheck = Scheduler.extend({
 	},
 
 	load_quickAssign: function(){
-		// TODO - refactor method
-		/*
 		var self = this;
 
-		dfm_mine = new instance.web.form.DefaultFieldManager(this);
+		var dfm_mine = new form_common.DefaultFieldManager(this);
 		dfm_mine.extend_field_desc({
 			quicktask: {
 				relation: "account.analytic.account",
@@ -155,7 +149,9 @@ var TimeCheck = Scheduler.extend({
 		td.append($('<label>').attr('for', 'quickassignInput').text(_t('Quick assign')));
 		tr.append(td);
 
-		this.quick_asign_work_time = new instance.web.form.FieldFloat(dfm_mine, // start hour
+		var FieldFloat = core.form_widget_registry.get('float');
+
+		this.quick_asign_work_time = new FieldFloat(dfm_mine, // start hour
 			{
 			attrs: {
 				name: "work_time",
@@ -187,8 +183,7 @@ var TimeCheck = Scheduler.extend({
 		});
 
 		table.append(tr);
-		$('.stimeline_header').append(table);
-		*/
+		this.$('.stimeline_header').append(table);
 	},
 
 });
