@@ -22,8 +22,8 @@ from openerp import api, fields, models
 
 class staff_booking_type(models.Model):
 	_name="staff.booking.type"
-	_columns={
-		'booking_type':fields.char('Booking Type',size= 32 ,required=True),
-	}
+	
+	booking_type = fields.Char('Booking Type',size= 32 ,required=True)
+
 	_rec_name = 'booking_type'
 	

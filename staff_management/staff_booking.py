@@ -23,33 +23,33 @@ from openerp import api, fields, models
 
 class staff_booking(models.Model):
 	_name="staff.booking"
-	_columns={
-		'booking_name':fields.char('Booking',size= 40 ,required=True),
-		'booking_type':fields.many2one('staff.booking.type', 'Event Type', readonly=False, relate=True),
-		'date': fields.date('Date', readonly=False, required=True),
-		'date_report': fields.date('Date Report', readonly=False, required=False),
-		'come_all_weather': fields.boolean('Come with all weather', readonly=False, required=False),
-		'hour_from': fields.float('Start Hour', readonly=False),
-		'hour_to': fields.float('End Hour', readonly=False),
-		'group_leader_name':fields.char('Group leader name',size= 255 ,required=True),
-		'group_leader_address':fields.text('Group leader address'),
-		'group_leader_email':fields.char('Group leader email',size= 255),
-		'group_leader_tel':fields.char('Group leader Tel',size= 50 ,required=True),
-		'nbr_adult':fields.integer('Number of adults', readonly=False, required=True),
-		'nbr_child':fields.integer('Number of children', readonly=False, required=True),
-		'price_adult':fields.float('Price per adult', readonly=False, required=True),
-		'price_child':fields.float('Price per child', readonly=False, required=True),
-		'nbr_wheelchair':fields.integer('Number of wheelchair', readonly=False),
-		'price_wheelchair':fields.float('Price per wheelchair', readonly=False),
-		'meal_included':fields.boolean('Meal included', readonly=False),
-		'meal_price_adult':fields.float('Price per adult meal', readonly=False),
-		'meal_price_child':fields.float('Price per child meal', readonly=False),
-		'total_price':fields.float('Total price', readonly=False),
-		'observation':fields.text('Observation'),
-		'meal_observation':fields.text('Meal observation'),
-		'create_uid': fields.many2one('res.users', 'Created by', readonly=True),
-		'write_uid': fields.many2one('res.users', 'Last modification by', readonly=True),
-	}
+	
+	booking_name = fields.Char('Booking',size= 40 ,required=True)
+	booking_type = fields.Many2one('staff.booking.type', 'Event Type', readonly=False, relate=True)
+	date = fields.Date('Date', readonly=False, required=True)
+	date_report = fields.Date('Date Report', readonly=False, required=False)
+	come_all_weather = fields.Boolean('Come with all weather', readonly=False, required=False)
+	hour_from = fields.Float('Start Hour', readonly=False)
+	hour_to = fields.Float('End Hour', readonly=False)
+	group_leader_name = fields.Char('Group leader name',size= 255 ,required=True)
+	group_leader_address = fields.Text('Group leader address')
+	group_leader_email = fields.Char('Group leader email',size= 255)
+	group_leader_tel = fields.Char('Group leader Tel',size= 50 ,required=True)
+	nbr_adult = fields.Integer('Number of adults', readonly=False, required=True)
+	nbr_child = fields.Integer('Number of children', readonly=False, required=True)
+	price_adult = fields.Float('Price per adult', readonly=False, required=True)
+	price_child = fields.Float('Price per child', readonly=False, required=True)
+	nbr_wheelchair = fields.Integer('Number of wheelchair', readonly=False)
+	price_wheelchair = fields.Float('Price per wheelchair', readonly=False)
+	meal_included = fields.Boolean('Meal included', readonly=False)
+	meal_price_adult = fields.Float('Price per adult meal', readonly=False)
+	meal_price_child = fields.Float('Price per child meal', readonly=False)
+	total_price = fields.Float('Total price', readonly=False)
+	observation = fields.Text('Observation')
+	meal_observation = fields.Text('Meal observation')
+	create_uid = fields.Many2one('res.users', 'Created by', readonly=True)
+	write_uid = fields.Many2one('res.users', 'Last modification by', readonly=True)
+	
 	
 	_rec_name = 'booking_name'
 	

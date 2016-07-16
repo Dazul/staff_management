@@ -22,12 +22,12 @@ from openerp import api, fields, models
 
 class staff_events(models.Model):
 	_name="staff.events"
-	_columns={
-		'event_name':fields.char('Event',size= 32 ,required=True),
-		'date': fields.date('Date', readonly=False),
-		'hour_from': fields.float('Start Hour', readonly=False),
-		'hour_to': fields.float('End Hour', readonly=False),
-	}
+	
+	event_name = fields.Char('Event',size= 32 ,required=True)
+	date = fields.Date('Date', readonly=False)
+	hour_from = fields.float('Start Hour', readonly=False)
+	hour_to = fields.float('End Hour', readonly=False)
+	
 	
 	_rec_name = 'event_name'
 	

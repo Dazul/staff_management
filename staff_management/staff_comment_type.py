@@ -22,8 +22,8 @@ from openerp import api, fields, models
 
 class staff_comment_type(models.Model):
 	_name="staff.comment.type"
-	_columns={
-		'comment_type':fields.char('Comment Type',size= 32 ,required=True),
-	}
+	
+	comment_type = fields.Char('Comment Type',size= 32 ,required=True)
+	
 	_rec_name = 'comment_type'
 

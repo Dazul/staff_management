@@ -22,8 +22,8 @@ from openerp import api, fields, models
 
 class staff_event_type(models.Model):
 	_name="staff.event.type"
-	_columns={
-		'event_type':fields.char('Event Type',size= 32 ,required=True),
-	}
+	
+	event_type = fields.Char('Event Type',size= 32 ,required=True)
+	
 	_rec_name = 'event_type'
 

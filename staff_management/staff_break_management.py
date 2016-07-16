@@ -22,10 +22,10 @@ from openerp import api, fields, models
 
 class staff_break_management(models.Model):
 	_name="staff.break.management"
-	_columns={
-		'work_time_min': fields.float('Minimum work time', readonly=False),
-		'work_time_max': fields.float('Maximum work time', readonly=False),
-		'break_time': fields.float('Break time', readonly=False),
-	}
+	
+	work_time_min = fields.Float('Minimum work time', readonly=False)
+	work_time_max = fields.Float('Maximum work time', readonly=False)
+	break_time = fields.Float('Break time', readonly=False)
+	
 	_rec_name = 'break_time'
 

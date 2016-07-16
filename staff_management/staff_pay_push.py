@@ -27,19 +27,19 @@ from staff_utils import staff_utils
 
 class staff_pay_push(TransientModel):
 	_name="staff.pay.push"
-	_columns={
-		'user_id':fields.many2one('res.users', 'User', relate=True),
-		'user_id_read':fields.many2one('res.users', 'User', relate=True),
-		'amount': fields.float('Amount', readonly=False),
-		'creditTotal': fields.float('Balance total', readonly=False),
-		'creditMonth': fields.float('Balance month', readonly=False),
-		'comment': fields.char('Comment',size= 255, required=True),
-		'journal': fields.many2one('account.analytic.journal', 'Analytic Journal', relate=True),
-		'analytic_account': fields.many2one('account.analytic.account', 'Analytic Account', relate=True),
-		'account': fields.many2one('account.account', 'General account', relate=True),
-		'date': fields.date('Date'),
-		'state': fields.selection([('init', 'init'),('defineAmount', 'defineAmount')]),
-	}
+	
+	user_id = fields.Many2one('res.users', 'User', relate=True)
+	user_id_read = fields.Many2one('res.users', 'User', relate=True)
+	amount = fields.Float('Amount', readonly=False)
+	creditTotal = fields.Float('Balance total', readonly=False)
+	creditMonth = fields.Float('Balance month', readonly=False)
+	comment = fields.Char('Comment',size= 255, required=True)
+	journal = fields.Many2one('account.analytic.journal', 'Analytic Journal', relate=True)
+	analytic_account = fields.Many2one('account.analytic.account', 'Analytic Account', relate=True)
+	account = fields.Many2one('account.account', 'General account', relate=True)
+	date = fields.Date('Date')
+	state = fields.Selection([('init', 'init'),('defineAmount', 'defineAmount')])
+	
 	
 	
 	def getDif(self, cr, uid, user_id):

@@ -30,15 +30,15 @@ class staff_scheduler(models.Model):
 	_name="staff.scheduler"
 	
 	_columns={
-		'user_id':fields.many2one('res.users', 'User', readonly=True, relate=True),
-		'task_id':fields.many2one('account.analytic.account', 'Task', readonly=False),
-		'date': fields.date('Date', readonly=True),
-		'hour_from': fields.float('Start Hour', readonly=False),
-		'hour_to': fields.float('End Hour', readonly=False),
-		'comment':fields.char('Comment',size= 512 ,required=False),
-		'work_time':fields.float('Worked time', readonly=False),
-		'confirm':fields.boolean('Confirm', readonly=False),
-		'replaceable':fields.boolean('Replaceable', readonly=False, default=False),
+		'user_id':fields.Many2one('res.users', 'User', readonly=True, relate=True),
+		'task_id':fields.Many2one('account.analytic.account', 'Task', readonly=False),
+		'date': fields.Date('Date', readonly=True),
+		'hour_from': fields.Float('Start Hour', readonly=False),
+		'hour_to': fields.Float('End Hour', readonly=False),
+		'comment':fields.Char('Comment',size= 512 ,required=False),
+		'work_time':fields.Float('Worked time', readonly=False),
+		'confirm':fields.Boolean('Confirm', readonly=False),
+		'replaceable':fields.Boolean('Replaceable', readonly=False, default=False),
 	}
 	
 	#Check if the hour from is between 0 and 24
