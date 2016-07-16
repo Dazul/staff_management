@@ -56,7 +56,7 @@ class staff_booking(models.Model):
 	#Check if the hour from is between 0 and 24
 	@api.model
 	def _check_hour_to(self, ids):
-		for event in self.browse(cr, uid, ids):
+		for event in self.browse(ids):
 			if(event.hour_to < 0 or event.hour_to > 24):
 				return False
 		return True
@@ -64,7 +64,7 @@ class staff_booking(models.Model):
 	#Check if the hour to is between 0 and 24
 	@api.model
 	def _check_hour_from(self, ids):
-		for event in self.browse(cr, uid, ids):
+		for event in self.browse(ids):
 			if(event.hour_from < 0 or event.hour_from > 24):
 				return False
 		return True

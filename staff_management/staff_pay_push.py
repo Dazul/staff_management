@@ -19,13 +19,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import fields
-from openerp.osv.orm import TransientModel
+from openerp import api, fields, models
 from openerp.tools.translate import _
 from datetime import datetime
 from staff_utils import staff_utils
 
-class staff_pay_push(TransientModel):
+class staff_pay_push(models.TransientModel):
 	_name="staff.pay.push"
 	
 	user_id = fields.Many2one('res.users', 'User', relate=True)
@@ -40,37 +39,37 @@ class staff_pay_push(TransientModel):
 	date = fields.Date('Date')
 	state = fields.Selection([('init', 'init'),('defineAmount', 'defineAmount')])
 	
-	
-	
-	def getDif(self, cr, uid, user_id):
-		account_lines = self.pool.get('account.analytic.line')
-		user_lines = account_lines.search(cr, uid, [('user_id', '=', user_id)])
+	@api.model
+	def getDif(self, user_id):
+		account_lines = self.env['account.analytic.line']
+		user_lines = account_lines.search([('user_id', '=', user_id)])
 		#Excecute SQL for optimization! "For" loop will take too long on future.
-		cr.execute('Select sum(amount) from account_analytic_line where user_id = '+str(user_id))
+		cr.execute('Select sum(amount) from account_analytic_line where user_id = %s', (str(user_id), ))
 		ammount = cr.fetchone()
 		return ammount[0]
 	
-	def getDifMonth(self, cr, uid, user_id, date):
+	@api.model
+	def getDifMonth(self, user_id, date):
 		utils = staff_utils()
-		account_lines = self.pool.get('account.analytic.line')
-		user_lines = account_lines.search(cr, uid, [('user_id', '=', user_id)])
+		account_lines = self.env['account.analytic.line']
+		user_lines = account_lines.search([('user_id', '=', user_id)])
 		#Excecute SQL for optimization! "For" loop will take too long on future.
 		first = utils.get_first_day_month(date.strftime("%Y-%m-%d"))
 		last = utils.get_last_day_month(date.strftime("%Y-%m-%d"))
-		cr.execute('Select sum(amount) from account_analytic_line where user_id = '+str(user_id)+' and date::date <= \'' +last+ '\' and date::date >= \'' + first + '\'')
+		cr.execute('Select sum(amount) from account_analytic_line where user_id = %s and date::date <= %s and date::date >= %s', (str(user_id), last, first, ))
 		ammount = cr.fetchone()
 		return ammount[0]
 
-	
-	def get_form_context(self, cr, uid, user_id, date_str):
+	@api.model
+	def get_form_context(self, user_id, date_str):
 		user_id = int(user_id)
-		creditTotal = self.getDif(cr, uid, user_id)
+		creditTotal = self.getDif(user_id)
 		date = datetime.strptime(date_str, "%Y-%m-%d")
-		creditMonth = self.getDifMonth(cr, uid, user_id, date)
+		creditMonth = self.getDifMonth(user_id, date)
 		#Hard coded. TODO some better code on next releases.
 		account = [0];
-		account_lines = self.pool.get('account.analytic.account')
-		account = account_lines.search(cr, uid, [('name', '=', 'Salaires')])
+		account_lines = self.env['account.analytic.account']
+		account = account_lines.search([('name', '=', 'Salaires')])
 		if len(account) == 0:
 			accoundId = 0
 		else:
@@ -82,8 +81,9 @@ class staff_pay_push(TransientModel):
 				'journal':2,
 				'account':1,
 				'analytic_account':accoundId,}
-
-	def create(self, cr, uid, vals, context=None):
+	
+	@api.model
+	def create(self, vals, context=None):
 		if context.has_key('default_user_id_read'):
 			user_id = context['default_user_id_read']
 			if vals.has_key('journal'):
@@ -94,17 +94,17 @@ class staff_pay_push(TransientModel):
 				account = vals['account']
 			else:
 				account = 1
-			account_lines = self.pool.get('account.analytic.line')
+			account_lines = self.env['account.analytic.line']
 			account_lines.create(cr, uid, {'name': vals['comment'], 'account_id': vals['analytic_account'],
 											'journal_id':journal, 'user_id':user_id, 'date': vals['date'],
 											'amount':-vals['amount'], 'general_account_id':account,}, context)
-		return super(staff_pay_push, self).create(cr, uid, vals, context)
+		return super(staff_pay_push, self).create(vals, context)
 
-	
-	def get_month_salaries(self, cr, uid, domain):
-		account = self.pool.get('account.analytic.line')
-		ids = account.search(cr, uid, domain)
-		values = account.browse(cr, uid, ids)
+	@api.model
+	def get_month_salaries(self, domain):
+		account = self.env['account.analytic.line']
+		ids = account.search(domain)
+		values = account.browse(ids)
 		dic = {}
 		for record in values:
 			dayInMonth = record.date[8:10]
@@ -121,7 +121,5 @@ class staff_pay_push(TransientModel):
 					userDic[dayInMonth] = {'timework':[dayWorkTime], 'amounts':[dayAmount]}
 			else:
 				dic[record.user_id.id] = {'name':record.user_id.name, dayInMonth:{'timework':[dayWorkTime], 'amounts':[dayAmount]}}
-		
 		return dic
 
-staff_pay_push()

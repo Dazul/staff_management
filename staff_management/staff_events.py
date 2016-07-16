@@ -25,8 +25,8 @@ class staff_events(models.Model):
 	
 	event_name = fields.Char('Event',size= 32 ,required=True)
 	date = fields.Date('Date', readonly=False)
-	hour_from = fields.float('Start Hour', readonly=False)
-	hour_to = fields.float('End Hour', readonly=False)
+	hour_from = fields.Float('Start Hour', readonly=False)
+	hour_to = fields.Float('End Hour', readonly=False)
 	
 	
 	_rec_name = 'event_name'

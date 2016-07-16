@@ -18,17 +18,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, fields
+from openerp import api, fields, models
 import datetime
 
-class staff_comments(orm.Model):
+class staff_comments(models.Model):
 	_name="staff.comments"
 	
 	comment = fields.Text('Comment',required=True)
 	user_id = fields.Many2one('res.users', 'User', readonly=False, relate=True)
 	comment_type = fields.Many2one('staff.comment.type', 'Comment Type', readonly=False, relate=True)
 	create_uid = fields.Many2one('res.users', 'Author', readonly=True, relate=True)
-	write_date = fields.date('Date of comment',readonly=True )
+	write_date = fields.Date('Date of comment',readonly=True )
 	
-	
-staff_comments()

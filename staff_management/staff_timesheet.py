@@ -23,7 +23,5 @@ from openerp import api, fields, models
 class staff_timesheet(models.Model):
 	_name="staff.timesheet"
 	
-	_columns={
-		'user_id':fields.many2one('res.users', 'User', readonly=True, relate=True),
-	}	
+	user_id = fields.Many2one('res.users', 'User', readonly=True, relate=True)
 

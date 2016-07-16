@@ -29,17 +29,15 @@ from staff_utils import staff_utils
 class staff_scheduler(models.Model):
 	_name="staff.scheduler"
 	
-	_columns={
-		'user_id':fields.Many2one('res.users', 'User', readonly=True, relate=True),
-		'task_id':fields.Many2one('account.analytic.account', 'Task', readonly=False),
-		'date': fields.Date('Date', readonly=True),
-		'hour_from': fields.Float('Start Hour', readonly=False),
-		'hour_to': fields.Float('End Hour', readonly=False),
-		'comment':fields.Char('Comment',size= 512 ,required=False),
-		'work_time':fields.Float('Worked time', readonly=False),
-		'confirm':fields.Boolean('Confirm', readonly=False),
-		'replaceable':fields.Boolean('Replaceable', readonly=False, default=False),
-	}
+	user_id = fields.Many2one('res.users', 'User', readonly=True, relate=True)
+	task_id = fields.Many2one('account.analytic.account', 'Task', readonly=False)
+	date = fields.Date('Date', readonly=True)
+	hour_from = fields.Float('Start Hour', readonly=False)
+	hour_to = fields.Float('End Hour', readonly=False)
+	comment = fields.Char('Comment',size= 512 ,required=False)
+	work_time = fields.Float('Worked time', readonly=False)
+	confirm = fields.Boolean('Confirm', readonly=False)
+	replaceable = fields.Boolean('Replaceable', readonly=False, default=False)
 	
 	#Check if the hour from is between 0 and 24
 	@api.model
@@ -214,8 +212,9 @@ class staff_scheduler(models.Model):
 	# add user_id to create the elements
 	@api.model
 	def create(self, vals):
-		vals['user_id']=user
-		vals['task_id']=False
+		user = self._context['uid']
+		vals['user_id'] = user
+		vals['task_id'] = False
 		#Control if an event is set this day.
 		listTasks = self.search([('date','=',vals['date']),('user_id','=',user)])
 		if len(listTasks) >= 1:
@@ -229,13 +228,12 @@ class staff_scheduler(models.Model):
 	#Remove an availability with assignement check.
 	@api.model
 	def unlink(self, ids):
-		records = super(staff_scheduler, self).read(ids, ['id', 'task_id'])
+		record = self.browse(ids)
 		#raise Exception(records) if a user want remove an availibility with a task
-		if(records[0]['task_id']):
+		if record.task_id.id:
 			raise except_orm(_('Error'), _("You can't delete this availability because there is an assigned task on it."))
 		#Check the unlink date.
-		date = super(staff_scheduler, self).read(ids, ['date'])
-		if self.checkPastDay(datetime.strptime(date[0]['date'], "%Y-%m-%d")):
+		if self.checkPastDay(datetime.strptime(record.date, "%Y-%m-%d")):
 			raise except_orm(_('Error'), _("Only future dates can be changed."))
 		return super(staff_scheduler, self).unlink(ids)
 	
