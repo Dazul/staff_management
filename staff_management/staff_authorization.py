@@ -19,10 +19,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, fields
+from openerp import api, fields, models
 import datetime
 
-class staff_authorization(orm.Model):
+class staff_authorization(models.Model):
 	_name="staff.authorization"
 	_columns={
 		'task_id':fields.many2one('account.analytic.account', 'Task', readonly=False),
@@ -30,5 +30,4 @@ class staff_authorization(orm.Model):
 		'create_uid': fields.many2one('res.users', 'Author', readonly=True),
 		'write_date':fields.date('Date of formation',readonly=True ),
 	}
-	
-staff_authorization()
+

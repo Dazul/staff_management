@@ -18,13 +18,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, fields
+from openerp import api, fields, models
 
-class staff_event_type(orm.Model):
+class staff_event_type(models.Model):
 	_name="staff.event.type"
 	_columns={
 		'event_type':fields.char('Event Type',size= 32 ,required=True),
 	}
 	_rec_name = 'event_type'
-	
-staff_event_type()
+

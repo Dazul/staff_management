@@ -36,4 +36,3 @@ class staff_utils():
 		end_date = datetime(day.year, day.month, last_day)
 		return end_date.strftime('%Y-%m-%d')
 
-staff_utils()

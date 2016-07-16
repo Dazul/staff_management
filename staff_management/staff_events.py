@@ -18,9 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, fields
+from openerp import api, fields, models
 
-class staff_events(orm.Model):
+class staff_events(models.Model):
 	_name="staff.events"
 	_columns={
 		'event_name':fields.char('Event',size= 32 ,required=True),
@@ -32,15 +32,17 @@ class staff_events(orm.Model):
 	_rec_name = 'event_name'
 	
 	#Check if the hour from is between 0 and 24
-	def _check_hour_to(self,cr,uid,ids):
-		for event in self.browse(cr, uid, ids):
+	@api.model
+	def _check_hour_to(self, ids):
+		for event in self.browse(ids):
 			if(event.hour_to < 0 or event.hour_to > 24):
 				return False
 		return True
 	
 	#Check if the hour to is between 0 and 24
-	def _check_hour_from(self,cr,uid,ids):
-		for event in self.browse(cr, uid, ids):
+	@api.model
+	def _check_hour_from(self, ids):
+		for event in self.browse(ids):
 			if(event.hour_from < 0 or event.hour_from > 24):
 				return False
 		return True
@@ -48,5 +50,4 @@ class staff_events(orm.Model):
 	_constraints = [(_check_hour_from,'Start hour must be between 0 and 24.', ['hour_from']), 
 				(_check_hour_to,'End hour must be between 0 and 24.', ['hour_to'])]
 	_sql_constraints = [('unique_date','unique(date)', 'Only one event per day!')]
-	
-staff_events()
+

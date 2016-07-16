@@ -19,9 +19,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, fields
+from openerp import api, fields, models
 
-class staff_booking(orm.Model):
+class staff_booking(models.Model):
 	_name="staff.booking"
 	_columns={
 		'booking_name':fields.char('Booking',size= 40 ,required=True),
@@ -54,14 +54,16 @@ class staff_booking(orm.Model):
 	_rec_name = 'booking_name'
 	
 	#Check if the hour from is between 0 and 24
-	def _check_hour_to(self,cr,uid,ids):
+	@api.model
+	def _check_hour_to(self, ids):
 		for event in self.browse(cr, uid, ids):
 			if(event.hour_to < 0 or event.hour_to > 24):
 				return False
 		return True
 	
 	#Check if the hour to is between 0 and 24
-	def _check_hour_from(self,cr,uid,ids):
+	@api.model
+	def _check_hour_from(self, ids):
 		for event in self.browse(cr, uid, ids):
 			if(event.hour_from < 0 or event.hour_from > 24):
 				return False
@@ -72,15 +74,16 @@ class staff_booking(orm.Model):
 	
 	# Return a dictionary from the list of date received.
 	# Dic is: {key, total_people}
-	def count_nbr_people(self, cr, uid, *args):
+	@api.model
+	def count_nbr_people(self, *args):
 		ret = {};
 		for d in args:
-			bookings = self.search(cr, uid, [('date', '=', str(d))])
+			bookings = self.search([('date', '=', str(d))])
 			total_people = 0
 			for booking in bookings:
-				total_people += self.browse(cr, uid, booking).nbr_adult
-				total_people += self.browse(cr, uid, booking).nbr_child
-				total_people += self.browse(cr, uid, booking).nbr_wheelchair
+				total_people += self.browse(booking).nbr_adult
+				total_people += self.browse(booking).nbr_child
+				total_people += self.browse(booking).nbr_wheelchair
 			ret[d] = total_people
 		return ret
 	

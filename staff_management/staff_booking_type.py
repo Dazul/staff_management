@@ -18,13 +18,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import orm, fields
+from openerp import api, fields, models
 
-class staff_booking_type(orm.Model):
+class staff_booking_type(models.Model):
 	_name="staff.booking.type"
 	_columns={
 		'booking_type':fields.char('Booking Type',size= 32 ,required=True),
 	}
 	_rec_name = 'booking_type'
 	
-staff_booking_type()
