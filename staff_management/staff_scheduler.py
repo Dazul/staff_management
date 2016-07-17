@@ -164,7 +164,7 @@ class staff_scheduler(models.Model):
 		return dayDate > today
 		
 	# Get user informations
-	@api.model
+	@api.multi
 	def getPersonalInfo(self, users_id):
 		ret = {}
 		for user in users_id:
@@ -184,7 +184,7 @@ class staff_scheduler(models.Model):
 		return ret
 	
 	# Swap activities for replacement
-	@api.model
+	@api.multi
 	def swapUidTask(self, task_id):
 		# Check if task_id can is replaceable.
 		task = self.browse(task_id)
@@ -226,16 +226,16 @@ class staff_scheduler(models.Model):
 		return super(staff_scheduler, self).create(vals)
 	
 	#Remove an availability with assignement check.
-	@api.model
-	def unlink(self, ids):
-		record = self.browse(ids)
+	@api.multi
+	def unlink(self):
+		record = self.browse(self.ids[0])
 		#raise Exception(records) if a user want remove an availibility with a task
 		if record.task_id.id:
 			raise except_orm(_('Error'), _("You can't delete this availability because there is an assigned task on it."))
 		#Check the unlink date.
 		if self.checkPastDay(datetime.strptime(record.date, "%Y-%m-%d")):
 			raise except_orm(_('Error'), _("Only future dates can be changed."))
-		return super(staff_scheduler, self).unlink(ids)
+		return super(staff_scheduler, self).unlink()
 	
 	#Count the activities of the mounth for selected user
 	#Return a dictonary of { key [ day with activity, day available.] }
