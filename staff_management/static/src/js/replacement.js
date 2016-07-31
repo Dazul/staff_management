@@ -73,7 +73,7 @@ var Replacement = GeneralScheduler.extend({
 			if (confirm(_t("Do you really want to replace this task ?"))) {
 				var task_id = cellDataList[0].event.id;
 				var model = new Model("staff.scheduler");
-				model.call("swapUidTask",[task_id]).then(function(res){
+				model.call("swapUidTask",[[], task_id]).then(function(res){
 					self.refresh_events();
 				});
 			}

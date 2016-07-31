@@ -42,7 +42,7 @@ var Scheduler = GeneralScheduler.extend({
 		var date_from = new Date(this.range_start.getFullYear(), this.range_start.getMonth(), 1);
 		var date_to = new Date(this.range_start.getFullYear(), this.range_start.getMonth() + 1, 0);
 		var model = new Model("staff.scheduler");
-		model.call("countActivitie",[list_userID, time.date_to_str(date_from), time.date_to_str(date_to)]).then(function(res){
+		model.call("countActivitie",[[], list_userID, time.date_to_str(date_from), time.date_to_str(date_to)]).then(function(res){
 			self.work_ratio = {};
 			for(var i in res){
 				self.work_ratio[i] = res[i];
@@ -60,7 +60,7 @@ var Scheduler = GeneralScheduler.extend({
 		}
 		var booking = new Model('staff.booking');
 
-		booking.call("count_nbr_people",list_dates).then(function(res) {
+		booking.call("count_nbr_people",[[],list_dates]).then(function(res) {
 			self.booking_numbers = {};
 			for(var d = new Date(self.range_start) ; d<=self.range_stop ; d = self.getNextDate(d)){
 				self.booking_numbers[d] = res[time.date_to_str(d)];

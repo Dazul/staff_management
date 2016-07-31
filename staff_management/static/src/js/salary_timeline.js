@@ -49,7 +49,7 @@ var SalaryTimeline = Timeline.extend({
 
 		this.sumCols = {};
 
-		this.dataset.call("get_month_salaries",[this.get_range_domain(domain, this.range_start, this.range_stop)]).then(function(datas) {
+		this.dataset.call("get_month_salaries",[[], this.get_range_domain(domain, this.range_start, this.range_stop)]).then(function(datas) {
 			self.datas_loaded(datas);
 		});
 	},

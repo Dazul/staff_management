@@ -95,7 +95,7 @@ var GeneralScheduler = Timeline.extend({
 		}
 		var self = this;
 		var model = new Model("staff.scheduler");
-		model.call("getPersonalInfo",[users_id]).then(function(res){
+		model.call("getPersonalInfo",[[], users_id]).then(function(res){
 			self.user_information = res;
 		});
 
