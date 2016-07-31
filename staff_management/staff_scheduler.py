@@ -177,7 +177,7 @@ class staff_scheduler(models.Model):
 			auths = []
 			tasks = self.env["account.analytic.account"]
 			for auth_id in user_auth:
-				auth_obj = authorizations.browse(auth_id)
+				auth_obj = authorizations.browse(auth_id.id)
 				task = tasks.browse(auth_obj.task_id.id)
 				auths.append(task.name)
 			ret[user] = {"name":partner.name, "mobile":partner.mobile,"auths":auths, "image":partner.image_medium}
@@ -240,7 +240,7 @@ class staff_scheduler(models.Model):
 	#Count the activities of the mounth for selected user
 	#Return a dictonary of { key [ day with activity, day available.] }
 	#User_id is the planner, start and and are the first and last day for the search pool.
-	@api.model
+	@api.multi
 	def countActivitie(self, users_id, start, end):
 		ret = {}
 		for user in users_id:

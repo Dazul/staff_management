@@ -74,16 +74,16 @@ class staff_booking(models.Model):
 	
 	# Return a dictionary from the list of date received.
 	# Dic is: {key, total_people}
-	@api.model
-	def count_nbr_people(self, *args):
+	@api.multi
+	def count_nbr_people(self, list_dates):
 		ret = {};
-		for d in args:
+		for d in list_dates:
 			bookings = self.search([('date', '=', str(d))])
 			total_people = 0
 			for booking in bookings:
-				total_people += self.browse(booking).nbr_adult
-				total_people += self.browse(booking).nbr_child
-				total_people += self.browse(booking).nbr_wheelchair
+				total_people += self.browse(booking.id).nbr_adult
+				total_people += self.browse(booking.id).nbr_child
+				total_people += self.browse(booking.id).nbr_wheelchair
 			ret[d] = total_people
 		return ret
 	
