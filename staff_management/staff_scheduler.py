@@ -60,20 +60,20 @@ class staff_scheduler(models.Model):
 	
 	#Update elements
 	#Make a control to ensure that the user can do the task.
-	@api.model
-	def write(self, ids, vals):
-		if context is not None:
-			# If write_worked_time on context,
-			# write the wirked time on te timesheet
-			if 'write_worked_time' in context:
-				if 'work_time' in vals:
-					worked_time = vals['work_time']
-				else:
-					worked_time = None
-				self.writeTimesheet(ids, worked_time)
-				return True
+	@api.multi
+	def write(self, vals):
+		import pdb; pdb.set_trace()
+		# If write_worked_time on context,
+		# write the wirked time on te timesheet
+		if 'write_worked_time' in context:
+			if 'work_time' in vals:
+				worked_time = vals['work_time']
+			else:
+				worked_time = None
+			self.writeTimesheet(self._ids, worked_time)
+			return True
 		#Records is a list of dictonary. Each dictionary is in this form: [key:(int_id, string_name)]
-		records = super(staff_scheduler, self).read(ids, None)
+		records = self.read()
 		#Control if the availability exits when the write is performed
 		if len(records) == 0:
 			raise except_orm(_('Error'), _("The user removed this availability."))
@@ -107,7 +107,7 @@ class staff_scheduler(models.Model):
 				break_length = self.env['staff.break.management'].browse(breaks)[0].break_time
 				time = time - break_length
 			vals['work_time'] = time
-		return super(staff_scheduler, self).write(ids, vals)
+		return super(staff_scheduler, self).write(vals)
 	
 	#push the time worked into timesheet
 	@api.model
