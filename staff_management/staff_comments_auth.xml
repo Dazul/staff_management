@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    	
+    	<record id="view_staff_comments_authorization_search_form" model="ir.ui.view">
+            <field name="name">staff.comments.authorization.search.form</field>
+            <field name="model">staff.comments.authorization</field>
+            <field name="arch" type="xml">
+                <search string="Comments Authorizations">
+                	<field name="comment_type"/>
+                    <field name="user_id"/>
+                   <group  expand='0' string='Group by...'>
+                       <filter string='Users' domain="[]" context="{'group_by' : 'user_id'}"/>
+                       <filter string='Tasks' domain="[]" context="{'group_by' : 'comment_type'}"/>
+                   </group>
+                </search>
+            </field>
+        </record>
+    	
+        <record model="ir.ui.view" id="view_staff_comments_authorization_form">
+            <field name="name">staff.comments.authorization.form</field>
+            <field name="model">staff.comments.authorization</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Comments Authorizations">
+                	<group>
+		            	<field name="user_id"/>
+		                <field name="comment_type"/>
+		                <field name="create_uid"/>
+		                <field name="write_date"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_staff_comments_authorization_tree">
+            <field name="name">staff.comments.authorization.tree</field>
+            <field name="model">staff.comments.authorization</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Comments Authorizations">
+                    <field name="user_id"/>
+                    <field name="comment_type"/>
+                    <field name="create_uid"/>
+                    <field name="write_date"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="show_staff_comments_authorization">
+			<field name="name">CommentsAuth</field>
+			<field name="res_model">staff.comments.authorization</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<menuitem name="Comments Authorizations" id="menu_staff_comments_authorization" sequence="53" parent="menu_staff_options" action="show_staff_comments_authorization" groups="group_staff_management_in_charge"/>
+        
+    </data>
+</openerp>

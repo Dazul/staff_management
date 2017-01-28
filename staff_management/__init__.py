@@ -9,3 +9,4 @@ import staff_booking
 import staff_pay_push
 import staff_utils
 import staff_break_management
+import staff_comments_auth

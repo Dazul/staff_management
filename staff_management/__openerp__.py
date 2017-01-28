@@ -23,6 +23,7 @@
 		'staff_booking.xml',
 		'staff_break_management.xml',
 		'staff_pay_push.xml',
+		'staff_comments_auth.xml',
 		'views/staff_management.xml',],
 	"installable" : True,
 	"active" : False,
