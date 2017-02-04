@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2013 EIA-FR (https://eia-fr.ch/)
-#    Luis Domingues & Romain Monnard
+#    Copyright (C) 2017 Luis Domingues & Romain Monnard
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -26,9 +25,25 @@ class staff_comments(orm.Model):
     _columns={
         'comment':fields.text('Comment',required=True),
         'user_id':fields.many2one('res.users', 'User', readonly=False, relate=True),
-        'comment_type':fields.many2one('staff.comment.type', 'Comment Type', readonly=False, relate=True),
+        'comment_type':fields.many2one('staff.comment.type', 'Comment Type', readonly=False, relate=True, required=True),
         'create_uid':fields.many2one('res.users', 'Author', readonly=True, relate=True),
         'write_date':fields.date('Date of comment',readonly=True ),
     }
+
+    def read(self, cr, user, ids, args=None, context=None):
+        granted_comments = []
+        comments = super(staff_comments, self).read(cr, user, ids, args, context)
+        auths = self.pool.get("staff.comments.authorization")
+        for comment in comments:
+            if 'comment_type' not in comment:
+                granted_comments.append(comment)
+                continue
+            match = auths.search(cr, user, [('user_id','=',user),('comment_type','=',comment['comment_type'][0])])
+            if len(match) > 0:
+                granted_comments.append(comment)
+        print len(comments)
+        print '********************************************************************'
+        print len(granted_comments)
+        return granted_comments
 
 staff_comments()
