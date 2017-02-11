@@ -30,6 +30,10 @@ class staff_comments(orm.Model):
         'write_date':fields.date('Date of comment',readonly=True ),
     }
 
+    def read_group(self, domain, fields, groupby, offset, limit, orderby, lazy):
+        print '***Read Group***'
+        return super(staff_comments, self).read_group(domain, fields, groupby, offset, limit, orderby, lazy)
+
     def read(self, cr, user, ids, args=None, context=None):
         granted_comments = []
         comments = super(staff_comments, self).read(cr, user, ids, args, context)
@@ -42,8 +46,10 @@ class staff_comments(orm.Model):
             if len(match) > 0:
                 granted_comments.append(comment)
         print len(comments)
+        print comments
         print '********************************************************************'
         print len(granted_comments)
+        print granted_comments
         return granted_comments
 
 staff_comments()
