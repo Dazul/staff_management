@@ -18,6 +18,7 @@
 #
 ##############################################################################
 from openerp.osv import orm, fields
+from openerp import api
 import datetime
 
 class staff_comments(orm.Model):
@@ -29,9 +30,11 @@ class staff_comments(orm.Model):
         'create_uid':fields.many2one('res.users', 'Author', readonly=True, relate=True),
         'write_date':fields.date('Date of comment',readonly=True ),
     }
-
+    
+    @api.model
     def read_group(self, domain, fields, groupby, offset, limit, orderby, lazy):
         print '***Read Group***'
+        import pdb; pdb.set_trace()
         return super(staff_comments, self).read_group(domain, fields, groupby, offset, limit, orderby, lazy)
 
     def read(self, cr, user, ids, args=None, context=None):
